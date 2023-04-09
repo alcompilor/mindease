@@ -8,4 +8,4 @@ This is a web application that allows users to track their mood on a daily basis
 - [@Mohammed Alkateb](https://www.github.com/mohammed-alkateb)
 - [@Ahmed Abbasi](https://www.github.com/bigcbull)
 - [@Mohamed Nour Humeidi](https://www.github.com/MoNourH)
-- [@Joseph Hammami](https://www.github.com/.....)
+- [@Joseph Hammami](https://www.github.com/josephhammami)
