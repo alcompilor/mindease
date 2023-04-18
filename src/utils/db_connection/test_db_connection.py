@@ -1,22 +1,22 @@
-import mysql.connector
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+"""Unittest DBConnection module."""
+
 import unittest
+from src.utils.db_connection.db_connection import DBConnection
 
 
-class test_db_connection(unittest.TestCase):
-    
-    def test_config_db_connection(self):
+class TestDBConnection(unittest.TestCase):
+    """Test DBConnection."""
 
-        self.cnx = mysql.connector.connect(
-            database = 'mindease',
-            host = '93.190.141.70',
-            user = 'mindease_user',
-            password = 'X3sh1sAvWa4NGWDw',
-            auth_plugin='mysql_native_password'
-        )
+    def test_init(self):
+        """Test DBConnection constructor."""
+        database = DBConnection()
+        cursor = database.cursor
 
-        self.cursor = self.cnx.cursor()
         query = 'SELECT VERSION()'
-        self.cursor.execute(query)
-        row = self.cursor.fetchone()
+        cursor.execute(query)
+        row = cursor.fetchone()
 
         self.assertIsNotNone(row, 'Connection Failed')
