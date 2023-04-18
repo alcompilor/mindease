@@ -1,0 +1,59 @@
+{% extends 'layout.html' %} {% block content %}
+<div id="register-main">
+  <div id="left"></div>
+  <div id="right">
+    <h1 class="title is-2">Create your account on Mindease</h1>
+    <div id="register">
+      <div class="field is-grouped">
+        <div class="control">
+          <label class="label">First Name</label>
+          <input class="input" type="text" placeholder="John" />
+        </div>
+        <div class="control">
+          <label class="label">Last Name</label>
+          <input class="input" type="text" placeholder="Smith" />
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="label">Email</label>
+        <div class="control">
+          <input
+            class="input"
+            type="email"
+            placeholder="john.smith@gmail.com"
+          />
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="label">Gender</label>
+        <div class="control">
+          <div class="select">
+            <select>
+              <option>Select dropdown</option>
+              <option>Male</option>
+              <option>Female</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="field">
+        <div class="control">
+          <label class="checkbox">
+            <input type="checkbox" />
+            I agree to the <a href="#">terms and conditions</a>
+          </label>
+        </div>
+      </div>
+
+      <div class="field">
+        <div class="control">
+          <button class="button is-black">Get started</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

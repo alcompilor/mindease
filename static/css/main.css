@@ -1,0 +1,25 @@
+#register-main {
+  display: grid;
+  height: 100vh;
+  grid-template-columns: 2fr 2fr;
+  width: 100%;
+  background-image: url("https://i.ibb.co/VThkNFN/643eb741e8490.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+#left {
+}
+
+#right {
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  justify-content: center;
+  background-color: #ffffff;
+  padding: 4em 4em;
+}
+
+#register {
+  width: fit-content;
+}
