@@ -1,17 +1,26 @@
-import mysql.connector
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+"""DBConnection module."""
+
+import os
+import mysql.connector  # pylint: disable=import-error
+from dotenv import load_dotenv
 
 
-class db_connection:
+class DBConnection:
+    """DBConnection Class."""
 
-    def config_db_connection(self):
+    def __init__(self):
+        """Init constructor for DBConnection class."""
+        load_dotenv()
 
         self.cnx = mysql.connector.connect(
-            database = 'mindease',
-            host = '93.190.141.70',
-            user = 'mindease_user',
-            password = 'X3sh1sAvWa4NGWDw',
+            database=os.getenv('DATABASE_NAME'),
+            host=os.getenv('DATABASE_HOSTNAME'),
+            user=os.getenv('DATABASE_USER'),
+            password=os.getenv('DATABASE_PASSWORD'),
             auth_plugin='mysql_native_password'
         )
 
-        self.cursor = cnx.cursor()
-        
+        self.cursor = self.cnx.cursor()
