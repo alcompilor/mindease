@@ -1,14 +1,15 @@
 #register-main {
   display: grid;
   height: 100vh;
-  grid-template-columns: 2fr 2fr;
+  grid-template-columns: 3fr 2fr;
   width: 100%;
-  background-image: url("https://i.ibb.co/VThkNFN/643eb741e8490.png");
+  background-image: url("../img/register_background.jpg");
   background-repeat: no-repeat;
-  background-size: cover;
+  background-size: contain;
 }
 
 #left {
+  width: 100%;
 }
 
 #right {
@@ -16,8 +17,13 @@
   flex-direction: column;
   align-items: left;
   justify-content: center;
-  background-color: #ffffff;
-  padding: 4em 4em;
+  background-color: #f8f8f8;
+  padding: 0em 7em;
+}
+
+#register-logo {
+  width: 40%;
+  filter: contrast(1.3);
 }
 
 #register {
