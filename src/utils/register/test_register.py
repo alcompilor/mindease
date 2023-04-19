@@ -19,7 +19,7 @@ class TestRegister(unittest.TestCase):
             'last_name': 'Alkateb',
             'email': 'jackreacherssss@gmail.com',
             'password': 'pass1234',
-            'age': 30,
+            'birth': '2010.10.10',
             'gender': 'male'
         }
 
