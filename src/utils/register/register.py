@@ -17,7 +17,7 @@ class Register:
         self.last_name = user['last_name']
         self.email = user['email']
         self.password = user['password']
-        self.birth = user['birth']
+        self.age = user['age']
         self.gender = user['gender']
 
     def register_user(self):
@@ -25,7 +25,7 @@ class Register:
 
         query = 'INSERT INTO User \
             (first_name, last_name, email, \
-            password, birth, gender) VALUES \
+            password, age, gender) VALUES \
             (%s, %s, %s, %s, %s, %s)'
 
         params = (
@@ -33,7 +33,7 @@ class Register:
             self.last_name,
             self.email,
             self.password,
-            self.birth,
+            self.age,
             self.gender
             )
 
