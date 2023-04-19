@@ -18,6 +18,8 @@
               id="first-name"
               type="text"
               placeholder="John"
+              minlength="1"
+              maxlength="35"
               required
             />
           </div>
@@ -28,6 +30,8 @@
               id="last-name"
               type="text"
               placeholder="Smith"
+              minlength="1"
+              maxlength="35"
               required
             />
           </div>
@@ -41,8 +45,13 @@
               id="email"
               type="email"
               placeholder="john.smith@gmail.com"
+              minlength="1"
+              maxlength="254"
               required
             />
+            <p class="help is-danger" id="email-notice" style="display: none">
+              This email is invalid
+            </p>
           </div>
         </div>
 
@@ -54,8 +63,17 @@
               id="password"
               type="password"
               placeholder="Enter a password"
+              minlength="8"
+              maxlength="254"
               required
             />
+            <p
+              class="help is-danger"
+              id="password-notice"
+              style="display: none"
+            >
+              Password should be at least 8 characters
+            </p>
           </div>
           <div class="control">
             <label class="label">Confirm Password</label>
@@ -64,8 +82,17 @@
               id="password-confirm"
               type="password"
               placeholder="Re-enter password"
+              minlength="8"
+              maxlength="254"
               required
             />
+            <p
+              class="help is-danger"
+              id="password-confirm-notice"
+              style="display: none"
+            >
+              Passwords do not match
+            </p>
           </div>
         </div>
 
@@ -88,6 +115,7 @@
               type="date"
               min="1920-01-01"
               max="2010-01-01"
+              required
             />
           </div>
         </div>
