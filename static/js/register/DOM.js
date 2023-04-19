@@ -58,29 +58,29 @@ const matchPassword = () => {
 registerContainer.addEventListener("mouseover", validateForm);
 
 // Event listener that validates first name on change
-firstName.addEventListener("change", (e) => {
+firstName.addEventListener("input", (e) => {
   validateField(firstName);
 });
 
 // Event listener that validates last name on change
-lastName.addEventListener("change", (e) => {
+lastName.addEventListener("input", (e) => {
   validateField(lastName);
 });
 
 // Event listener that validates email on change
-email.addEventListener("change", (e) => {
+email.addEventListener("input", (e) => {
   validateField(email);
 });
 
 // Event listener that validates password on change
-password.addEventListener("change", (e) => {
+password.addEventListener("input", (e) => {
   matchPassword();
   validateField(password);
   validateField(passwordConfirm);
 });
 
 // Event listener that validates password confirmation on change
-passwordConfirm.addEventListener("change", (e) => {
+passwordConfirm.addEventListener("input", (e) => {
   matchPassword();
   validateField(passwordConfirm);
 });
