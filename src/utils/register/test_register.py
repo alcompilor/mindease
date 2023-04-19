@@ -17,10 +17,10 @@ class TestRegister(unittest.TestCase):
         user = {
             'first_name': 'Mohammed',
             'last_name': 'Alkateb',
-            'email': 'jackreacher123aslmd@gmail.com',
+            'email': 'jackreachers@gmail.com',
             'password': 'pass1234',
             'age': 30,
-            'gender': 'male'
+            'gender': 'males'
         }
 
         conn = DBConnection()
