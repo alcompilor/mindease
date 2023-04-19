@@ -15,11 +15,11 @@ class TestRegister(unittest.TestCase):
         """Test register_user Function."""
 
         user = {
-            'first_name': 'Mohammed',
-            'last_name': 'Alkateb',
-            'email': 'jackreacherssss@gmail.com',
+            'first_name': 'Jackson',
+            'last_name': 'Reacher',
+            'email': 'jackreacher@gmail.com',
             'password': 'pass1234',
-            'age': 30,
+            'birth': '1955.05.05',
             'gender': 'male'
         }
 
