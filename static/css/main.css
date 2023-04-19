@@ -79,10 +79,21 @@ html {
   border-radius: 0.5em;
 }
 
-.signup-btn {
+.custom-green-btn {
   background-color: rgb(18 137 108);
   border-color: rgb(18 137 108);
   color: #fff;
+  border-radius: 0.5em;
+}
+
+.custom-green-btn:hover {
+  color: #fff;
+  background-color: rgb(15, 119, 93);
+  border-color: rgb(15, 119, 93);
+}
+
+.custom-light-btn {
+  border-radius: 0.5em;
 }
 
 /* HOME HERO */
@@ -91,7 +102,7 @@ html {
   display: grid;
   grid-template-columns: 1.5fr 1.3fr;
   gap: 1em;
-  height: 64vh;
+  height: 66vh;
   border-radius: 3em;
   padding-left: 7%;
   padding-right: 7%;
