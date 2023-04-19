@@ -35,7 +35,7 @@ class Register:
             self.password,
             self.birth,
             self.gender
-            )
+        )
 
         try:
             conn = DBConnection()
@@ -47,4 +47,3 @@ class Register:
         except mysql.connector.Error as err:
             print(f'error: {err}')
             return {'registration_succeeded': False}
-            
