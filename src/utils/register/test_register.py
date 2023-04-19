@@ -12,15 +12,15 @@ class TestRegister(unittest.TestCase):
     """Test Register."""
 
     def test_register_user(self):
-        """Test Register_user Function."""
+        """Test register_user Function."""
 
         user = {
             'first_name': 'Mohammed',
             'last_name': 'Alkateb',
-            'email': 'jackreachers@gmail.com',
+            'email': 'jackreacherssss@gmail.com',
             'password': 'pass1234',
             'age': 30,
-            'gender': 'males'
+            'gender': 'male'
         }
 
         conn = DBConnection()
@@ -33,7 +33,7 @@ class TestRegister(unittest.TestCase):
         self.assertTrue(row is None or
             len(row) == 0)
 
-        reg = Register()
-        user_register = reg.register_user(user)
+        reg = Register(user)
+        user_reg = reg.register_user()
 
-        self.assertEqual(user_register, {'registration_succeeded': True}, 'Registration failed')
+        self.assertEqual(user_reg, {'registration_succeeded': True}, 'Registration failed')

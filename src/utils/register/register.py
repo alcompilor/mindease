@@ -1,12 +1,17 @@
-from src.utils.db_connection.db_connection import DBConnection
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+"""Register Module."""
+
 import mysql.connector
+from src.utils.db_connection.db_connection import DBConnection
 
 
 class Register:
-    def __init__(self):
-        pass
+    """Register Class."""
 
-    def register_user(self, user):
+    def __init__(self, user):
+        """Register Constructor."""
 
         self.first_name = user['first_name']
         self.last_name = user['last_name']
@@ -15,17 +20,20 @@ class Register:
         self.age = user['age']
         self.gender = user['gender']
 
+    def register_user(self):
+        """Register user function for Register class."""
+
         query = 'INSERT INTO User \
             (first_name, last_name, email, \
             password, age, gender) VALUES \
             (%s, %s, %s, %s, %s, %s)'
 
         params = (
-            self.first_name, 
-            self.last_name, 
-            self.email, 
-            self.password, 
-            self.age, 
+            self.first_name,
+            self.last_name,
+            self.email,
+            self.password,
+            self.age,
             self.gender
             )
 
@@ -35,7 +43,8 @@ class Register:
             conn.cursor.execute(query, params)
             conn.cnx.commit()
             return {'registration_succeeded': True}
-            
+
         except mysql.connector.Error as err:
             print(f'error: {err}')
             return {'registration_succeeded': False}
+            
