@@ -24,3 +24,4 @@ class DBConnection:
         )
 
         self.cursor = self.cnx.cursor()
+       
