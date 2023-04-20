@@ -12,7 +12,6 @@ class Register:
 
     def __init__(self, user):
         """Register Constructor."""
-
         self.first_name = user['first_name']
         self.last_name = user['last_name']
         self.email = user['email']
@@ -22,7 +21,6 @@ class Register:
 
     def register_user(self):
         """Register user function for Register class."""
-
         query = 'INSERT INTO User \
             (first_name, last_name, email, \
             password, birth, gender) VALUES \
@@ -42,8 +40,12 @@ class Register:
 
             conn.cursor.execute(query, params)
             conn.cnx.commit()
+
             return {'registration_succeeded': True}
 
         except mysql.connector.Error as err:
             print(f'error: {err}')
             return {'registration_succeeded': False}
+
+        conn.cursor.close()
+        conn.cnx.close()
