@@ -65,7 +65,8 @@ html {
 }
 
 .navbar-custom:hover {
-  transform: scale(1.01);
+  transform: scale(0.99);
+  box-shadow: none;
   transition-duration: 0.3s;
 }
 
@@ -102,10 +103,12 @@ html {
   display: grid;
   grid-template-columns: 1.5fr 1.3fr;
   gap: 1em;
-  height: 66vh;
+  height: auto;
   border-radius: 3em;
   padding-left: 7%;
   padding-right: 7%;
+  padding-top: 2em;
+  padding-bottom: 2em;
   background: rgb(255, 255, 255);
   background: linear-gradient(296deg, #48c78e 3%, rgb(220 243 215) 100%);
   transition-duration: 0.2s;
@@ -131,6 +134,69 @@ html {
 }
 
 #home-hero:hover {
-  transform: scale(1.01);
+  transform: scale(0.99);
+  box-shadow: none;
   transition-duration: 0.3s;
+}
+
+/* CARDS */
+
+#cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto;
+  gap: 3em;
+}
+
+#card {
+  display: grid;
+  grid-template-columns: 1.5fr 1.5fr;
+  gap: 1em;
+  padding: 2em 3em;
+  background: rgb(255, 255, 255);
+  background: linear-gradient(296deg, #bae3d1 3%, rgb(243 243 243) 100%);
+  height: auto;
+  border-radius: 2em;
+  box-shadow: 6px 7px 0px 0px #7dae8e70;
+  transition-duration: 0.2s;
+}
+
+#card:hover {
+  transform: scale(0.99);
+  box-shadow: none;
+  transition-duration: 0.3s;
+}
+
+#card-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#card-img > img {
+  width: 100%;
+}
+
+/* FOOTER */
+
+.custom-footer {
+  border-top-left-radius: 2em;
+  border-top-right-radius: 2em;
+  background: linear-gradient(
+    189deg,
+    rgb(152 197 142) 3%,
+    rgb(35 141 121) 100%
+  );
+  padding: 3rem 1.5rem 4rem;
+  margin-top: 5%;
+}
+
+#footer-text,
+#footer-text > strong {
+  color: #fff;
+}
+
+#footer-text > a {
+  color: #fff;
+  text-decoration: underline;
 }
