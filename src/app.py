@@ -5,10 +5,12 @@
 
 import os
 from pathlib import Path
+from textwrap import dedent
 from flask import Flask, render_template, request, flash
 import bcrypt
 from dotenv import load_dotenv
 from src.validator import ValidateRegister
+from src.utils.register.register import Register
 
 load_dotenv()  # load .env
 
@@ -38,7 +40,20 @@ def register_page():
     """Route for account registration page."""
     form = ValidateRegister(request.form)
     if request.method == 'POST' and form.validate():
-        flash('Thanks for registering')
+        hashed_pwd = encrypt_password(str.encode(form.password.data))
+
+        user = {'first_name': form.first_name.data,
+                'last_name': form.last_name.data,
+                'email': form.email.data,
+                'password': hashed_pwd,
+                'birth': form.birth.data,
+                'gender': form.gender.data
+                }
+
+        Register(user)
+        flash(dedent("""\
+            Successfully registered.
+            We will notify you once our platform launches!"""))
 
     data = {"doc_title": "Register | Mindease", "register_form": form}
     return render_template("register.html", data=data)
@@ -54,4 +69,4 @@ def comingsoon_page():
 def encrypt_password(password):
     """Encrypt registration password."""
     hashed_pwd = bcrypt.hashpw(password, bcrypt.gensalt(rounds=15))
-    return {'hashed_password': hashed_pwd}
+    return hashed_pwd
