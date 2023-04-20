@@ -1,6 +1,7 @@
 // Targeting DOM elements
 const registerContainer = document.getElementById("register"); // form container
 const registerBtn = document.getElementById("register-btn"); // form submit button
+const registerForm = document.getElementById("register-form"); // form
 
 const firstName = document.getElementById("first-name"); // first name field
 const lastName = document.getElementById("last-name"); // last name field
@@ -88,6 +89,9 @@ passwordConfirm.addEventListener("input", (e) => {
 // Event listener that triggers action + css changes once submit btn is clicked
 registerBtn.addEventListener("click", (e) => {
   registerBtn.classList.add("is-loading");
+  setTimeout(() => {
+    registerForm.submit();
+  }, 4000);
 });
 
 // Event listener to init terms & conditions modal

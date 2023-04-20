@@ -12,47 +12,22 @@
         ><strong>Already got an account?</strong></a
       >
       <h1 class="title is-3">Create an account on Mindease</h1>
-      <form id="register-form">
+      <form id="register-form" action="/register" method="POST">
         <div class="field is-grouped">
           <div class="control">
             <label class="label">First Name</label>
             {{ data.register_form.first_name(class_="input") }}
-            <input
-              class="input"
-              id="first-name"
-              type="text"
-              placeholder="John"
-              minlength="1"
-              maxlength="35"
-              required
-            />
           </div>
           <div class="control">
             <label class="label">Last Name</label>
-            <input
-              class="input"
-              id="last-name"
-              type="text"
-              placeholder="Smith"
-              minlength="1"
-              maxlength="35"
-              required
-            />
+            {{ data.register_form.last_name(class_="input") }}
           </div>
         </div>
 
         <div class="field">
           <label class="label">Email</label>
           <div class="control">
-            <input
-              class="input"
-              id="email"
-              type="email"
-              placeholder="john.smith@gmail.com"
-              minlength="1"
-              maxlength="254"
-              required
-            />
+            {{ data.register_form.email(class_="input") }}
             <p class="help is-danger" id="email-notice" style="display: none">
               This email is invalid
             </p>
@@ -62,15 +37,7 @@
         <div class="field is-grouped">
           <div class="control">
             <label class="label">Password</label>
-            <input
-              class="input"
-              id="password"
-              type="password"
-              placeholder="Enter a password"
-              minlength="8"
-              maxlength="254"
-              required
-            />
+            {{ data.register_form.password(class_="input") }}
             <p
               class="help is-danger"
               id="password-notice"
@@ -81,15 +48,7 @@
           </div>
           <div class="control">
             <label class="label">Confirm Password</label>
-            <input
-              class="input"
-              id="password-confirm"
-              type="password"
-              placeholder="Re-enter password"
-              minlength="8"
-              maxlength="254"
-              required
-            />
+            {{ data.register_form.password_confirm(class_="input") }}
             <p
               class="help is-danger"
               id="password-confirm-notice"
@@ -104,31 +63,20 @@
           <div class="control">
             <label class="label">Gender</label>
             <div class="select">
-              <select id="gender" required>
-                <option>Male</option>
-                <option>Female</option>
-              </select>
+              {{ data.register_form.gender(class_="input") }}
             </div>
           </div>
 
           <div class="control">
             <label class="label">Date of Birth:</label>
-            <input
-              class="input"
-              id="date-birth"
-              type="date"
-              min="1920-01-01"
-              max="2010-01-01"
-              required
-            />
+            {{ data.register_form.birth(class_="input") }}
           </div>
         </div>
 
         <div class="field">
           <div class="control">
             <label class="checkbox">
-              <input type="checkbox" id="tos" required />
-              I agree to the
+              {{ data.register_form.accept_tos }} I agree to the
               <a
                 href="#"
                 class="js-modal-trigger"
