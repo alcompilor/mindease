@@ -4,8 +4,9 @@
 """Flask module."""
 
 from pathlib import Path
-from flask import Flask, render_template
+from flask import Flask, render_template, request, flash
 import bcrypt
+from src.validator import ValidateRegister
 
 ROOT_DIR = Path(__file__).parent.parent  # getting root dir path
 STATIC_DIR = (ROOT_DIR).joinpath('static')  # generating static dir path
@@ -25,10 +26,14 @@ def home_page():
     return render_template("index.html", data=data)
 
 
-@app.route("/register")  # route
+@app.route('/register', methods=['POST', 'GET'])  # route
 def register_page():
     """Route for account registration page."""
-    data = {"doc_title": "Register | Mindease"}
+    form = ValidateRegister(request.form)
+    if request.method == 'POST' and form.validate():
+        flash('Thanks for registering')
+
+    data = {"doc_title": "Register | Mindease", "register_form": form}
     return render_template("register.html", data=data)
 
 
