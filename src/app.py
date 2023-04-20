@@ -42,15 +42,17 @@ def register_page():
     if request.method == 'POST' and form.validate():
         hashed_pwd = encrypt_password(str.encode(form.password.data))
 
-        user = {'first_name': form.first_name.data,
-                'last_name': form.last_name.data,
-                'email': form.email.data,
-                'password': hashed_pwd,
-                'birth': form.birth.data,
-                'gender': form.gender.data
-                }
+        user_data = {'first_name': form.first_name.data,
+                     'last_name': form.last_name.data,
+                     'email': form.email.data,
+                     'password': hashed_pwd,
+                     'birth': form.birth.data,
+                     'gender': form.gender.data
+                     }
 
-        Register(user)
+        user = Register(user_data)
+        user.register_user()
+
         flash(dedent("""\
             Successfully registered.
             We will notify you once our platform launches!"""))
