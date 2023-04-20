@@ -4,34 +4,64 @@ html {
 
 #register-main {
   display: grid;
-  height: 100vh;
-  grid-template-columns: 3fr 2fr;
-  width: 100%;
-  background-image: url("../img/register_background.jpg");
-  background-repeat: no-repeat;
-  background-size: contain;
-}
-
-#left {
-  width: 100%;
+  min-height: 100vh;
+  grid-template-columns: 1fr 1.2fr;
+  background: #f8f8f8;
+  padding-right: 7%;
+  padding-left: 7%;
 }
 
 #right {
   display: flex;
   flex-direction: column;
-  align-items: left;
   justify-content: center;
-  background-color: #f8f8f8;
+  align-items: center;
+  width: 100%;
+}
+
+#register-img {
+  width: 90%;
+}
+
+#left {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   padding: 0em 7em;
+  gap: 2em;
 }
 
 #register-logo {
-  width: 40%;
+  width: 50%;
   filter: contrast(1.3);
+  padding: 0.5em 2em 0.5em 1em;
+  background: rgb(197, 199, 153);
+  background: linear-gradient(
+    191deg,
+    rgb(159 196 151) 3%,
+    rgba(18, 141, 117, 1) 100%
+  );
+  border-radius: 1em;
+  box-shadow: 5px 6px 0px 0px #96b48f80;
+  transition-duration: 0.2s;
+}
+
+#register-logo:hover {
+  box-shadow: none;
+  transform: scale(0.99);
+  transition-duration: 0.3s;
 }
 
 #register {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
   width: fit-content;
+}
+
+#register-link {
+  color: #2d885f;
+  text-decoration: underline;
 }
 
 /* HOME PAGE */

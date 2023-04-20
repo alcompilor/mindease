@@ -1,14 +1,17 @@
 {% extends 'layout.html' %} {% block content %}
 <div id="register-main">
-  <div id="left"></div>
-  <div id="right">
-    <img
-      src="{{ url_for('static', filename='img/logo.png') }}"
-      id="register-logo"
-    />
-    <br />
-    <h1 class="title is-3">Create an account on Mindease</h1>
+  <div id="left">
+    <a href="/"
+      ><img
+        src="{{ url_for('static', filename='img/logo-white.png') }}"
+        id="register-logo"
+      />
+    </a>
     <div id="register">
+      <a id="register-link" href="/login"
+        ><strong>Already got an account?</strong></a
+      >
+      <h1 class="title is-3">Create an account on Mindease</h1>
       <form id="register-form">
         <div class="field is-grouped">
           <div class="control">
@@ -125,14 +128,18 @@
             <label class="checkbox">
               <input type="checkbox" id="tos" required />
               I agree to the
-              <a href="#" class="js-modal-trigger" data-target="tos-modal">
+              <a
+                href="#"
+                class="js-modal-trigger"
+                data-target="tos-modal"
+                id="register-link"
+              >
                 terms and conditions
               </a>
             </label>
           </div>
         </div>
       </form>
-      <br />
       <br />
       <div class="field">
         <div class="control">
@@ -142,6 +149,12 @@
         </div>
       </div>
     </div>
+  </div>
+  <div id="right">
+    <img
+      src="{{ url_for('static', filename='img/register.png') }}"
+      id="register-img"
+    />
   </div>
 </div>
 <div class="modal" id="tos-modal">
