@@ -91,7 +91,7 @@ registerBtn.addEventListener("click", (e) => {
   registerBtn.classList.add("is-loading");
   setTimeout(() => {
     registerForm.submit();
-  }, 4000);
+  }, 2500);
 });
 
 // Event listener to init terms & conditions modal
