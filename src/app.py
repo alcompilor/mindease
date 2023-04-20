@@ -6,9 +6,13 @@
 from pathlib import Path
 from flask import Flask, render_template
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 import bcrypt
 >>>>>>> 994f0a9a5af7581c3020529fad2ed7db9a53d7e6
+=======
+import bcrypt
+>>>>>>> 85e3b7bfcd707edefdb636b6cf01f440e75bb569
 
 ROOT_DIR = Path(__file__).parent.parent  # getting root dir path
 STATIC_DIR = (ROOT_DIR).joinpath('static')  # generating static dir path
@@ -41,11 +45,17 @@ def comingsoon_page():
     data = {"doc_title": "Thank You | Mindease"}
     return render_template("comingsoon.html", data=data)
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 85e3b7bfcd707edefdb636b6cf01f440e75bb569
 
 
 def encrypt_password(password):
     """Encrypt registration password"""
     hashed_pwd = bcrypt.hashpw(password, bcrypt.gensalt(rounds=15))
     return {'hashed_password': hashed_pwd}
+<<<<<<< HEAD
 >>>>>>> 994f0a9a5af7581c3020529fad2ed7db9a53d7e6
+=======
+>>>>>>> 85e3b7bfcd707edefdb636b6cf01f440e75bb569
