@@ -25,6 +25,7 @@ class ValidateRegister(Form):
             validators.DataRequired(message="First Name is required"),
         ],
         id="first-name",
+        render_kw={"placeholder": "John"},
     )
 
     last_name = StringField(
@@ -34,6 +35,7 @@ class ValidateRegister(Form):
             validators.DataRequired(message="Last Name is required"),
         ],
         id="last-name",
+        render_kw={"placeholder": "Smith"},
     )
 
     email = EmailField(
@@ -44,6 +46,7 @@ class ValidateRegister(Form):
             validators.DataRequired(message="Email is required"),
         ],
         id="email",
+        render_kw={"placeholder": "john.smith@gmail.com"},
     )
 
     password = PasswordField(
@@ -58,6 +61,7 @@ class ValidateRegister(Form):
             ),
         ],
         id="password",
+        render_kw={"placeholder": "Enter a password"},
     )
 
     password_confirm = PasswordField(
@@ -67,6 +71,7 @@ class ValidateRegister(Form):
                 message="Password confirmation sis required")
         ],
         id="password-confirm",
+        render_kw={"placeholder": "Re-enter password"},
     )
 
     gender = SelectField(
@@ -90,4 +95,32 @@ class ValidateRegister(Form):
                 message="You must accept terms & conditions")
         ],
         id="tos",
+    )
+
+
+class ValidateLogin(Form):
+    """Login Validator to validate client side login form."""
+
+    email = EmailField(
+        "Email",
+        validators=[
+            validators.Length(min=1, max=254, message="Email is invalid"),
+            validators.Email(message="Email is invalid"),
+            validators.DataRequired(message="Email is required"),
+        ],
+        id="email",
+        render_kw={"placeholder": "Your email"},
+    )
+
+    password = PasswordField(
+        "Password",
+        validators=[
+            validators.DataRequired(message="Password is required"),
+            validators.Length(
+                min=8, max=50,
+                message="Password is between 8 and 50 characters"
+            ),
+        ],
+        id="password",
+        render_kw={"placeholder": "Your password"},
     )
