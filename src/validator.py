@@ -12,22 +12,7 @@ from wtforms import (
     SelectField,
     DateField,
     validators,
-    ValidationError,
 )
-import mysql.connector
-from src.utils.db_connection.db_connection import DBConnection
-
-
-def validate_email_db(form, field):
-    """Check whether email exists in database. Used in Login Validator."""
-    try:
-        database = DBConnection()
-        query = "SELECT user_id FROM User WHERE email = %s"
-        database.cursor.execute(query, field.data)
-        database.cursor.fetchone()
-
-    except mysql.connector.Error as err:
-        raise ValidationError('Email does not exist') from err
 
 
 class ValidateRegister(Form):
@@ -122,7 +107,6 @@ class ValidateLogin(Form):
             validators.Length(min=1, max=254, message="Email is invalid"),
             validators.Email(message="Email is invalid"),
             validators.DataRequired(message="Email is required"),
-            validate_email_db,
         ],
         id="email",
         render_kw={"placeholder": "Your email"},
