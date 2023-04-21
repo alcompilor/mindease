@@ -7,29 +7,31 @@
         id="register-logo"
       />
     </a>
-    {% for message in get_flashed_messages() %}
-    <article class="message is-primary">
-      <div class="message-body">
-        <strong>{{ message }}</strong>
-      </div>
-    </article>
-    {% endfor %} {% with errors =
-    get_flashed_messages(category_filter=["error"]) %} {% if errors %}
-    <article class="message is-danger">
-      <div class="message-body">
-        {%- for msg in errors %}
-        <strong>{{ msg }}</strong>
-        {% endfor -%}
-      </div>
-    </article>
-    {% endif %} {% endwith %} {% for field in data.register_form.errors %} {%
-    for error in data.register_form.errors[field] %}
-    <article class="message is-danger">
-      <div class="message-body">
-        <strong>{{ error }}</strong>
-      </div>
-    </article>
-    {% endfor %} {% endfor %}
+    <div id="register-notifications">
+      {% for message in get_flashed_messages() %}
+      <article class="message is-primary">
+        <div class="message-body">
+          <strong>{{ message }}</strong>
+        </div>
+      </article>
+      {% endfor %} {% with errors =
+      get_flashed_messages(category_filter=["error"]) %} {% if errors %}
+      <article class="message is-danger">
+        <div class="message-body">
+          {%- for msg in errors %}
+          <strong>{{ msg }}</strong>
+          {% endfor -%}
+        </div>
+      </article>
+      {% endif %} {% endwith %} {% for field in data.register_form.errors %} {%
+      for error in data.register_form.errors[field] %}
+      <article class="message is-danger">
+        <div class="message-body">
+          <strong>{{ error }}</strong>
+        </div>
+      </article>
+      {% endfor %} {% endfor %}
+    </div>
     <div id="register">
       <a id="register-link" href="/login"
         ><strong>Already got an account?</strong></a
