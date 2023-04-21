@@ -7,18 +7,35 @@
         id="register-logo"
       />
     </a>
+    {% for message in get_flashed_messages() %}
+    <article class="message is-primary">
+      <div class="message-body">
+        <strong>{{ message }}</strong>
+      </div>
+    </article>
+    {% endfor %} {% with errors =
+    get_flashed_messages(category_filter=["error"]) %} {% if errors %}
+    <article class="message is-danger">
+      <div class="message-body">
+        {%- for msg in errors %}
+        <strong>{{ msg }}</strong>
+        {% endfor -%}
+      </div>
+    </article>
+    {% endif %} {% endwith %} {% for field in data.register_form.errors %} {%
+    for error in data.register_form.errors[field] %}
+    <article class="message is-danger">
+      <div class="message-body">
+        <strong>{{ error }}</strong>
+      </div>
+    </article>
+    {% endfor %} {% endfor %}
     <div id="register">
-      {% for message in get_flashed_messages() %}
-      <article class="message is-primary">
-        <div class="message-body">
-          <strong>{{ message }}</strong>
-        </div>
-      </article>
-      {% endfor %}
       <a id="register-link" href="/login"
         ><strong>Already got an account?</strong></a
       >
       <h1 class="title is-3">Create an account on Mindease</h1>
+
       <form id="register-form" action="/register" method="POST">
         <div class="field is-grouped">
           <div class="control">
