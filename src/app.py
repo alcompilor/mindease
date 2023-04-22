@@ -6,11 +6,14 @@
 import os
 from pathlib import Path
 from textwrap import dedent
-from flask import Flask, render_template, request, flash
+from flask import Flask, render_template, request, flash, url_for, redirect
+from flask_login import LoginManager, login_user, login_required, logout_user
 import bcrypt
 from dotenv import load_dotenv
-from src.validator import ValidateRegister
+from src.validator import ValidateRegister, ValidateLogin
 from src.utils.register.register import Register
+from src.utils.login.login import Login
+from src.utils.user.user import User
 
 load_dotenv()  # load .env
 
@@ -27,6 +30,9 @@ app = Flask(__name__,
 # assigning secret key for flask app
 app.secret_key = os.getenv('APP_SECRET_KEY')
 
+login_manager = LoginManager()
+login_manager.init_app(app)
+
 
 @app.route("/")  # route
 def home_page():
@@ -36,7 +42,7 @@ def home_page():
 
 
 @app.route('/register', methods=['POST', 'GET'])  # route
-def register_page():
+def register():
     """Route for account registration page."""
     form = ValidateRegister(request.form)
     if request.method == 'POST' and form.validate():
@@ -50,7 +56,6 @@ def register_page():
                      'gender': form.gender.data
                      }
 
-        print(user_data)
         user = Register(user_data)
         result = user.register_user()
 
@@ -66,11 +71,43 @@ def register_page():
     return render_template("register.html", data=data)
 
 
-@app.route("/thankyou")  # TEMPORARY route
-def comingsoon_page():
-    """Route for coming soon page."""
-    data = {"doc_title": "Thank You | Mindease"}
-    return render_template("comingsoon.html", data=data)
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    """Route for login page."""
+    form = ValidateLogin(request.form)
+    if request.method == 'POST' and form.validate():
+
+        user_data = {'email': form.email.data,
+                     'password': form.password.data,
+                     }
+
+        user_login = Login()
+        result = user_login.login(user_data['email'], user_data['password'])
+
+        if result['login_succeeded']:
+            user = User(email=user_data['email'], name=None,
+                        password=None, birth=None, gender=None, user_id=None)
+
+            user_id = user.get_user_id(user_data['email'])
+            login_user(user_id)
+
+            return redirect(url_for('dashboard'))
+
+    return render_template('login.html')
+
+
+@app.route('/logout')
+def logout():
+    """Route to logout a user."""
+    logout_user()
+    return redirect(url_for('login'))
+
+
+@app.route('/dashboard')
+@login_required
+def dashboard():
+    """Route for user dashboard."""
+    return 'Welcome, user!'
 
 
 def encrypt_password(password):
