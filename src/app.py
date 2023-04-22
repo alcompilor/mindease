@@ -50,12 +50,17 @@ def register_page():
                      'gender': form.gender.data
                      }
 
+        print(user_data)
         user = Register(user_data)
-        user.register_user()
+        result = user.register_user()
 
-        flash(dedent("""\
-            Successfully registered.
-            We will notify you once our platform launches!"""))
+        if result['registration_succeeded']:
+            flash(dedent("""\
+                    Successfully registered.
+                    We will notify you once our platform launches!"""),
+                  "success")
+        else:
+            flash("Email already exists", "error")
 
     data = {"doc_title": "Register | Mindease", "register_form": form}
     return render_template("register.html", data=data)
