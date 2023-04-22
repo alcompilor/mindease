@@ -78,8 +78,8 @@ def login():
                      'password': form.password.data,
                      }
 
-        user_login = Login()
-        result = user_login.login(user_data['email'], user_data['password'])
+        init_login = Login()
+        result = init_login.login(user_data['email'], user_data['password'])
 
         if result['login_succeeded']:
             user_id = load_user(user_data['email'])
@@ -89,9 +89,11 @@ def login():
 
         if not result['login_succeeded'] and result['invalid_password']:
             flash("Password is incorrect", "error")
+            return redirect(url_for('login'))
 
         if not result['login_succeeded'] and result['invalid_email']:
             flash("This email does not exist", "error")
+            return redirect(url_for('login'))
 
     data = {"doc_title": "Login | Mindease", "login_form": form}
     return render_template("login.html", data=data)
@@ -101,6 +103,7 @@ def login():
 def logout():
     """Route to logout a user."""
     session.pop('user_id', None)
+
     flash("You have been successfully logged out", "success")
     return redirect(url_for('login'))
 
