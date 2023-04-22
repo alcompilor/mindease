@@ -8,15 +8,18 @@
       />
     </a>
     <div id="register-notifications">
-      {% for message in get_flashed_messages() %}
-      <article class="message is-primary">
+      {% with successes = get_flashed_messages(category_filter=["success"]) %}
+      {% if successes %}
+      <article class="message is-success msg-shadow">
         <div class="message-body">
-          <strong>{{ message }}</strong>
+          {%- for msg in successes %}
+          <strong>{{ msg }}</strong>
+          {% endfor -%}
         </div>
       </article>
-      {% endfor %} {% with errors =
+      {% endif %} {% endwith %} {% with errors =
       get_flashed_messages(category_filter=["error"]) %} {% if errors %}
-      <article class="message is-danger">
+      <article class="message is-danger msg-shadow">
         <div class="message-body">
           {%- for msg in errors %}
           <strong>{{ msg }}</strong>
@@ -25,7 +28,7 @@
       </article>
       {% endif %} {% endwith %} {% for field in data.register_form.errors %} {%
       for error in data.register_form.errors[field] %}
-      <article class="message is-danger">
+      <article class="message is-danger msg-shadow">
         <div class="message-body">
           <strong>{{ error }}</strong>
         </div>
