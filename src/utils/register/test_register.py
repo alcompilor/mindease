@@ -4,9 +4,10 @@
 """unittest Register module."""
 
 import unittest
+from unittest.mock import MagicMock
 from src.utils.register.register import Register
 from src.utils.db_connection.db_connection import DBConnection
-from unittest.mock import MagicMock
+
 
 class TestRegister(unittest.TestCase):
     """Test Register."""
@@ -16,7 +17,7 @@ class TestRegister(unittest.TestCase):
         user = {
             'first_name': 'Jackson',
             'last_name': 'Reacher',
-            'email': 'jackreacheroo@gmail.com',
+            'email': 'jackreacherooss@gmail.com',
             'password': 'pass1234',
             'birth': '1955.05.05',
             'gender': 'male'
@@ -27,7 +28,8 @@ class TestRegister(unittest.TestCase):
         conn_mock.cnx.cursor.return_value = cursor_mock
         cursor_mock.fetchone.return_value = None
 
-        with unittest.mock.patch('src.utils.db_connection.db_connection.DBConnection', return_value=conn_mock):
+        with unittest.mock.patch('src.utils.db_connection.db_connection.DBConnection',
+            return_value=conn_mock):
             reg = Register(user)
             user_reg = reg.register_user()
 
