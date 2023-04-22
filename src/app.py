@@ -90,7 +90,8 @@ def login():
 
             return redirect(url_for('dashboard'))
 
-    return render_template('login.html')
+    data = {"doc_title": "Login | Mindease", "login_form": form}
+    return render_template("login.html", data=data)
 
 
 @app.route('/logout')
