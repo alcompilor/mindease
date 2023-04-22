@@ -87,13 +87,16 @@ def login():
 
             return redirect(url_for('dashboard'))
 
-        if not result['login_succeeded'] and result['invalid_password']:
-            flash("Password is incorrect", "error")
-            return redirect(url_for('login'))
+        if not result['login_succeeded']:
+            try:
+                result['invalid_password']
 
-        if not result['login_succeeded'] and result['invalid_email']:
-            flash("This email does not exist", "error")
-            return redirect(url_for('login'))
+                flash("Password is incorrect", "error")
+                return redirect(url_for('login'))
+
+            except KeyError:
+                flash("This email does not exist", "error")
+                return redirect(url_for('login'))
 
     data = {"doc_title": "Login | Mindease", "login_form": form}
     return render_template("login.html", data=data)
