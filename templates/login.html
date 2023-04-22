@@ -1,13 +1,13 @@
 {% extends 'layout.html' %} {% block content %}
-<div id="register-main">
+<div id="auth-main">
   <div id="left">
     <a href="/"
       ><img
         src="{{ url_for('static', filename='img/logo-white.png') }}"
-        id="register-logo"
+        id="auth-logo"
       />
     </a>
-    <div id="register-notifications">
+    <div id="auth-notifications">
       {% with successes = get_flashed_messages(category_filter=["success"]) %}
       {% if successes %}
       <article class="message is-success msg-shadow">
@@ -26,8 +26,8 @@
           {% endfor -%}
         </div>
       </article>
-      {% endif %} {% endwith %} {% for field in data.register_form.errors %} {%
-      for error in data.register_form.errors[field] %}
+      {% endif %} {% endwith %} {% for field in data.login_form.errors %} {% for
+      error in data.login_form.errors[field] %}
       <article class="message is-danger msg-shadow">
         <div class="message-body">
           <strong>{{ error }}</strong>
@@ -35,13 +35,13 @@
       </article>
       {% endfor %} {% endfor %}
     </div>
-    <div id="register">
-      <a id="register-link" href="/register"
+    <div id="auth">
+      <a id="auth-link" href="/register"
         ><strong>Don't have an account?</strong></a
       >
       <h1 class="title is-3">Login to your Mindease account</h1>
 
-      <form id="register-form" action="/login" method="POST">
+      <form id="auth-form" action="/login" method="POST">
         <div class="field">
           <label class="label">Email</label>
           <div class="control">
@@ -55,7 +55,7 @@
         <div class="field">
           <div class="control">
             <label class="label">Password</label>
-            {{ data.register_form.password(class_="input") }}
+            {{ data.login_form.password(class_="input") }}
           </div>
         </div>
       </form>
@@ -70,7 +70,7 @@
   <div id="right">
     <img
       src="{{ url_for('static', filename='img/register.png') }}"
-      id="register-img"
+      id="auth-img"
     />
   </div>
 </div>
