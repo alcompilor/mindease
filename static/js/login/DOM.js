@@ -50,5 +50,5 @@ loginBtn.addEventListener("click", (e) => {
   loginBtn.classList.add("is-loading");
   setTimeout(() => {
     loginForm.submit();
-  }, 2500);
+  }, 1000);
 });
