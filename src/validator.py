@@ -21,21 +21,16 @@ def validate_date_of_birth(form, field):
     """Validate minimum age."""
     date_of_birth = datetime.datetime.strptime(f"{field.data}",
                                                '%Y-%m-%d')
-    minimum_age_date = (datetime.datetime.now() -
-                        datetime.timedelta(days=13*365))
+    today = datetime.date.today()
 
-    if date_of_birth > minimum_age_date:
+    age = (today.year - date_of_birth.year -
+           ((today.month, today.day) <
+            (date_of_birth.month, date_of_birth.day)))
+
+    if age < 13:
         raise ValidationError("You must be at least 13 years old")
-
-
-def get_min_year(date_type):
-    """Return max/min date to show on register form."""
-    if date_type == "max":
-        return (datetime.datetime.now() -
-                datetime.timedelta(days=13*365)).date()
-
-    return (datetime.datetime.now() -
-            datetime.timedelta(days=90*365)).date()
+    if age > 90:
+        raise ValidationError("You must be at most 90 years old")
 
 
 class ValidateRegister(Form):
@@ -108,10 +103,7 @@ class ValidateRegister(Form):
         "Date of Birth",
         validators=[validators.DataRequired(
             message="Date of birth is required"),
-            validate_date_of_birth, validators.NumberRange(
-                max=f"{get_min_year('max')}", min=f"{get_min_year('min')}",
-                message="Date of birth is invalid"
-        )],
+            validate_date_of_birth],
         id="date-birth",
         format="%Y-%m-%d",
     )
