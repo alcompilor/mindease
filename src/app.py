@@ -6,8 +6,8 @@
 import os
 from pathlib import Path
 from textwrap import dedent
-from flask import Flask, render_template, request, flash, url_for, redirect
-from flask_login import LoginManager, login_user, login_required, logout_user
+from flask import (Flask, render_template, request,
+                   flash, url_for, redirect, session)
 import bcrypt
 from dotenv import load_dotenv
 from src.validator import ValidateRegister, ValidateLogin
@@ -29,9 +29,6 @@ app = Flask(__name__,
 
 # assigning secret key for flask app
 app.secret_key = os.getenv('APP_SECRET_KEY')
-
-login_manager = LoginManager()
-login_manager.init_app(app)
 
 
 @app.route("/")  # route
@@ -81,14 +78,22 @@ def login():
                      'password': form.password.data,
                      }
 
-        user_login = Login()
-        result = user_login.login(user_data['email'], user_data['password'])
+        init_login = Login()
+        result = init_login.login(user_data['email'], user_data['password'])
 
         if result['login_succeeded']:
             user_id = load_user(user_data['email'])
-            login_user(user_id)
+            session['user_id'] = user_id
 
             return redirect(url_for('dashboard'))
+
+        if not result['login_succeeded'] and result['invalid_password']:
+            flash("Password is incorrect", "error")
+            return redirect(url_for('login'))
+
+        if not result['login_succeeded'] and result['invalid_email']:
+            flash("This email does not exist", "error")
+            return redirect(url_for('login'))
 
     data = {"doc_title": "Login | Mindease", "login_form": form}
     return render_template("login.html", data=data)
@@ -97,18 +102,24 @@ def login():
 @app.route('/logout')
 def logout():
     """Route to logout a user."""
-    logout_user()
+    session.pop('user_id', None)
+
+    flash("You have been successfully logged out", "success")
     return redirect(url_for('login'))
 
 
 @app.route('/dashboard')
-@login_required
 def dashboard():
     """Route for user dashboard."""
+    user_id = session.get('user_id')
+
+    if user_id is None:
+        flash('You are not authenticated', 'error')
+        return redirect('/login')
+
     return 'Welcome, user!'
 
 
-@login_manager.user_loader
 def load_user(email):
     """Load user id from database based on email."""
     user = User(email=email, name=None,
