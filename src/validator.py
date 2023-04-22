@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """Validator module."""
+import datetime
 
 from wtforms import (
     Form,
@@ -12,7 +13,24 @@ from wtforms import (
     SelectField,
     DateField,
     validators,
+    ValidationError
 )
+
+
+def validate_date_of_birth(form, field):
+    """Validate minimum age."""
+    date_of_birth = datetime.datetime.strptime(f"{field.data}",
+                                               '%Y-%m-%d')
+    today = datetime.date.today()
+
+    age = (today.year - date_of_birth.year -
+           ((today.month, today.day) <
+            (date_of_birth.month, date_of_birth.day)))
+
+    if age < 13:
+        raise ValidationError("You must be at least 13 years old")
+    if age > 90:
+        raise ValidationError("You must be at most 90 years old")
 
 
 class ValidateRegister(Form):
@@ -84,7 +102,8 @@ class ValidateRegister(Form):
     birth = DateField(
         "Date of Birth",
         validators=[validators.DataRequired(
-            message="Date of birth is required")],
+            message="Date of birth is required"),
+            validate_date_of_birth],
         id="date-birth",
         format="%Y-%m-%d",
     )

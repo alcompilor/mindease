@@ -50,6 +50,7 @@ def register_page():
                      'gender': form.gender.data
                      }
 
+        print(user_data)
         user = Register(user_data)
         result = user.register_user()
 
