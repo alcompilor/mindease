@@ -87,6 +87,7 @@ def login():
 
             return redirect(url_for('dashboard'))
 
+<<<<<<< HEAD
         if not result['login_succeeded'] and result['invalid_password']:
             flash("Password is incorrect", "error")
             return redirect(url_for('login'))
@@ -95,6 +96,8 @@ def login():
             flash("This email does not exist", "error")
             return redirect(url_for('login'))
 
+=======
+>>>>>>> 6428e4aefd71e2eae8adf8e04b6b52e9bf73c62b
     data = {"doc_title": "Login | Mindease", "login_form": form}
     return render_template("login.html", data=data)
 
