@@ -85,10 +85,7 @@ def login():
         result = user_login.login(user_data['email'], user_data['password'])
 
         if result['login_succeeded']:
-            user = User(email=user_data['email'], name=None,
-                        password=None, birth=None, gender=None, user_id=None)
-
-            user_id = user.get_user_id(user_data['email'])
+            user_id = load_user(user_data['email'])
             login_user(user_id)
 
             return redirect(url_for('dashboard'))
@@ -108,6 +105,15 @@ def logout():
 def dashboard():
     """Route for user dashboard."""
     return 'Welcome, user!'
+
+
+@login_manager.user_loader
+def load_user(email):
+    """Load user id from database based on email."""
+    user = User(email=email, name=None,
+                password=None, birth=None, gender=None, user_id=None)
+
+    return user.get_user_id(email)
 
 
 def encrypt_password(password):
