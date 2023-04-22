@@ -24,13 +24,7 @@ class TestLogin(unittest.TestCase):
         self.setUp()
         email = "alkatebmohammed383@gmail.com"
         password = "mohammed2001"
-        row = (79, 'Mohammed', 'Alkateb', 'alkatebmohammed383@gmail.com',
-            '$2b$15$S7GPEegPX98JcofcYa09jeFq76NAsS0ejzZwWBwLZzqD0g.RsxoxO',
-            "2023.4.22", 'male')
-        self.cursor_mock.fetchone.return_value is (row)
 
-        if row is None:
-            self.assertFalse(True)
         self.assertEqual(self.login_instance.validate_password
             (email, password.encode('utf-8')),
             {"matches": True}, {"matches": False})

@@ -12,13 +12,22 @@ class Login:
     def __init__(self):
         """Login constructor."""
         self.conn = DBConnection()
-        self.cursor = self.conn.cnx.cursor()
+
+    def close_cursor(self, cursor):
+        """close cursor function."""
+        cursor.close()
+
+    def close_cnx(self):
+        """close cnx function."""
+        self.conn.cnx.close()
 
     def validate_password(self, email, password):
         """validate password function."""
         query = 'SELECT * FROM User WHERE email=%s LIMIT 1'
-        self.cursor.execute(query, (email,))
-        row = self.cursor.fetchone()
+        cursor = self.conn.cnx.cursor()
+        cursor.execute(query, (email,))
+        row = cursor.fetchone()
+        self.close_cursor(cursor)
 
         if row is None:
             return {'hashed_password_found': False}
@@ -33,12 +42,17 @@ class Login:
     def login(self, email, password):
         """login function."""
         query = 'SELECT email FROM User WHERE email=%s'
-        self.cursor.execute(query, (email,))
-        row = self.cursor.fetchone()
+        cursor = self.conn.cnx.cursor()
+        cursor.execute(query, (email,))
+        row = cursor.fetchone()
+        self.close_cursor(cursor)
 
         if row is not None:
             result = self.validate_password(email, password.encode('utf-8'))
             if result['matches'] is True:
+                self.close_cnx()
                 return {'login_succeeded': True}
+            self.close_cnx()
             return {'login_succeeded': False, 'invalid_password': True}
+        self.close_cnx()
         return {'login_succeeded': False, 'invalid_email': True}
