@@ -1,5 +1,8 @@
 """User integrated Class."""
 
+import time
+import secrets
+
 import mysql.connector
 
 from src.utils.db_connection.db_connection import DBConnection
@@ -7,7 +10,7 @@ from src.utils.db_connection.db_connection import DBConnection
 class User:
     """User Class"""
 
-    def __init__(self, name, birth, email, password, gender, user_id):
+    def __init__(self, name, birth, email, password, gender, user_id, doctor_key):
         """Initialize User object with provided data."""
 
         self.name = name
@@ -16,6 +19,7 @@ class User:
         self.password = password
         self.gender = gender
         self.user_id = user_id
+        self.doctor_key = doctor_key
 
     def get_user_id(self, email):
         """Method to retrieve user_id from table in the DB."""
@@ -84,6 +88,17 @@ class User:
         database.cnx.close()
         return {"gender" : result[0]} if result else None
 
+    def get_doctor_key(self, user_id):
+        """Method to retrieve the doctor_key of a user from table int he DB."""
+
+        database = DBConnection()
+        query = "SELECT doctor_key FROM User WHERE user_id = %s"
+        database.cursor.execute(query, (user_id,))
+        result = database.cursor.fetchone()
+        database.cursor.close()
+        database.cnx.close()
+        return {"doctor_key" : result[0]} if result else None
+
     def update_name(self, new_name, email):
         """Method to update the name of a user in the DB."""
 
@@ -149,6 +164,33 @@ class User:
 
         return {"password_changed" : success}
 
+    def update_doctor_key(self, doctor_key):
+        """Method to update the doctor_key of a user in the DB."""
+
+        key_length = secrets.choice(range(15,21))
+        key = secrets.token_urlsafe(key_length)
+
+        timestamp = str(int(time.time() * 1000))
+        key = f"{key}{timestamp}"
+
+        query = "UPDATE User SET doctor_key = %s WHERE doctor_key = %s"
+        data = (key, doctor_key)
+
+        try:
+            database = DBConnection()
+            database.cursor.execute(query,data)
+            database.cnx.commit()
+            success = True
+
+        except mysql.connector.Error as err:
+            print(f"Error: {err}")
+            success = False
+
+        database.cursor.close()
+        database.cnx.close()
+
+        return {"doctor_key_updated" : success}
+
     def delete_user(self, email):
         """Method to delete a user from the DB."""
 
@@ -168,4 +210,4 @@ class User:
         database.cursor.close()
         database.cnx.close()
 
-        return {'user_deleted': success}
+        return {"user_deleted" : success}
