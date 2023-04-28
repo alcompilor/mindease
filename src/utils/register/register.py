@@ -41,11 +41,11 @@ class Register:
             conn.cursor.execute(query, params)
             conn.cnx.commit()
 
+            conn.cursor.close()
+            conn.cnx.close()
+
             return {'registration_succeeded': True}
 
         except mysql.connector.Error as err:
             print(f'error: {err}')
             return {'registration_succeeded': False}
-
-        conn.cursor.close()
-        conn.cnx.close()

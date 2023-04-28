@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/main.css') }}"
+    />
+    {% if request.endpoint == 'register' %}
+    <script
+      type="module"
+      src="{{ url_for('static', filename='js/register/DOM.js') }}"
+      defer
+    ></script>
+    {% endif %} {% if request.endpoint == 'login' %}
+    <script
+      type="module"
+      src="{{ url_for('static', filename='js/login/DOM.js') }}"
+      defer
+    ></script>
+    {% endif %}
+    <title>{{data.doc_title}}</title>
+  </head>
+  <body>
+    {% block content %}{% endblock %}
+  </body>
+</html>
