@@ -68,7 +68,7 @@ def register():
     return render_template("register.html", data=data)
 
 
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/login', methods=['GET', 'POST'])  # route
 def login():
     """Route for login page."""
     form = ValidateLogin(request.form)
@@ -102,7 +102,7 @@ def login():
     return render_template("login.html", data=data)
 
 
-@app.route('/logout')
+@app.route('/logout')  # route
 def logout():
     """Route to logout a user."""
     session.pop('user_id', None)
@@ -111,7 +111,20 @@ def logout():
     return redirect(url_for('login'))
 
 
-@app.route('/myspace')
+@app.route('/checkup')  # route
+def checkup():
+    """Route for user space."""
+    user_id = session.get('user_id')
+
+    if user_id is None:
+        flash('You are not authenticated', 'error')
+        return redirect('/login')
+
+    data = {}
+    return render_template("checkup.html", data=data)
+
+
+@app.route('/myspace')  # route
 def myspace():
     """Route for user space."""
     user_id = session.get('user_id')
@@ -126,8 +139,14 @@ def myspace():
 
 def load_user(email):
     """Load user id from database based on email."""
-    user = User(email=email, name=None,
-                password=None, birth=None, gender=None, user_id=None)
+    user = User(email=email,
+                name=None,
+                password=None,
+                birth=None,
+                gender=None,
+                user_id=None,
+                doctor_key=None
+                )
 
     return user.get_user_id(email)
 
