@@ -12,6 +12,15 @@
       rel="stylesheet"
       href="{{ url_for('static', filename='css/main.css') }}"
     />
+    <script
+      type="module"
+      src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"
+    ></script>
+    <script
+      nomodule
+      src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"
+    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     {% if request.endpoint == 'register' %}
     <script
       type="module"
@@ -22,6 +31,22 @@
     <script
       type="module"
       src="{{ url_for('static', filename='js/login/DOM.js') }}"
+      defer
+    ></script>
+    {% endif %} {% if request.endpoint == 'myspace' %}
+    <script
+      type="module"
+      src="{{ url_for('static', filename='js/space/metrics.js') }}"
+      defer
+    ></script>
+    <script
+      type="module"
+      src="{{ url_for('static', filename='js/space/assertion.js') }}"
+      defer
+    ></script>
+    <script
+      type="module"
+      src="{{ url_for('static', filename='js/space/DOM.js') }}"
       defer
     ></script>
     {% endif %}
