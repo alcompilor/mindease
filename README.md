@@ -22,11 +22,9 @@ Please [refer here](#) if you would like to see a demo for the web application.
 
 **pip** - Usually comes with Python but you might need to manually install it
 
-**mysql** - Must be up and running with a ready to use database
+**mysql** - Must be up and running on port 3306 with a ready to use database
 
 **phpmyadmin** (Optional) - In case you need a decent Web GUI to administer the database
-
-*Since the application will require port 5000 when operating, it must be open and available.*
 
 ## 🚀 Get Started
 *Follow the steps below in order to properly host and run the application*
@@ -68,6 +66,7 @@ DATABASE_NAME = <Your Database Name>
 DATABASE_HOSTNAME = <Your Database Hostname>
 DATABASE_USER = <Your Database User>
 DATABASE_PASSWORD = <Your Database Password>
+APP_PORT = <Desired App Port>
 APP_SECRET_KEY = <Random Solid Key>
 
 # Example:
@@ -76,6 +75,7 @@ DATABASE_NAME=mindease
 DATABASE_HOSTNAME=db.mindease.com
 DATABASE_USER=mindease_user
 DATABASE_PASSWORD=XPxv39ebR5P4B4a
+APP_PORT=5000
 APP_SECRET_KEY=SyRe462xk9uScqB
 ```
 
@@ -86,8 +86,6 @@ Run the application:
 ```
 
 ***Important:*** *Always reactivate the virtual environment before running the application.*
-
-***Note:*** *The application will run on port 5000*
 ## ⚙️ Running Tests - for development purposes
 
 To execute tests and linters, run the following command
