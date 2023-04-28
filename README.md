@@ -1,4 +1,4 @@
-
+<br />
 <img width="300" alt="Mindease Logo" src="https://i.imgur.com/shPchlq.png">
 <br />
 
