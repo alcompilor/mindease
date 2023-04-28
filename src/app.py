@@ -85,7 +85,7 @@ def login():
             user_id = load_user(user_data['email'])
             session['user_id'] = user_id
 
-            return redirect(url_for('dashboard'))
+            return redirect(url_for('myspace'))
 
         if not result['login_succeeded']:
             try:
@@ -111,16 +111,17 @@ def logout():
     return redirect(url_for('login'))
 
 
-@app.route('/dashboard')
-def dashboard():
-    """Route for user dashboard."""
+@app.route('/myspace')
+def myspace():
+    """Route for user space."""
     user_id = session.get('user_id')
 
     if user_id is None:
         flash('You are not authenticated', 'error')
         return redirect('/login')
 
-    return 'Welcome, user!'
+    data = {}
+    return render_template("space.html", data=data)
 
 
 def load_user(email):
