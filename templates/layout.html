@@ -12,10 +12,19 @@
       rel="stylesheet"
       href="{{ url_for('static', filename='css/main.css') }}"
     />
+    {% if request.endpoint == 'register' %}
     <script
+      type="module"
       src="{{ url_for('static', filename='js/register/DOM.js') }}"
       defer
     ></script>
+    {% endif %} {% if request.endpoint == 'login' %}
+    <script
+      type="module"
+      src="{{ url_for('static', filename='js/login/DOM.js') }}"
+      defer
+    ></script>
+    {% endif %}
     <title>{{data.doc_title}}</title>
   </head>
   <body>

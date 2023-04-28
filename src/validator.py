@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """Validator module."""
+import datetime
 
 from wtforms import (
     Form,
@@ -12,7 +13,24 @@ from wtforms import (
     SelectField,
     DateField,
     validators,
+    ValidationError
 )
+
+
+def validate_date_of_birth(form, field):
+    """Validate minimum age."""
+    date_of_birth = datetime.datetime.strptime(f"{field.data}",
+                                               '%Y-%m-%d')
+    today = datetime.date.today()
+
+    age = (today.year - date_of_birth.year -
+           ((today.month, today.day) <
+            (date_of_birth.month, date_of_birth.day)))
+
+    if age < 13:
+        raise ValidationError("You must be at least 13 years old")
+    if age > 90:
+        raise ValidationError("You must be at most 90 years old")
 
 
 class ValidateRegister(Form):
@@ -25,6 +43,7 @@ class ValidateRegister(Form):
             validators.DataRequired(message="First Name is required"),
         ],
         id="first-name",
+        render_kw={"placeholder": "John"},
     )
 
     last_name = StringField(
@@ -34,6 +53,7 @@ class ValidateRegister(Form):
             validators.DataRequired(message="Last Name is required"),
         ],
         id="last-name",
+        render_kw={"placeholder": "Smith"},
     )
 
     email = EmailField(
@@ -44,6 +64,7 @@ class ValidateRegister(Form):
             validators.DataRequired(message="Email is required"),
         ],
         id="email",
+        render_kw={"placeholder": "john.smith@gmail.com"},
     )
 
     password = PasswordField(
@@ -58,6 +79,7 @@ class ValidateRegister(Form):
             ),
         ],
         id="password",
+        render_kw={"placeholder": "Enter a password"},
     )
 
     password_confirm = PasswordField(
@@ -67,6 +89,7 @@ class ValidateRegister(Form):
                 message="Password confirmation sis required")
         ],
         id="password-confirm",
+        render_kw={"placeholder": "Re-enter password"},
     )
 
     gender = SelectField(
@@ -79,7 +102,8 @@ class ValidateRegister(Form):
     birth = DateField(
         "Date of Birth",
         validators=[validators.DataRequired(
-            message="Date of birth is required")],
+            message="Date of birth is required"),
+            validate_date_of_birth],
         id="date-birth",
         format="%Y-%m-%d",
     )
@@ -90,4 +114,32 @@ class ValidateRegister(Form):
                 message="You must accept terms & conditions")
         ],
         id="tos",
+    )
+
+
+class ValidateLogin(Form):
+    """Login Validator to validate client side login form."""
+
+    email = EmailField(
+        "Email",
+        validators=[
+            validators.Length(min=1, max=254, message="Email is invalid"),
+            validators.Email(message="Email is invalid"),
+            validators.DataRequired(message="Email is required"),
+        ],
+        id="email",
+        render_kw={"placeholder": "Your email"},
+    )
+
+    password = PasswordField(
+        "Password",
+        validators=[
+            validators.DataRequired(message="Password is required"),
+            validators.Length(
+                min=8, max=50,
+                message="Password is between 8 and 50 characters"
+            ),
+        ],
+        id="password",
+        render_kw={"placeholder": "Your password"},
     )

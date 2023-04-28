@@ -6,11 +6,14 @@
 import os
 from pathlib import Path
 from textwrap import dedent
-from flask import Flask, render_template, request, flash
+from flask import (Flask, render_template, request,
+                   flash, url_for, redirect, session)
 import bcrypt
 from dotenv import load_dotenv
-from src.validator import ValidateRegister
+from src.validator import ValidateRegister, ValidateLogin
 from src.utils.register.register import Register
+from src.utils.login.login import Login
+from src.utils.user.user import User
 
 load_dotenv()  # load .env
 
@@ -36,7 +39,7 @@ def home_page():
 
 
 @app.route('/register', methods=['POST', 'GET'])  # route
-def register_page():
+def register():
     """Route for account registration page."""
     form = ValidateRegister(request.form)
     if request.method == 'POST' and form.validate():
@@ -51,21 +54,81 @@ def register_page():
                      }
 
         user = Register(user_data)
-        user.register_user()
+        result = user.register_user()
 
-        flash(dedent("""\
-            Successfully registered.
-            We will notify you once our platform launches!"""))
+        if result['registration_succeeded']:
+            flash(dedent("""\
+                    Successfully registered.
+                    We will notify you once our platform launches!"""),
+                  "success")
+        else:
+            flash("Email already exists", "error")
 
     data = {"doc_title": "Register | Mindease", "register_form": form}
     return render_template("register.html", data=data)
 
 
-@app.route("/thankyou")  # TEMPORARY route
-def comingsoon_page():
-    """Route for coming soon page."""
-    data = {"doc_title": "Thank You | Mindease"}
-    return render_template("comingsoon.html", data=data)
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    """Route for login page."""
+    form = ValidateLogin(request.form)
+    if request.method == 'POST' and form.validate():
+
+        user_data = {'email': form.email.data,
+                     'password': form.password.data,
+                     }
+
+        init_login = Login()
+        result = init_login.login(user_data['email'], user_data['password'])
+
+        if result['login_succeeded']:
+            user_id = load_user(user_data['email'])
+            session['user_id'] = user_id
+
+            return redirect(url_for('dashboard'))
+
+        if not result['login_succeeded']:
+            try:
+                result['invalid_password']
+
+                flash("Password is incorrect", "error")
+                return redirect(url_for('login'))
+
+            except KeyError:
+                flash("This email does not exist", "error")
+                return redirect(url_for('login'))
+
+    data = {"doc_title": "Login | Mindease", "login_form": form}
+    return render_template("login.html", data=data)
+
+
+@app.route('/logout')
+def logout():
+    """Route to logout a user."""
+    session.pop('user_id', None)
+
+    flash("You have been successfully logged out", "success")
+    return redirect(url_for('login'))
+
+
+@app.route('/dashboard')
+def dashboard():
+    """Route for user dashboard."""
+    user_id = session.get('user_id')
+
+    if user_id is None:
+        flash('You are not authenticated', 'error')
+        return redirect('/login')
+
+    return 'Welcome, user!'
+
+
+def load_user(email):
+    """Load user id from database based on email."""
+    user = User(email=email, name=None,
+                password=None, birth=None, gender=None, user_id=None)
+
+    return user.get_user_id(email)
 
 
 def encrypt_password(password):

@@ -1,7 +1,9 @@
+import { dateLimit } from "./functions.js";
+
 // Targeting DOM elements
-const registerContainer = document.getElementById("register"); // form container
+const registerContainer = document.getElementById("auth"); // form container
 const registerBtn = document.getElementById("register-btn"); // form submit button
-const registerForm = document.getElementById("register-form"); // form
+const registerForm = document.getElementById("auth-form"); // form
 
 const firstName = document.getElementById("first-name"); // first name field
 const lastName = document.getElementById("last-name"); // last name field
@@ -96,6 +98,10 @@ registerBtn.addEventListener("click", (e) => {
 
 // Event listener to init terms & conditions modal
 document.addEventListener("DOMContentLoaded", () => {
+  // Setting date interval in datepicker
+  dateBirth.setAttribute("max", dateLimit("max"));
+  dateBirth.setAttribute("min", dateLimit("min"));
+
   // Functions to open and close a modal
   function openModal($el) {
     $el.classList.add("is-active");
