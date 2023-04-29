@@ -35,6 +35,11 @@
     ></script>
     {% endif %} {% if request.endpoint == 'myspace' %}
     <script
+      src="https://code.jquery.com/jquery-3.6.4.min.js"
+      integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8="
+      crossorigin="anonymous"
+    ></script>
+    <script
       type="module"
       src="{{ url_for('static', filename='js/space/metrics.js') }}"
       defer
@@ -45,8 +50,7 @@
       defer
     ></script>
     <script
-      type="module"
-      src="{{ url_for('static', filename='js/space/DOM.js') }}"
+      src="{{ url_for('static', filename='js/space/timer.js') }}"
       defer
     ></script>
     {% endif %} {% if request.endpoint == 'checkup' %}

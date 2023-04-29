@@ -8,48 +8,8 @@
     <div id="myspace-left-user">
       <h4 class="title is-4">Hi Ahmed 😌</h4>
     </div>
-    <div id="myspace-left-menu">
-      <ul>
-        <li>
-          <a href="/myspace" class="subtitle is-5"
-            ><ion-icon name="planet-outline"></ion-icon> My Space</a
-          >
-        </li>
-        <li>
-          <a href="/myspace/journals" class="subtitle is-5"
-            ><ion-icon name="documents-outline"></ion-icon> Journals</a
-          >
-        </li>
-        <li>
-          <a href="/myspace/account" class="subtitle is-5"
-            ><ion-icon name="cog-outline"></ion-icon> Account</a
-          >
-        </li>
-        <li>
-          <a href="/logout" class="subtitle is-5"
-            ><ion-icon name="log-out-outline"></ion-icon> Logout</a
-          >
-        </li>
-      </ul>
-    </div>
+    <div id="myspace-left-menu">{% include 'space-menu.html' %}</div>
   </div>
-  <div id="myspace-main">
-    <div id="myspace-main-data">
-      <div id="myspace-main-quote">
-        <h4 class="title is-4">Assertion 🥰</h4>
-        <h5 class="subtitle is-5" id="assertion"></h5>
-      </div>
-      <div id="myspace-main-key">
-        <h4 class="title is-4">Sharable Key 🔑</h4>
-        <h5 class="subtitle is-5">j9A8laJ24Ajma4</h5>
-      </div>
-    </div>
-    <div id="myspace-main-metrics">
-      <h4 class="title is-4">Mood Metrics 🎭</h4>
-    </div>
-    <div id="myspace-main-data2">
-      <div id="myspace-main-journals"></div>
-    </div>
-  </div>
+  <div id="myspace-main">{% include 'space-main.html' %}</div>
 </div>
 {% endblock %}
