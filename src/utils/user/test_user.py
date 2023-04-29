@@ -16,13 +16,14 @@ class TestUserClass(unittest.TestCase):
 
         self.email = "jacksonreacher@gmail.com"
         self.user_id = 41
-        self.name = "Jackson"
+        self.first_name = "Jackson"
+        self.last_name = "Reacher"
         self.birth = datetime.date(1955, 5, 5)
         self.gender = "male"
         self.password = "pass1234"
         self.doctor_key = "A43212DADD1321"
 
-        self.user = User(self.name, self.birth, self.email, self.password, self.gender, self.user_id, self.doctor_key)
+        self.user = User(self.first_name, self.last_name, self.birth, self.email, self.password, self.gender, self.user_id, self.doctor_key)
 
         self.db_connection = MagicMock(spec=DBConnection)
         self.db_connection.cursor = MagicMock()
@@ -40,14 +41,23 @@ class TestUserClass(unittest.TestCase):
         result = self.user.get_user_id(self.email)
         self.assertEqual(result, {"user_id": self.user_id})
 
-    def test_get_name(self):
-        """Tests the retrieval of a name that belongs to a user."""
+    def test_get_first_name(self):
+        """Tests the retrieval of a first_name that belongs to a user."""
 
-        self.db_connection.cursor.fetchone.return_value = self.name
+        self.db_connection.cursor.fetchone.return_value = self.first_name
         DBConnection.return_value = self.db_connection
 
-        result = self.user.get_name(self.email)
-        self.assertEqual(result, {"name": self.name})
+        result = self.user.get_first_name(self.email)
+        self.assertEqual(result, {"first_name": self.first_name})
+
+    def test_get_last_name(self):
+        """Tests the retrieval of a last_name that belongs to a user."""
+
+        self.db_connection.cursor.fetchone.return_value = self.last_name
+        DBConnection.return_value = self.db_connection
+
+        result = self.user.get_last_name(self.email)
+        self.assertEqual(result, {"last_name": self.last_name})
 
     def test_get_birth(self):
         """Tests the retrieval of a users date of birth."""
@@ -94,18 +104,31 @@ class TestUserClass(unittest.TestCase):
         result = self.user.get_doctor_key(self.user_id)
         self.assertEqual(result, {"doctor_key": self.doctor_key})
 
-    def test_update_name(self):
-        """Tests the update of a users name."""
+    def test_update_first_name(self):
+        """Tests the update of a users first_name."""
 
-        new_name = "Jackson"
+        new_first_name = "Jackson"
 
         DBConnection.cursor = MagicMock()
         DBConnection.cursor.execute = MagicMock()
         DBConnection.cnx = MagicMock()
         DBConnection.cnx.commit = MagicMock()
 
-        response = self.user.update_name(new_name, self.email)
-        self.assertEqual(response, {"name_changed": True})
+        response = self.user.update_first_name(new_first_name, self.email)
+        self.assertEqual(response, {"first_name_changed": True})
+
+    def test_update_last_name(self):
+        """Tests the update of a users last_name."""
+
+        new_last_name = "Reacher"
+
+        DBConnection.cursor = MagicMock()
+        DBConnection.cursor.execute = MagicMock()
+        DBConnection.cnx = MagicMock()
+        DBConnection.cnx.commit = MagicMock()
+
+        response = self.user.update_last_name(new_last_name, self.email)
+        self.assertEqual(response, {"last_name_changed": True})
 
     def test_update_password(self):
         """Tests the update of a users password."""
