@@ -64,8 +64,11 @@ def register():
         else:
             flash("Email already exists", "error")
 
-    data = {"doc_title": "Register | Mindease", "register_form": form}
-    return render_template("register.html", data=data)
+    if session.get('user_id') is None:
+        data = {"doc_title": "Register | Mindease", "register_form": form}
+        return render_template("register.html", data=data)
+
+    return redirect(url_for('myspace'))
 
 
 @app.route('/login', methods=['GET', 'POST'])  # route
@@ -98,8 +101,11 @@ def login():
                 flash("This email does not exist", "error")
                 return redirect(url_for('login'))
 
-    data = {"doc_title": "Login | Mindease", "login_form": form}
-    return render_template("login.html", data=data)
+    if session.get('user_id') is None:
+        data = {"doc_title": "Login | Mindease", "login_form": form}
+        return render_template("login.html", data=data)
+
+    return redirect(url_for('myspace'))
 
 
 @app.route('/logout')  # route
