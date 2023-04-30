@@ -142,7 +142,8 @@ def myspace():
         flash('You are not authenticated', 'error')
         return redirect('/login')
 
-    data_summary = DataSummary().get_data_summary(session.get('user_email'))
+    data_summary = DataSummary()
+    data_summary = data_summary.get_data_summary(session.get('user_email'))
 
     data = {"summary": data_summary}
     return render_template("space.html", data=data)
