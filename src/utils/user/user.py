@@ -10,10 +10,11 @@ from src.utils.db_connection.db_connection import DBConnection
 class User:
     """User Class"""
 
-    def __init__(self, name, birth, email, password, gender, user_id, doctor_key):
+    def __init__(self, first_name, last_name, birth, email, password, gender, user_id, doctor_key):
         """Initialize User object with provided data."""
 
-        self.name = name
+        self.first_name = first_name
+        self.last_name = last_name
         self.birth = birth
         self.email = email
         self.password = password
@@ -32,8 +33,8 @@ class User:
         database.cnx.close()
         return {"user_id": result[0]} if result else None
 
-    def get_name(self, email):
-        """Method to retrieve name from table in the DB."""
+    def get_first_name(self, email):
+        """Method to retrieve first_name from table in the DB."""
 
         database = DBConnection()
         query = "SELECT first_name FROM User WHERE email = %s"
@@ -41,7 +42,18 @@ class User:
         result = database.cursor.fetchone()
         database.cursor.close()
         database.cnx.close()
-        return {"name" : result[0]} if result else None
+        return {"first_name" : result[0]} if result else None
+
+    def get_last_name(self, email):
+        """Method to retrieve last_name from table in the DB."""
+
+        database = DBConnection()
+        query = "SELECT last_name FROM User WHERE email = %s"
+        database.cursor.execute(query, (email,))
+        result = database.cursor.fetchone()
+        database.cursor.close()
+        database.cnx.close()
+        return {"last_name" : result[0]} if result else None
 
     def get_birth(self, email):
         """Method to retrieve age/birth from table in the DB."""
@@ -53,7 +65,6 @@ class User:
         database.cursor.close()
         database.cnx.close()
         return {"birth" : result[0]} if result else None
-
 
     def get_email(self, email):
         """Method to retrieve email from table in the DB."""
@@ -99,11 +110,11 @@ class User:
         database.cnx.close()
         return {"doctor_key" : result[0]} if result else None
 
-    def update_name(self, new_name, email):
-        """Method to update the name of a user in the DB."""
+    def update_first_name(self, new_first_name, email):
+        """Method to update the first_name of a user in the DB."""
 
         query = "UPDATE User SET first_name = %s WHERE email = %s"
-        data = (new_name, email)
+        data = (new_first_name, email)
 
         try:
             database = DBConnection()
@@ -118,7 +129,28 @@ class User:
         database.cursor.close()
         database.cnx.close()
 
-        return {"name_changed" : success}
+        return {"first_name_changed" : success}
+
+    def update_last_name(self, new_last_name, email):
+        """Method to update the last_name of a user in the DB."""
+
+        query = "UPDATE User SET last_name = %s WHERE email = %s"
+        data = (new_last_name, email)
+
+        try:
+            database = DBConnection()
+            database.cursor.execute(query, data)
+            database.cnx.commit()
+            success = True
+
+        except mysql.connector.Error as err:
+            print(f"Error: {err}")
+            success = False
+
+        database.cursor.close()
+        database.cnx.close()
+
+        return {"last_name_changed" : success}
 
     def update_email(self, new_email, email):
         """Method to update the email of a user in the DB."""
