@@ -148,6 +148,18 @@ def myspace():
     return render_template("space.html", data=data)
 
 
+@app.route('/myspace/journals')  # route
+def journals():
+    """Route for user journals."""
+    user_id = session.get('user_id')
+
+    if user_id is None:
+        flash('You are not authenticated', 'error')
+        return redirect('/login')
+
+    return render_template("journals.html")
+
+
 @app.route('/aboutus')  # route
 def aboutus():
     """Route for about-us page."""
