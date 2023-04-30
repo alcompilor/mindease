@@ -153,7 +153,8 @@ def aboutus():
 def load_user(email):
     """Load user id from database based on email."""
     user = User(email=email,
-                name=None,
+                first_name=None,
+                last_name=None,
                 password=None,
                 birth=None,
                 gender=None,
