@@ -1,11 +1,22 @@
 var arr = userData.checkups.checkups_sentences;
 
+let checkups_answers = [];
+let checkups_date = [];
+
+userData.checkups.checkups_answers.forEach((element) => {
+  element ? checkups_answers.push(element) : null;
+});
+
+userData.checkups.checkups_date.forEach((element) => {
+  element ? checkups_date.push(new Date(element).toISOString()) : null;
+});
+
 var options = {
   colors: ["#33AC83"],
   series: [
     {
       name: "Checkup",
-      data: userData.checkups.checkups_answers,
+      data: checkups_answers,
     },
   ],
   chart: {
@@ -20,7 +31,7 @@ var options = {
   },
   xaxis: {
     type: "datetime",
-    categories: userData.checkups.checkups_date,
+    categories: checkups_date,
   },
   tooltip: {
     style: {
