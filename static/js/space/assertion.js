@@ -1,4 +1,5 @@
 const assertionEl = document.getElementById("assertion");
+const newAssertion = document.getElementById("assertion-new");
 
 async function reqAssertion() {
   const assertion = await fetch("https://www.affirmations.dev", {
@@ -10,6 +11,12 @@ async function reqAssertion() {
   return await assertion.affirmation;
 }
 
-reqAssertion().then((res) => {
-  assertionEl.textContent = res;
-});
+const renderAssertion = () => {
+  reqAssertion().then((res) => {
+    assertionEl.textContent = res;
+  });
+};
+
+newAssertion.addEventListener("click", renderAssertion);
+
+renderAssertion();

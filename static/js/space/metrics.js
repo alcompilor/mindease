@@ -1,16 +1,11 @@
-var arr = [
-  "vimeo b",
-  "messenger for talking",
-  "facebook for socializing",
-  "linkedin for socialicing professionally",
-];
+var arr = userData.checkups.checkups_sentences;
 
 var options = {
   colors: ["#33AC83"],
   series: [
     {
       name: "Checkup",
-      data: [1, 2, 3, 1, 5, 3, 5],
+      data: userData.checkups.checkups_answers,
     },
   ],
   chart: {
@@ -25,15 +20,7 @@ var options = {
   },
   xaxis: {
     type: "datetime",
-    categories: [
-      "2018-09-19",
-      "2018-09-20",
-      "2018-09-21",
-      "2018-09-22",
-      "2018-09-23",
-      "2018-09-24",
-      "2018-09-25",
-    ],
+    categories: userData.checkups.checkups_date,
   },
   tooltip: {
     style: {
@@ -54,8 +41,16 @@ var options = {
   },
 };
 
-var chart = new ApexCharts(
-  document.getElementById("myspace-main-metrics"),
-  options
-);
-chart.render();
+if (
+  userData.checkups.checkups_answers[0] &&
+  userData.checkups.checkups_answers[1]
+) {
+  var chart = new ApexCharts(
+    document.getElementById("myspace-main-metrics"),
+    options
+  );
+  chart.render();
+} else {
+  document.getElementById("metrics-none").textContent =
+    "There are currently no metrics to show. Keep answering your daily checkups 💪🏼";
+}
