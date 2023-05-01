@@ -176,11 +176,11 @@ class ValidateJournal(Form):
         "Content",
         validators=[
             validators.DataRequired(message="Journal Content is required"),
-            validators.Length(min=1, max=520,
+            validators.Length(min=1, max=540,
                               message="Content is too long (>520 chars)")
         ],
         id="journal-content",
-        render_kw={"placeholder": "When I was a child I..."},
+        render_kw={"placeholder": "When I was a child I...", "rows": "14"},
     )
 
     date_submitted = DateField(
