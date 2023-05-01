@@ -59,6 +59,34 @@ class TestJournal(unittest.TestCase):
         self.db_connection.cnx.commit.assert_called()
         self.db_connection.cursor.close.assert_called()
         self.db_connection.cnx.close.assert_called()
+        
+        
+    
+    def test_get_all_journals(self):
+        """Test get_all_journals method"""
+        
+        self.db_connection.cursor.execute = MagicMock()
+        self.journal.get_all_journals()
+        self.db_connection.cursor.execute.assert_called_with(
+            "SELECT * FROM Journal", ())
+        self.db_connection.cnx.commit.assert_called()
+        self.db_connection.cursor.close.assert_called()
+        self.db_connection.cnx.close.assert_called()
+    
+    
+    def test_search_journals(self):
+        """"Test search_journals method"""
+    
+        self.db_connection.cursor.execute = MagicMock()
+        self.journal.search_journals(self.db_connection, user_id=3, journal_date=datetime.date(2023, 4, 18))
+        self.db_connection.cursor.execute.assert_called_with(
+            "SELECT * FROM Journal WHERE user_id=%s AND journal_date=%s",())
+        self.db_connection.cnx.commit.assert_called()
+        self.db_connection.cursor.close.assert_called()
+        self.db_connection.cnx.close.assert_called()
+        
 
+
+        
     if __name__ == "__main__":
         unittest.main()
