@@ -82,6 +82,10 @@ html {
   text-decoration: underline;
 }
 
+#password-notice {
+  max-width: 29ch;
+}
+
 /* HOME PAGE */
 #home {
   margin-left: 10%;
@@ -288,6 +292,11 @@ a[data-li-active="true"] {
   width: 100%;
   background-color: #fff;
   padding: 5em 3em;
+  background: url(/static/img/myspace.jpg);
+  background-size: 90%;
+  background-repeat: no-repeat;
+  background-position: bottom;
+  background-position-y: 625px;
 }
 
 #myspace-left-logo {
