@@ -14,6 +14,43 @@ const gender = document.getElementById("gender"); // gender dropdown
 const dateBirth = document.getElementById("date-birth"); // date of birth datepicker
 const tos = document.getElementById("tos"); // terms & conditions checkbox
 
+const passwordNote = document.getElementById("password-notice");
+
+// Function to validate password using regex
+const validatePassword = () => {
+  const regexUpper = new RegExp("(?=.*?[A-Z])");
+  const regexLower = new RegExp("(?=.*?[a-z])");
+  const regexDigit = new RegExp("(?=.*?[0-9])");
+  const regexSpecial = new RegExp("(?=.*?[#?!@$%^&*-])");
+  const regexLength = new RegExp(".{8,}");
+
+  const currentPass = password.value;
+
+  const isValidRegex = (regexUpper.test(currentPass) &&
+     regexLower.test(currentPass) &&
+     regexDigit.test(currentPass) &&
+     regexSpecial.test(currentPass) &&
+     regexLength.test(currentPass)
+  );
+
+  console.log(isValidRegex)
+
+  if (!isValidRegex) {
+     password.setCustomValidity("Password does not meet complexity requirements")
+  } else {
+     password.setCustomValidity("")
+  }
+
+  if (!regexLength.test(currentPass)) {
+     passwordNote.textContent = "Password must be at least 8 chars";
+  } else if (!regexUpper.test(currentPass) || !regexLower.test(currentPass)) {
+     passwordNote.textContent = "Must contain a mixture of both uppercase and lowercase letters.";
+  } else if (!regexDigit.test(currentPass) || !regexSpecial.test(currentPass)) {
+     passwordNote.textContent = "Must contain a mixture of both digits and special characters.";
+  }
+
+}
+
 // Function to validate Registation fields and update css
 const validateField = (field) => {
   const notice = document.getElementById(`${field.id}-notice`); // target the field's error notice
@@ -77,8 +114,9 @@ email.addEventListener("input", (e) => {
 
 // Event listener that validates password on change
 password.addEventListener("input", (e) => {
-  matchPassword();
+  validatePassword();
   validateField(password);
+  matchPassword();
   validateField(passwordConfirm);
 });
 
