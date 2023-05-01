@@ -84,3 +84,6 @@ def db_config():
             "CONSTRAINT fk_user_id_checkup_answer FOREIGN KEY (user_id) " +
             "REFERENCES User (user_id) ON DELETE CASCADE)"
         )
+    
+    conn.cursor.close()
+    conn.cnx.close()
