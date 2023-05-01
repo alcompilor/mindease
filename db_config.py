@@ -87,3 +87,6 @@ def db_config():
     
     conn.cursor.close()
     conn.cnx.close()
+
+if __name__ == "__main__":
+    db_config()
