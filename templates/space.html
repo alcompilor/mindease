@@ -10,6 +10,6 @@
     </div>
     <div id="myspace-left-menu">{% include 'space-menu.html' %}</div>
   </div>
-  <div id="myspace-main">{% include 'space-main.html' %}</div>
+  <div id="myspace-main">{% block space %}{% endblock %}</div>
 </div>
 {% endblock %}
