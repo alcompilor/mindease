@@ -203,5 +203,6 @@ class ValidateCheckup(Form):
             validators.DataRequired(message="Checkup value is required"),
             validators.NumberRange(min=1, max=5,
                                    message="Checkup value is invalid")
-        ]
+        ],
+        id="emoji"
     )
