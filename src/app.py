@@ -10,10 +10,12 @@ from flask import (Flask, render_template, request,
                    flash, url_for, redirect, session)
 import bcrypt
 from dotenv import load_dotenv
-from src.validator import ValidateRegister, ValidateLogin
+from src.validator import (ValidateRegister, ValidateLogin, ValidateJournal,
+                           ValidateCheckup)
 from src.utils.register.register import Register
 from src.utils.login.login import Login
 from src.utils.user.user import User
+from src.utils.data_summary.data_summary import DataSummary
 
 load_dotenv()  # load .env
 
@@ -87,6 +89,11 @@ def login():
         if result['login_succeeded']:
             user_id = load_user(user_data['email'])
             session['user_id'] = user_id
+            session['user_email'] = user_data['email']
+            data_summary = DataSummary().get_data_summary(
+                session.get('user_email')
+            )
+            session['data_summary'] = data_summary
 
             return redirect(url_for('myspace'))
 
@@ -112,21 +119,28 @@ def login():
 def logout():
     """Route to logout a user."""
     session.pop('user_id', None)
+    session.pop('user_email', None)
 
     flash("You have been successfully logged out", "success")
     return redirect(url_for('login'))
 
 
-@app.route('/checkup')  # route
+@app.route('/checkup', methods=['GET', 'POST'])  # route
 def checkup():
     """Route for user space."""
+    form = ValidateCheckup(request.form)
+    if request.method == 'POST' and form.validate():
+        # checkup_data =
+        # {form.checkup_range.data}
+        pass
+
     user_id = session.get('user_id')
 
     if user_id is None:
         flash('You are not authenticated', 'error')
         return redirect('/login')
 
-    data = {}
+    data = {"doc_title": "Checkup | Mindease", "checkup_form": form}
     return render_template("checkup.html", data=data)
 
 
@@ -139,8 +153,35 @@ def myspace():
         flash('You are not authenticated', 'error')
         return redirect('/login')
 
-    data = {}
-    return render_template("space.html", data=data)
+    data = {"doc_title": "My Space | Mindease"}
+    return render_template("space-main.html", data=data)
+
+
+@app.route('/myspace/journals', methods=['GET', 'POST'])  # route
+def journals():
+    """Route for user journals."""
+    form = ValidateJournal(request.form)
+    if request.method == 'POST' and form.validate():
+        # journal_data =
+        # {form.title.data, form.content.data, form.date_submitted.data}
+        pass
+
+    user_id = session.get('user_id')
+
+    if user_id is None:
+        flash('You are not authenticated', 'error')
+        return redirect('/login')
+
+    data = {"doc_title": "My Space - Journals | Mindease",
+            "journal_form": form}
+    return render_template("space-journals.html", data=data)
+
+
+@app.route('/aboutus')  # route
+def aboutus():
+    """Route for about-us page."""
+    data = {"doc_title": "About Us | Mindease"}
+    return render_template("aboutus.html", data=data)
 
 
 @app.route('/aboutus')  # route
@@ -153,7 +194,8 @@ def aboutus():
 def load_user(email):
     """Load user id from database based on email."""
     user = User(email=email,
-                name=None,
+                first_name=None,
+                last_name=None,
                 password=None,
                 birth=None,
                 gender=None,

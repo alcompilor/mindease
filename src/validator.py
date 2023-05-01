@@ -12,6 +12,8 @@ from wtforms import (
     EmailField,
     SelectField,
     DateField,
+    TextAreaField,
+    IntegerRangeField,
     validators,
     ValidationError
 )
@@ -31,6 +33,17 @@ def validate_date_of_birth(form, field):
         raise ValidationError("You must be at least 13 years old")
     if age > 90:
         raise ValidationError("You must be at most 90 years old")
+
+
+def validate_submission_date(form, field):
+    """Validate submission date for journal."""
+    fetched_date = datetime.datetime.strptime(f"{field.data}", "%Y-%m-%d")
+    current_date = datetime.datetime.now().replace(
+        hour=0, minute=0, second=0, microsecond=0
+    )
+
+    if fetched_date != current_date:
+        raise ValidationError("An error occured: Submission date is invalid")
 
 
 class ValidateRegister(Form):
@@ -142,4 +155,54 @@ class ValidateLogin(Form):
         ],
         id="password",
         render_kw={"placeholder": "Your password"},
+    )
+
+
+class ValidateJournal(Form):
+    """Journal Validator to validate client side new journal form."""
+
+    title = StringField(
+        "Title",
+        validators=[
+            validators.DataRequired(message="Journal Title is required"),
+            validators.Length(min=1, max=30,
+                              message="Title is too long (>30 chars)"),
+        ],
+        id="journal-title",
+        render_kw={"placeholder": "A memory from my childhood"},
+    )
+
+    content = TextAreaField(
+        "Content",
+        validators=[
+            validators.DataRequired(message="Journal Content is required"),
+            validators.Length(min=1, max=540,
+                              message="Content is too long (>520 chars)")
+        ],
+        id="journal-content",
+        render_kw={"placeholder": "When I was a child I...", "rows": "14"},
+    )
+
+    date_submitted = DateField(
+        "Date",
+        validators=[
+            validators.DataRequired(
+                message="An error has occured: Date couldn't be processed."),
+            validate_submission_date,
+        ],
+        id="journal-submission-date"
+    )
+
+
+class ValidateCheckup(Form):
+    """Checkup Validator to validate client side new checkup range."""
+
+    checkup_range = IntegerRangeField(
+        "Range",
+        validators=[
+            validators.DataRequired(message="Checkup value is required"),
+            validators.NumberRange(min=1, max=5,
+                                   message="Checkup value is invalid")
+        ],
+        id="emoji"
     )

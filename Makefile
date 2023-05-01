@@ -41,6 +41,11 @@ test: lint coverage
 doc:
 	python -m pydoc $(module)
 
+
+# Run db config for flask app #
+db:
+	python db_config.py
+
 # Run production flask app #
 run:
 	@printf "\n\e[\033[0;44m\e[1m SERVER UP AND RUNNING.. \e[0m\n"
