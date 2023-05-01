@@ -184,13 +184,6 @@ def aboutus():
     return render_template("aboutus.html", data=data)
 
 
-@app.route('/aboutus')  # route
-def aboutus():
-    """Route for about-us page."""
-    data = {}
-    return render_template("aboutus.html", data=data)
-
-
 def load_user(email):
     """Load user id from database based on email."""
     user = User(email=email,
