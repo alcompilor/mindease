@@ -33,9 +33,9 @@
       src="{{ url_for('static', filename='js/login/DOM.js') }}"
       defer
     ></script>
-    {% endif %} {% if request.endpoint == 'myspace' %}
+    {% endif %} {% if 'myspace' is in request.path %}
     <script type="text/javascript">
-      const userData = {{ data.summary|tojson|safe }}
+      const userData = {{ session['data_summary']|tojson|safe }}
     </script>
     <script
       src="https://code.jquery.com/jquery-3.6.4.min.js"
@@ -57,6 +57,10 @@
     ></script>
     <script
       src="{{ url_for('static', filename='js/space/timer.js') }}"
+      defer
+    ></script>
+    <script
+      src="{{ url_for('static', filename='js/space/journals.js') }}"
       defer
     ></script>
     {% endif %} {% if request.endpoint == 'checkup' %}

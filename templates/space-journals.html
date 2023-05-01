@@ -1,0 +1,27 @@
+{% extends 'space.html' %} {% block space %}
+<div id="myspace-journals-data">
+  <div id="myspace-journals-history">
+    <h4 class="title is-4">Your Journals 📄</h4>
+    <h4 class="subtitle is-4" id="journals-none" style="display:none;">You have no journals. Add a few but keep in mind that journals can't be deleted nor edited.</h4>
+    <div id="myspace-journals-cards">
+      <div id="journal-card">
+        <details>
+            <summary>Example Journal 1.</summary>
+            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+        </details>
+      </div>
+      <div id="journal-card">
+        <details>
+            <summary>Example Journal 2.</summary>
+            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+        </details>
+      </div>
+    </div>
+  </div>
+  <div id="myspace-journals-create">
+    <h4 class="title is-4">New Journal 🖊️</h4>
+    <div id="myspace-journals-new">
+    </div>
+  </div>
+</div>
+{% endblock %}
