@@ -79,7 +79,13 @@ APP_PORT=5000
 APP_SECRET_KEY=SyRe462xk9uScqB
 ```
 
-Run the application:
+Run database configuration (which configures your database automatically):
+
+```bash
+  make db
+```
+
+Run the application (production mode):
 
 ```bash
   make run
