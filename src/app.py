@@ -10,7 +10,7 @@ from flask import (Flask, render_template, request,
                    flash, url_for, redirect, session)
 import bcrypt
 from dotenv import load_dotenv
-from src.validator import ValidateRegister, ValidateLogin
+from src.validator import ValidateRegister, ValidateLogin, ValidateJournal
 from src.utils.register.register import Register
 from src.utils.login.login import Login
 from src.utils.user.user import User
@@ -133,7 +133,7 @@ def checkup():
         flash('You are not authenticated', 'error')
         return redirect('/login')
 
-    data = {}
+    data = {"doc_title": "Checkup | Mindease"}
     return render_template("checkup.html", data=data)
 
 
@@ -146,25 +146,34 @@ def myspace():
         flash('You are not authenticated', 'error')
         return redirect('/login')
 
-    return render_template("space-main.html")
+    data = {"doc_title": "My Space | Mindease"}
+    return render_template("space-main.html", data=data)
 
 
-@app.route('/myspace/journals')  # route
+@app.route('/myspace/journals', methods=['GET', 'POST'])  # route
 def journals():
     """Route for user journals."""
+    form = ValidateJournal(request.form)
+    if request.method == 'POST' and form.validate():
+        # journal_data =
+        # {form.title.data, form.content.data, form.date_submitted.data}
+        pass
+
     user_id = session.get('user_id')
 
     if user_id is None:
         flash('You are not authenticated', 'error')
         return redirect('/login')
 
-    return render_template("space-journals.html")
+    data = {"doc_title": "My Space - Journals | Mindease",
+            "journal_form": form}
+    return render_template("space-journals.html", data=data)
 
 
 @app.route('/aboutus')  # route
 def aboutus():
     """Route for about-us page."""
-    data = {}
+    data = {"doc_title": "About Us | Mindease"}
     return render_template("aboutus.html", data=data)
 
 
