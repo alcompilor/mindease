@@ -381,6 +381,7 @@ html {
   margin-bottom: 1cm;
   font-weight: bold;
 }
+
 /* MY SPACE */
 
 /* SPACE MENU */
@@ -745,6 +746,10 @@ a[data-li-active="true"] {
   margin-top: 1em;
   margin-bottom: 1em;
   color: #859d8f;
+}
+
+#journal-notifications {
+  padding: 0em 0em 1em 0em;
 }
 
 /* CHECKUP */
