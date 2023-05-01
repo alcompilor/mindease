@@ -10,7 +10,8 @@ from flask import (Flask, render_template, request,
                    flash, url_for, redirect, session)
 import bcrypt
 from dotenv import load_dotenv
-from src.validator import ValidateRegister, ValidateLogin, ValidateJournal
+from src.validator import (ValidateRegister, ValidateLogin, ValidateJournal,
+                           ValidateCheckup)
 from src.utils.register.register import Register
 from src.utils.login.login import Login
 from src.utils.user.user import User
@@ -124,16 +125,22 @@ def logout():
     return redirect(url_for('login'))
 
 
-@app.route('/checkup')  # route
+@app.route('/checkup', methods=['GET', 'POST'])  # route
 def checkup():
     """Route for user space."""
+    form = ValidateCheckup(request.form)
+    if request.method == 'POST' and form.validate():
+        # checkup_data =
+        # {form.checkup_range.data}
+        pass
+
     user_id = session.get('user_id')
 
     if user_id is None:
         flash('You are not authenticated', 'error')
         return redirect('/login')
 
-    data = {"doc_title": "Checkup | Mindease"}
+    data = {"doc_title": "Checkup | Mindease", "checkup_form": form}
     return render_template("checkup.html", data=data)
 
 

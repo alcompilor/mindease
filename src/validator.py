@@ -13,6 +13,7 @@ from wtforms import (
     SelectField,
     DateField,
     TextAreaField,
+    IntegerRangeField,
     validators,
     ValidationError
 )
@@ -190,4 +191,17 @@ class ValidateJournal(Form):
             validate_submission_date,
         ],
         id="journal-submission-date"
+    )
+
+
+class ValidateCheckup(Form):
+    """Checkup Validator to validate client side new checkup range."""
+
+    checkup_range = IntegerRangeField(
+        "Range",
+        validators=[
+            validators.DataRequired(message="Checkup value is required"),
+            validators.NumberRange(min=1, max=5,
+                                   message="Checkup value is invalid")
+        ]
     )
