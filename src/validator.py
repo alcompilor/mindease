@@ -86,10 +86,11 @@ class ValidateRegister(Form):
             validators.DataRequired(message="Password is required"),
             validators.EqualTo("password_confirm",
                                message="Passwords must match"),
-            validators.Length(
-                min=8, max=50,
-                message="Password must be between 8 and 50 characters"
-            ),
+            validators.Regexp(r"(?=.*?[A-Z])", message="Missing uppercase letter"),
+            validators.Regexp(r"(?=.*?[a-z])", message="Missing lowercase letter"),
+            validators.Regexp(r"(?=.*?[0-9])", message="Missing digit"),
+            validators.Regexp(r"(?=.*?[#?!@$%^&*-])", message="Missing special character"),
+            validators.Regexp(r".{8,}", message="Password is too short"),
         ],
         id="password",
         render_kw={"placeholder": "Enter a password"},
