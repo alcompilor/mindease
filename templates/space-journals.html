@@ -21,6 +21,29 @@
   <div id="myspace-journals-create">
     <h4 class="title is-4">New Journal 🖊️</h4>
     <div id="myspace-journals-new">
+
+      <form id="journal-form" action="/myspace/journals" method="POST">
+        <div class="field">
+          <label class="label">Journal Title</label>
+          <div class="control">
+            {{ data.journal_form.title(class_="input") }}
+          </div>
+        </div>
+
+        <div class="field">
+          <div class="control">
+            <label class="label">Journal Content</label>
+            {{ data.journal_form.content(class_="textarea") }}
+          </div>
+        </div>
+      </form>
+      <br />
+      <div class="field">
+        <div class="control">
+          <button class="button is-black" id="journal-btn">Save</button>
+        </div>
+      </div>
+
     </div>
   </div>
 </div>
