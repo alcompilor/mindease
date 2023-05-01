@@ -89,6 +89,10 @@ def login():
             user_id = load_user(user_data['email'])
             session['user_id'] = user_id
             session['user_email'] = user_data['email']
+            data_summary = DataSummary().get_data_summary(
+                session.get('user_email')
+            )
+            session['data_summary'] = data_summary
 
             return redirect(url_for('myspace'))
 
@@ -142,10 +146,7 @@ def myspace():
         flash('You are not authenticated', 'error')
         return redirect('/login')
 
-    data_summary = DataSummary().get_data_summary(session.get('user_email'))
-
-    data = {"summary": data_summary}
-    return render_template("space.html", data=data)
+    return render_template("space-main.html")
 
 
 @app.route('/myspace/journals')  # route
@@ -157,7 +158,7 @@ def journals():
         flash('You are not authenticated', 'error')
         return redirect('/login')
 
-    return render_template("journals.html")
+    return render_template("space-journals.html")
 
 
 @app.route('/aboutus')  # route
