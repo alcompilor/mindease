@@ -33,7 +33,7 @@ class Journal:
         except mysql.connector.Error:
             return {"journal_created": False}
 
-    def get_all_journals(self):
+    def get_all_journals(self, user_id):
         """Fetch all journals."""
         try:
             database = DBConnection()
@@ -41,7 +41,7 @@ class Journal:
                     "journal_title, journal_content, journal_date " + \
                     "FROM Journal " + \
                     "WHERE user_id = %s"
-            database.cursor.execute(query)
+            database.cursor.execute(query, (user_id,))
             results = database.cursor.fetchall()
             journals = []
             for result in results:
