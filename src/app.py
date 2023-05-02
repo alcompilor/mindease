@@ -63,7 +63,7 @@ def register():
         if result['registration_succeeded']:
             flash(dedent("""\
                     Successfully registered.
-                    We will notify you once our platform launches!"""),
+                    To continue, please login."""),
                   "success")
         else:
             flash("Email already exists", "error")
@@ -101,7 +101,7 @@ def login():
 
         if not result['login_succeeded']:
             try:
-                result['invalid_password']  # ignore error
+                result['invalid_password']  # pylint: disable=W0104
 
                 flash("Password is incorrect", "error")
                 return redirect(url_for('login'))
@@ -193,7 +193,7 @@ def journals():
     fetched_journals = journal.get_all_journals(session['user_id']['user_id'])
 
     data = {"doc_title": "My Space - Journals | Mindease",
-            "journal_form": form}
+            "journal_form": form, "user_journals": fetched_journals}
     return render_template("space-journals.html", data=data)
 
 
