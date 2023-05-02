@@ -8,7 +8,7 @@ class Journal:
     """Journal class."""
 
     def __init__(self, journal_content, journal_date,
-                journal_title, user_id):
+                 journal_title, user_id):
         """Initialize Journal object with provided data."""
         self.journal_content = journal_content
         self.journal_date = journal_date
@@ -16,7 +16,7 @@ class Journal:
         self.user_id = user_id
 
     def create_journal(self, journal_content, journal_date,
-                    journal_title, user_id, journal_id):
+                       journal_title, user_id):
         """Create a journal."""
         try:
             database = DBConnection()
@@ -28,24 +28,13 @@ class Journal:
                                     journal_date))
             database.cnx.commit()
 
-            query = "SELECT journal_id, user_id, " + \
-                    "journal_title, journal_content, journal_date " + \
-                    "FROM Journal WHERE journal_id = %s"
-            database.cursor.execute(query, (journal_id,))
-            content = database.cursor.fetchone()
-
             database.cursor.close()
             database.cnx.close()
 
-        except mysql.connector.Error as err:
-            print(f"Error: {err}")
-            return {"error": str(err)}
+            return {"journal_created": True}
 
-        return \
-            {"journal_content": {
-                "id": content[0], "user": content[1], "title": content[2],
-                "content": content[3], "date": content[4]
-            }} if content else None
+        except mysql.connector.Error:
+            return {"journal_created": False}
 
     def get_all_journals(self):
         """Fetch all journals."""
