@@ -195,7 +195,7 @@ def journals():
             session['user_id']['user_id'])
     else:
         search_query = request.args.get('q')
-        fetched_journals = journals.search_journals(
+        fetched_journals = journal.search_journals(
             session['user_id']['user_id'], search_query)
 
     data = {"doc_title": "My Space - Journals | Mindease",
