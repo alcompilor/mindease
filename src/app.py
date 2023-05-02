@@ -33,14 +33,15 @@ app.url_map.strict_slashes = False  # ignores trailing slash in routes
 # assigning secret key for flask app
 app.secret_key = os.getenv('APP_SECRET_KEY')
 
-@app.route("/")  # route
+
+@app.route("/")  # homepage route
 def home_page():
     """Route for home page."""
     data = {"doc_title": "Home | Mindease"}
     return render_template("index.html", data=data)
 
 
-@app.route('/register', methods=['POST', 'GET'])  # route
+@app.route('/register', methods=['POST', 'GET'])  # register route
 def register():
     """Route for account registration page."""
     form = ValidateRegister(request.form)
@@ -73,7 +74,7 @@ def register():
     return redirect(url_for('myspace'))
 
 
-@app.route('/login', methods=['GET', 'POST'])  # route
+@app.route('/login', methods=['GET', 'POST'])  # login route
 def login():
     """Route for login page."""
     form = ValidateLogin(request.form)
@@ -99,7 +100,7 @@ def login():
 
         if not result['login_succeeded']:
             try:
-                result['invalid_password']
+                result['invalid_password']  # ignore error
 
                 flash("Password is incorrect", "error")
                 return redirect(url_for('login'))
@@ -115,7 +116,7 @@ def login():
     return redirect(url_for('myspace'))
 
 
-@app.route('/logout')  # route
+@app.route('/logout')  # logout route
 def logout():
     """Route to logout a user."""
     session.pop('user_id', None)
@@ -125,7 +126,7 @@ def logout():
     return redirect(url_for('login'))
 
 
-@app.route('/checkup', methods=['GET', 'POST'])  # route
+@app.route('/checkup', methods=['GET', 'POST'])  # checkup route
 def checkup():
     """Route for user space."""
     form = ValidateCheckup(request.form)
@@ -144,7 +145,7 @@ def checkup():
     return render_template("checkup.html", data=data)
 
 
-@app.route('/myspace')  # route
+@app.route('/myspace')  # myspace route
 def myspace():
     """Route for user space."""
     user_id = session.get('user_id')
@@ -157,7 +158,8 @@ def myspace():
     return render_template("space-main.html", data=data)
 
 
-@app.route('/myspace/journals', methods=['GET', 'POST'])  # route
+# myspace/journals route
+@app.route('/myspace/journals', methods=['GET', 'POST'])
 def journals():
     """Route for user journals."""
     form = ValidateJournal(request.form)
@@ -177,7 +179,7 @@ def journals():
     return render_template("space-journals.html", data=data)
 
 
-@app.route('/aboutus')  # route
+@app.route('/aboutus')  # aboutus route
 def aboutus():
     """Route for about-us page."""
     data = {"doc_title": "About Us | Mindease"}
@@ -185,7 +187,7 @@ def aboutus():
 
 
 def load_user(email):
-    """Load user id from database based on email."""
+    """Load user id from database based on user's email."""
     user = User(email=email,
                 first_name=None,
                 last_name=None,
@@ -200,6 +202,6 @@ def load_user(email):
 
 
 def encrypt_password(password):
-    """Encrypt registration password."""
+    """Encrypt/hash registration password."""
     hashed_pwd = bcrypt.hashpw(password, bcrypt.gensalt(rounds=15))
     return hashed_pwd
