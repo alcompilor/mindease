@@ -28,10 +28,10 @@ TEMPLATES_DIR = (ROOT_DIR).joinpath(
 app = Flask(__name__,
             static_folder=STATIC_DIR,
             template_folder=TEMPLATES_DIR)  # init flask app
+app.url_map.strict_slashes = False  # ignores trailing slash in routes
 
 # assigning secret key for flask app
 app.secret_key = os.getenv('APP_SECRET_KEY')
-
 
 @app.route("/")  # route
 def home_page():
