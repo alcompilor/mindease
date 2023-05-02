@@ -515,6 +515,7 @@ a[data-li-active="true"] {
 
 #assertion {
   background: linear-gradient(to right, #48c78e 0%, #00947e 40%);
+  -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
   font-weight: 600;
@@ -759,6 +760,7 @@ a[data-li-active="true"] {
 
 #checkupq {
   background: linear-gradient(to right, #3ea979 0%, #007c69 100%);
+  -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
   font-weight: 600;
