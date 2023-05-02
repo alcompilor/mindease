@@ -190,11 +190,37 @@ def journals():
         flash('You are not authenticated', 'error')
         return redirect('/login')
 
-    fetched_journals = journal.get_all_journals(session['user_id']['user_id'])
+    if not request.args.get('q'):
+        fetched_journals = journal.get_all_journals(
+            session['user_id']['user_id'])
+    else:
+        search_query = request.args.get('q')
+        fetched_journals = journals.search_journals(
+            session['user_id']['user_id'], search_query)
 
     data = {"doc_title": "My Space - Journals | Mindease",
             "journal_form": form, "user_journals": fetched_journals}
     return render_template("space-journals.html", data=data)
+
+
+'''
+@app.route('/myspace/journals/search', methods=['GET'])
+def search_journals():
+    """Route to search journals."""
+    user_id = session.get('user_id')
+
+    if user_id is None:
+        flash('You are not authenticated', 'error')
+        return redirect('/login')
+
+    search_query = request.args.get('q')
+
+    journals = Journal()
+    result = journals.search_journals(
+        session['user_id']['user_id'], search_query)
+
+    return result
+'''
 
 
 @app.route('/aboutus')  # aboutus route
