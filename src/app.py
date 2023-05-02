@@ -10,7 +10,8 @@ from flask import (Flask, render_template, request,
                    flash, url_for, redirect, session)
 import bcrypt
 from dotenv import load_dotenv
-from src.validator import ValidateRegister, ValidateLogin
+from src.validator import (ValidateRegister, ValidateLogin, ValidateJournal,
+                           ValidateCheckup)
 from src.utils.register.register import Register
 from src.utils.login.login import Login
 from src.utils.user.user import User
@@ -27,10 +28,10 @@ TEMPLATES_DIR = (ROOT_DIR).joinpath(
 app = Flask(__name__,
             static_folder=STATIC_DIR,
             template_folder=TEMPLATES_DIR)  # init flask app
+app.url_map.strict_slashes = False  # ignores trailing slash in routes
 
 # assigning secret key for flask app
 app.secret_key = os.getenv('APP_SECRET_KEY')
-
 
 @app.route("/")  # route
 def home_page():
@@ -124,16 +125,22 @@ def logout():
     return redirect(url_for('login'))
 
 
-@app.route('/checkup')  # route
+@app.route('/checkup', methods=['GET', 'POST'])  # route
 def checkup():
     """Route for user space."""
+    form = ValidateCheckup(request.form)
+    if request.method == 'POST' and form.validate():
+        # checkup_data =
+        # {form.checkup_range.data}
+        pass
+
     user_id = session.get('user_id')
 
     if user_id is None:
         flash('You are not authenticated', 'error')
         return redirect('/login')
 
-    data = {}
+    data = {"doc_title": "Checkup | Mindease", "checkup_form": form}
     return render_template("checkup.html", data=data)
 
 
@@ -146,25 +153,34 @@ def myspace():
         flash('You are not authenticated', 'error')
         return redirect('/login')
 
-    return render_template("space-main.html")
+    data = {"doc_title": "My Space | Mindease"}
+    return render_template("space-main.html", data=data)
 
 
-@app.route('/myspace/journals')  # route
+@app.route('/myspace/journals', methods=['GET', 'POST'])  # route
 def journals():
     """Route for user journals."""
+    form = ValidateJournal(request.form)
+    if request.method == 'POST' and form.validate():
+        # journal_data =
+        # {form.title.data, form.content.data, form.date_submitted.data}
+        pass
+
     user_id = session.get('user_id')
 
     if user_id is None:
         flash('You are not authenticated', 'error')
         return redirect('/login')
 
-    return render_template("space-journals.html")
+    data = {"doc_title": "My Space - Journals | Mindease",
+            "journal_form": form}
+    return render_template("space-journals.html", data=data)
 
 
 @app.route('/aboutus')  # route
 def aboutus():
     """Route for about-us page."""
-    data = {}
+    data = {"doc_title": "About Us | Mindease"}
     return render_template("aboutus.html", data=data)
 
 
