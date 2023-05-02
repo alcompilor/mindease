@@ -7,13 +7,10 @@ from src.utils.db_connection.db_connection import DBConnection
 class Journal:
     """Journal class."""
 
-    def __init__(self, journal_content, journal_date,
-                journal_title, user_id):
+    def __init__(self):
         """Initialize Journal object with provided data."""
-        self.journal_content = journal_content
-        self.journal_date = journal_date
-        self.journal_title = journal_title
-        self.user_id = user_id
+        pass
+        
 
     def create_journal(self, journal_content, journal_date,
                     journal_title, user_id, journal_id):
