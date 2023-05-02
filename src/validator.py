@@ -207,3 +207,16 @@ class ValidateCheckup(Form):
         ],
         id="emoji"
     )
+
+
+class ValidateDoctorKey(Form):
+    """Docotor_key validator to ensure that a doctor using valid doctor_key"""
+    doctor_key = StringField(
+        validators=[
+            validators.DataRequired(message="A Doctor key is required"),
+            validators.length(min=28, max=33, message="The number of characters should be\nwithin the range of 28 to 33"),
+            validators.Regexp(r'^(?=.*[a-zA-Z])(?=.*[0-9])[a-zA-Z0-9]*([-_][a-zA-Z0-9]*)?$', message='Doctor key contains invalid characters.'),
+        ],
+        id="doctor_key",
+        render_kw={"placeholder": "Enter a doctor key"},
+    )
