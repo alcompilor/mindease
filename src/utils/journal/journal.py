@@ -39,7 +39,8 @@ class Journal:
             database = DBConnection()
             query = "SELECT journal_id, user_id, " + \
                     "journal_title, journal_content, journal_date " + \
-                    "FROM Journal"
+                    "FROM Journal " + \
+                    "WHERE user_id = %s"
             database.cursor.execute(query)
             results = database.cursor.fetchall()
             journals = []
