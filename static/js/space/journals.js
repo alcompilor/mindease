@@ -1,3 +1,12 @@
+const saveBtn = document.getElementById("journal-btn");
+const journalForm = document.getElementById("journal-form");
+const journalSubmissionDate = document.getElementById("journal-submission-date");
+
+saveBtn.addEventListener("click", () => {
+  journalSubmissionDate.value = new Date().toLocaleDateString("sv-SE");
+  journalForm.submit();
+});
+
 // Fetch all the details element.
 const details = document.querySelectorAll("details");
 
