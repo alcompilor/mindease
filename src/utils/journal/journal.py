@@ -80,4 +80,3 @@ class Journal:
             return {"error": str(err)}
 
         return journals
-    
