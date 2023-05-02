@@ -2,14 +2,18 @@
 <div id="myspace-journals-data">
   <div id="myspace-journals-history">
     <h4 class="title is-4">Your Journals 📄</h4>
-    <div id="journal-search">
-      <input type="text" class="input" id="journal-search-input" />
-      <button id="journal-searchbtn" class="button is-success">Lookup</button>
-    </div>
-    <h4 class="subtitle is-4" id="journals-none" style="display: none">
-      You have no journals. Add a few but keep in mind that journals can't be
-      deleted nor edited 😉
-    </h4>
+    <form action="" method="GET">
+      <div id="journal-search">
+        <input type="text" class="input" id="journal-search-input" name="q" />
+        <input
+          id="journal-searchbtn"
+          class="button is-success"
+          type="submit"
+          value="Search"
+        />
+      </div>
+    </form>
+    <h4 class="subtitle is-4" id="journals-none"></h4>
     <div id="myspace-journals-cards"></div>
   </div>
   <div id="myspace-journals-create">
