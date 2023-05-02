@@ -13,7 +13,6 @@ class TestJournal(unittest.TestCase):
 
     def setUp(self):
         """Set up method."""
-        
         self.journal_content = "Today, I made a conscious effort to " + \
             "prioritize my well-being. I started the day with meditation " + \
             "and a mindful breakfast, and then went for a long walk in " + \
@@ -42,51 +41,51 @@ class TestJournal(unittest.TestCase):
     def test_create_journal(self):
         """Test create_journal method."""
         
-        self.db_connection.cursor.execute = MagicMock()
-        
-        self.journal.create_journal(self.journal_content, self.journal_date,
-                                    self.journal_title, self.user_id,
-                                    self.journal_id)
-        
-        
-        self.db_connection.cursor.execute.assert_called_with(
-            "INSERT INTO Journal (journal_id, user_id, journal_title, " +
-            "journal_content, journal_date) VALUES (%s, %s, %s, %s, %s)",
-            (self.journal_id, self.user_id, self.journal_title,
-             self.journal_content, self.journal_date))
-        
-        
-        self.db_connection.cnx.commit.assert_called()
-        self.db_connection.cursor.close.assert_called()
-        self.db_connection.cnx.close.assert_called()
-        
-        
-    
+        result = self.journal.create_journal(self.journal_content,
+                                             self.journal_date,
+                                             self.journal_title,
+                                             self.user_id, self.journal_id)
+        self.assertEqual(result["journal_content"]["id"], self.journal_id)
+        self.assertEqual(result["journal_content"]["user"], self.user_id)
+        self.assertEqual(result["journal_content"]["title"],
+                         self.journal_title)
+        self.assertEqual(result["journal_content"]["content"],
+                         self.journal_content)
+        self.assertEqual(result["journal_content"]["date"], self.journal_date)
+
+    def test_create_journal_error(self):
+        """Test create_journal with query error."""
+        result = self.journal.create_journal(self.journal_content,
+                                             self.journal_date,
+                                             self.journal_title,
+                                             self.user_id, self.journal_id)
+        self.assertTrue("error" in result)
+
     def test_get_all_journals(self):
-        """Test get_all_journals method"""
-        
-        self.db_connection.cursor.execute = MagicMock()
-        self.journal.get_all_journals()
-        self.db_connection.cursor.execute.assert_called_with(
-            "SELECT * FROM Journal", ())
-        self.db_connection.cnx.commit.assert_called()
-        self.db_connection.cursor.close.assert_called()
-        self.db_connection.cnx.close.assert_called()
-    
-    
+        """Test get_all_journals method."""
+        result = self.journal.get_all_journals()
+        self.assertTrue(isinstance(result, list))
+
     def test_search_journals(self):
-        """"Test search_journals method"""
-    
-        self.db_connection.cursor.execute = MagicMock()
-        self.journal.search_journals(self.db_connection, user_id=3, journal_date=datetime.date(2023, 4, 18))
-        self.db_connection.cursor.execute.assert_called_with(
-            "SELECT * FROM Journal WHERE user_id=%s AND journal_date=%s",())
-        self.db_connection.cnx.commit.assert_called()
-        self.db_connection.cursor.close.assert_called()
-        self.db_connection.cnx.close.assert_called()
-        
+        """Test search_journals method."""
+        result = self.journal.search_journals(self.user_id, self.journal_date)
+        self.assertTrue(isinstance(result, list))
 
+    def test_search_journals_error(self):
+        """Test search_journals with query error."""
+        result = self.journal.search_journals(self.user_id, "")
+        self.assertTrue("error" in result)
 
-        
+    @classmethod
+    def tearDownClass(cls):
+        """Remove inserted data from database."""
+        database = DBConnection()
+        query = "DELETE FROM Journal WHERE journal_id = %s"
+        database.cursor.execute(query, (70,))
+        database.cnx.commit()
+        database.cursor.close()
+        database.cnx.close()
+
     if __name__ == "__main__":
         unittest.main()
+        
