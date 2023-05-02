@@ -27,7 +27,7 @@ class TestJournal(unittest.TestCase):
 
         
         self.journal = Journal(self.journal_content, self.journal_date,
-                               self.journal_id, self.journal_title,
+                               self.journal_title,
                                self.user_id)
 
         
@@ -44,8 +44,8 @@ class TestJournal(unittest.TestCase):
         result = self.journal.create_journal(self.journal_content,
                                              self.journal_date,
                                              self.journal_title,
-                                             self.user_id, self.journal_id)
-        self.assertEqual(result["journal_content"]["id"], self.journal_id)
+                                             self.user_id)
+        self.assertIsNotNone(result["journal_content"]["id"])
         self.assertEqual(result["journal_content"]["user"], self.user_id)
         self.assertEqual(result["journal_content"]["title"],
                          self.journal_title)
@@ -58,7 +58,7 @@ class TestJournal(unittest.TestCase):
         result = self.journal.create_journal(self.journal_content,
                                              self.journal_date,
                                              self.journal_title,
-                                             self.user_id, self.journal_id)
+                                             self.user_id)
         self.assertTrue("error" in result)
 
     def test_get_all_journals(self):
