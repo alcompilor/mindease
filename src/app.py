@@ -164,19 +164,16 @@ def myspace():
 def journals():
     """Route for user journals."""
     user_id = session.get('user_id')
+    journal = Journal()
 
     form = ValidateJournal(request.form)
     if request.method == 'POST' and form.validate():
         journal_data = {"title": form.title.data,
                         "content": form.content.data,
                         "date": form.date_submitted.data,
-                        "user_id": user_id,
+                        "user_id": session['user_id']['user_id'],
                         }
 
-        journal = Journal(journal_title=journal_data['title'],
-                          journal_content=journal_data['content'],
-                          journal_date=journal_data['date'],
-                          user_id=journal_data['user_id'])
         result = journal.create_journal(
             journal_title=journal_data['title'],
             journal_content=journal_data['content'],
@@ -186,11 +183,14 @@ def journals():
 
         if result['journal_created']:
             flash('Journal has been saved', 'success')
-        flash('An error occured: Journal not saved', 'error')
+        else:
+            flash('An error occured: Journal not saved', 'error')
 
     if user_id is None:
         flash('You are not authenticated', 'error')
         return redirect('/login')
+
+    fetched_journals = journal.get_all_journals(session['user_id']['user_id'])
 
     data = {"doc_title": "My Space - Journals | Mindease",
             "journal_form": form}
