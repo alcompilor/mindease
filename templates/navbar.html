@@ -39,12 +39,23 @@
 
     <div class="navbar-end">
       <div class="navbar-item">
+        {% if session['user_id'] %}
+        <div class="buttons">
+          <a class="button custom-green-btn" href="/myspace">
+            <strong>My Space</strong>
+          </a>
+          <a class="button is-light custom-light-btn" href="/logout">
+            Logout
+          </a>
+        </div>
+        {% else %}
         <div class="buttons">
           <a class="button custom-green-btn" href="/register">
             <strong>Sign up</strong>
           </a>
           <a class="button is-light custom-light-btn" href="/login"> Log in </a>
         </div>
+        {% endif %}
       </div>
     </div>
   </div>

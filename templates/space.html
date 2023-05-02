@@ -1,0 +1,15 @@
+{% extends 'layout.html' %} {% block content %}
+<div id="myspace-container">
+  <div id="myspace-left">
+    <img
+      src="{{ url_for('static', filename='img/logo-white.png') }}"
+      id="myspace-left-logo"
+    />
+    <div id="myspace-left-user">
+      <h4 class="title is-4">Hi {{session['data_summary'].first_name}} 😌</h4>
+    </div>
+    <div id="myspace-left-menu">{% include 'space-menu.html' %}</div>
+  </div>
+  <div id="myspace-main">{% block space %}{% endblock %}</div>
+</div>
+{% endblock %}
