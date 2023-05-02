@@ -8,28 +8,32 @@ class Journal:
     """Journal class."""
 
     def __init__(self, journal_content, journal_date,
-                 journal_id, journal_title, user_id):
+                journal_title, user_id):
         """Initialize Journal object with provided data."""
         self.journal_content = journal_content
         self.journal_date = journal_date
-        self.journal_id = journal_id
         self.journal_title = journal_title
         self.user_id = user_id
 
     def create_journal(self, journal_content, journal_date,
-                       journal_title, user_id, journal_id):
+                    journal_title, user_id, journal_id):
         """Create a journal."""
         try:
             database = DBConnection()
-            query = "INSERT INTO Journal (journal_id, user_id, " + \
+            query = "INSERT INTO Journal (user_id, " + \
                     "journal_title, journal_content, journal_date" + \
-                    ") VALUES (%s, %s, %s, %s, %s)"
-            database.cursor.execute(query, (journal_id, user_id,
+                    ") VALUES (%s, %s, %s, %s)"
+            database.cursor.execute(query, (user_id,
                                     journal_title, journal_content,
                                     journal_date))
-            print("\n\n\ntest\n\n\n")
             database.cnx.commit()
+
+            query = "SELECT journal_id, user_id, " + \
+                    "journal_title, journal_content, journal_date " + \
+                    "FROM Journal WHERE journal_id = %s"
+            database.cursor.execute(query, (journal_id,))
             content = database.cursor.fetchone()
+
             database.cursor.close()
             database.cnx.close()
 
@@ -39,8 +43,8 @@ class Journal:
 
         return \
             {"journal_content": {
-                "id": journal_id, "user": user_id, "title": journal_title,
-                "content": journal_content, "date": journal_date
+                "id": content[0], "user": content[1], "title": content[2],
+                "content": content[3], "date": content[4]
             }} if content else None
 
     def get_all_journals(self):
