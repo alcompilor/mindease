@@ -4,7 +4,11 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/favicon.png') }}" />
+    <link
+      rel="icon"
+      type="image/png"
+      href="{{ url_for('static', filename='img/favicon.png') }}"
+    />
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css"
@@ -64,6 +68,10 @@
       src="{{ url_for('static', filename='js/space/journals.js') }}"
       defer
     ></script>
+    {% endif %} {% if 'journals' is in request.path %}
+    <script type="text/javascript">
+      const journals = {{ data.user_journals|tojson|safe }}
+    </script>
     {% endif %} {% if request.endpoint == 'checkup' %}
     <script
       type="module"
