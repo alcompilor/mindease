@@ -13,6 +13,7 @@ from wtforms import (
     SelectField,
     DateField,
     TextAreaField,
+    IntegerRangeField,
     validators,
     ValidationError
 )
@@ -85,10 +86,11 @@ class ValidateRegister(Form):
             validators.DataRequired(message="Password is required"),
             validators.EqualTo("password_confirm",
                                message="Passwords must match"),
-            validators.Length(
-                min=8, max=50,
-                message="Password must be between 8 and 50 characters"
-            ),
+            validators.Regexp(r"(?=.*?[A-Z])", message="Missing uppercase letter"),
+            validators.Regexp(r"(?=.*?[a-z])", message="Missing lowercase letter"),
+            validators.Regexp(r"(?=.*?[0-9])", message="Missing digit"),
+            validators.Regexp(r"(?=.*?[#?!@$%^&*-])", message="Missing special character"),
+            validators.Regexp(r".{8,}", message="Password is too short"),
         ],
         id="password",
         render_kw={"placeholder": "Enter a password"},
@@ -175,11 +177,11 @@ class ValidateJournal(Form):
         "Content",
         validators=[
             validators.DataRequired(message="Journal Content is required"),
-            validators.Length(min=1, max=520,
+            validators.Length(min=1, max=540,
                               message="Content is too long (>520 chars)")
         ],
         id="journal-content",
-        render_kw={"placeholder": "When I was a child I..."},
+        render_kw={"placeholder": "When I was a child I...", "rows": "14"},
     )
 
     date_submitted = DateField(
@@ -190,4 +192,18 @@ class ValidateJournal(Form):
             validate_submission_date,
         ],
         id="journal-submission-date"
+    )
+
+
+class ValidateCheckup(Form):
+    """Checkup Validator to validate client side new checkup range."""
+
+    checkup_range = IntegerRangeField(
+        "Range",
+        validators=[
+            validators.DataRequired(message="Checkup value is required"),
+            validators.NumberRange(min=1, max=5,
+                                   message="Checkup value is invalid")
+        ],
+        id="emoji"
     )
