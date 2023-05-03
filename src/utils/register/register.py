@@ -3,6 +3,9 @@
 
 """Register Module."""
 
+import time
+import secrets
+
 import mysql.connector
 from src.utils.db_connection.db_connection import DBConnection
 
@@ -18,13 +21,24 @@ class Register:
         self.password = user['password']
         self.birth = user['birth']
         self.gender = user['gender']
+        self.doctor_key = self.generate_doctor_key()
+
+    def generate_doctor_key(self):
+        """Generate a doctor key for the user."""
+        key_length = secrets.choice(range(15, 21))
+        key = secrets.token_urlsafe(key_length)
+
+        timestamp = str(int(time.time() * 1000))
+        key = f"{key}{timestamp}"
+
+        return key
 
     def register_user(self):
         """Register user function for Register class."""
         query = 'INSERT INTO User \
             (first_name, last_name, email, \
-            password, birth, gender) VALUES \
-            (%s, %s, %s, %s, %s, %s)'
+            password, birth, gender, doctor_key) VALUES \
+            (%s, %s, %s, %s, %s, %s, %s)'
 
         params = (
             self.first_name,
@@ -32,7 +46,8 @@ class Register:
             self.email,
             self.password,
             self.birth,
-            self.gender
+            self.gender,
+            self.doctor_key
         )
 
         try:
