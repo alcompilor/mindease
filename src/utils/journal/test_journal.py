@@ -67,7 +67,7 @@ class TestJournal(unittest.TestCase):
 
     def test_search_journals(self):
         """Test search_journals method."""
-        result = self.journal.search_journals(self.user_id, self.journal_date)
+        result = self.journal.search_journals(self.user_id, self.search_query)
         self.assertTrue(isinstance(result, list))
 
     def test_search_journals_error(self):
