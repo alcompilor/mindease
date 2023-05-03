@@ -49,14 +49,14 @@ def validate_submission_date(form, field):
 
 def validate_user_email(form, field):
     """Validate user email"""
-    email = f"field.data"
+    email = field.data
 
     is_valid = validate_email(
         email_address=email
     )
 
     if not is_valid:
-        raise ValidationError("{email} does not appear to exist")
+        raise ValidationError(f"{email} does not appear to exist")
 
 
 class ValidateRegister(Form):
