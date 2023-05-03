@@ -47,6 +47,7 @@ def validate_submission_date(form, field):
         raise ValidationError("An error occured: Submission date is invalid")
 
 
+'''
 def validate_user_email(form, field):
     """Validate user email."""
     email = field.data
@@ -57,6 +58,7 @@ def validate_user_email(form, field):
 
     if not is_valid:
         raise ValidationError(f"{email} does not appear to exist")
+'''
 
 
 class ValidateRegister(Form):
@@ -87,8 +89,7 @@ class ValidateRegister(Form):
         validators=[
             validators.Length(min=1, max=254, message="Email is invalid"),
             validators.Email(message="Email is invalid"),
-            validators.DataRequired(message="Email is required"),
-            validate_user_email
+            validators.DataRequired(message="Email is required")
         ],
         id="email",
         render_kw={"placeholder": "john.smith@gmail.com"},
@@ -233,9 +234,13 @@ class ValidateDoctorKey(Form):
         validators=[
             validators.DataRequired(message="A Doctor key is required"),
             validators.Length(
-                min=28, max=33, message="The number of characters should be\nwithin the range of 28 to 33"),
-            validators.Regexp(r'^(?=.*[a-zA-Z])(?=.*[0-9])[a-zA-Z0-9]*([-_][a-zA-Z0-9]*)?$',
-                              message='Doctor key contains invalid characters.'),
+                min=28,
+                max=33,
+                message="The number of characters should be within the range of 28 to 33"
+            ),
+            validators.Regexp(r"^(?=.*[a-zA-Z])(?=.*[0-9])[a-zA-Z0-9]*([-_][a-zA-Z0-9]*)?$",
+                              message='Doctor key contains invalid characters.'
+                              ),
         ],
         id="doctor_key",
         render_kw={"placeholder": "Enter a doctor key"},
