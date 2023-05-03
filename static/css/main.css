@@ -266,9 +266,9 @@ html {
   font-family: "Open Sans", sans-serif;
   font-size: 2rem;
   margin-bottom: 20px;
-}
-
-#index-aboutus-p1 {
+ }
+ 
+ #index-aboutus-p1 {
   font-family: "Open Sans", sans-serif;
   font-size: 19px;
   line-height: 1.6;
@@ -276,30 +276,30 @@ html {
   margin-top: 0.5em;
   margin-bottom: 1em;
   padding: 0.5em;
-}
-
-#index-aboutus-link1 {
+ }
+ 
+ #index-aboutus-link1 {
   color: rgb(0, 0, 0);
   font-family: "Open Sans", sans-serif;
   text-align: center;
   margin-bottom: 1em;
-}
-
-#index-aboutus-link2 {
+ }
+ 
+ #index-aboutus-link2 {
   color: rgb(0, 0, 0);
   font-family: "Open Sans", sans-serif;
   text-align: center;
   margin-bottom: 1em;
-}
-
-#index-aboutus-link3 {
+ }
+ 
+ #index-aboutus-link3 {
   color: rgb(0, 0, 0);
   font-family: "Open Sans", sans-serif;
   text-align: center;
   margin-bottom: 1em;
-}
-
-.home-hero {
+ }
+ 
+ .home-hero {
   display: grid;
   grid-template-columns: 1fr;
   gap: 1em;
@@ -314,53 +314,55 @@ html {
   transition-duration: 0.2s;
   box-shadow: 9px 11px 0px 0px #d3eae7;
   text-align: center;
-}
-
-.home-hero-left {
+ }
+ 
+ .home-hero-left {
   grid-row: 1 / span 2;
   display: flex;
   flex-direction: column;
   align-items: center;
-}
-
-.aboutus-cards-container {
+ }
+ 
+ .aboutus-cards-container {
   display: flex;
   justify-content: center;
   align-items: justify;
   flex-direction: column;
   gap: 2em;
   padding: 2em;
-}
-
-.aboutus-cards-grid {
+ }
+ 
+ .aboutus-cards-grid {
   display: flex;
   flex-wrap: nowrap;
   justify-content: space-evenly;
   align-items: justify;
   gap: 3em;
-}
-
-.aboutus-card {
+ }
+ 
+ .aboutus-card {
   display: flex;
   flex-direction: column;
   align-items: center;
   background: rgb(255, 255, 255);
   background: linear-gradient(296deg, #bae3d1 3%, rgb(243 243 243) 100%);
   padding: 1em;
-  border-radius: 1em;
   box-shadow: 6px 7px 0px 0px #7dae8e70;
   width: 500px;
   min-height: 200px;
-}
-
-.aboutus-card-title {
+ }
+ 
+ .aboutus-card-title-container {
   font-size: 1.5em;
-  font-weight: bold;
+  margin-bottom: 0.7em;
   text-align: center;
-  margin-bottom: 1em;
-}
-
-.aboutus-card-description {
+ }
+ 
+ .aboutus-card-title {
+  font-size: 1.2em;
+ }
+ 
+ .aboutus-card-description {
   font-family: "Open Sans", sans-serif;
   font-size: 16px;
   line-height: 1.6;
@@ -370,17 +372,58 @@ html {
   letter-spacing: 1px;
   text-align: left;
   max-width: 90%;
-}
-
-.aboutus-card-cta a {
-  text-decoration: none;
-  background-color: rgb(35, 141, 121);
-  color: #fff;
-  padding: 8px 16px;
-  border-radius: 0.5em;
-  margin-bottom: 1cm;
+ }
+ 
+ .featured-review-background {
+  display: flex;
+  flex-direction: column;
+  align-items: top;
+  padding: 1em;
+  box-shadow: 0px 0px 6px 6px #7dae8e70;
+  width: 650px;
+  min-height: 330px;
+  margin-left: 450px;
+  margin-top: 30px;
+ }
+ 
+ .featured-review-profile-image {
+  display: block;
+  width: 70px;
+  height: 70px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin-right: 1em;
+ }
+ 
+ .featured-review-header {
   font-weight: bold;
-}
+  font-size: 20px;
+  margin-bottom: 5px;
+ }
+ 
+ .featured-review-username {
+  display: flex;
+  font-weight: bold;
+  align-items: center;
+  justify-content: flex-end;
+  width: 24%;
+  margin-top: -60px;
+ }
+ 
+ .featured-review-content {
+  overflow: auto;
+  padding: 12px;
+  color: #333;
+  font-family: udemy sans,sf pro text,-apple-system,BlinkMacSystemFont,Roboto,segoe ui,Helvetica,Arial,sans-serif,apple color emoji,segoe ui emoji,segoe ui symbol;
+  font-weight: 400;
+  line-height: 1.4;
+  font-size: 0.9rem;
+ }
+ 
+ .featured-review-stars {
+  margin-left: 66px;
+  margin-top: 3px;
+ } 
 
 /* MY SPACE */
 
