@@ -4,6 +4,7 @@
 """Validator module."""
 import datetime
 
+from validate_email import validate_email
 from wtforms import (
     Form,
     BooleanField,
@@ -46,6 +47,18 @@ def validate_submission_date(form, field):
         raise ValidationError("An error occured: Submission date is invalid")
 
 
+def validate_user_email(form, field):
+    """Validate user email"""
+    email = field.data
+
+    is_valid = validate_email(
+        email_address=email
+    )
+
+    if not is_valid:
+        raise ValidationError(f"{email} does not appear to exist")
+
+
 class ValidateRegister(Form):
     """Register Validator to validate client side register form."""
 
@@ -75,6 +88,7 @@ class ValidateRegister(Form):
             validators.Length(min=1, max=254, message="Email is invalid"),
             validators.Email(message="Email is invalid"),
             validators.DataRequired(message="Email is required"),
+            validate_user_email
         ],
         id="email",
         render_kw={"placeholder": "john.smith@gmail.com"},
@@ -206,4 +220,17 @@ class ValidateCheckup(Form):
                                    message="Checkup value is invalid")
         ],
         id="emoji"
+    )
+
+
+class ValidateDoctorKey(Form):
+    """Docotor_key validator to ensure that a doctor using valid doctor_key"""
+    doctor_key = StringField(
+        validators=[
+            validators.DataRequired(message="A Doctor key is required"),
+            validators.Length(min=28, max=33, message="The number of characters should be\nwithin the range of 28 to 33"),
+            validators.Regexp(r'^(?=.*[a-zA-Z])(?=.*[0-9])[a-zA-Z0-9]*([-_][a-zA-Z0-9]*)?$', message='Doctor key contains invalid characters.'),
+        ],
+        id="doctor_key",
+        render_kw={"placeholder": "Enter a doctor key"},
     )
