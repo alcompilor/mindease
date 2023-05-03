@@ -460,7 +460,7 @@ a[data-li-active="true"] {
   flex-direction: column;
   justify-content: center;
   gap: 2em;
-  padding: 3em 6em;
+  padding: 4em 3em;
   background-color: #e2efe6;
   /*#edf6ee*/
   border-top-left-radius: 6em;

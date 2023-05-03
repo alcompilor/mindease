@@ -10,7 +10,9 @@
   <div id="myspace-main-key">
     <h4 class="title is-4">Shareable Key 🔑</h4>
     <div id="myspace-main-key-container">
-      <h5 class="subtitle is-5" id="key-container">j9A8laJ24Ajma4</h5>
+      <h5 class="subtitle is-5" id="key-container">
+        {{ session['data_summary']['doctor_key'] }}
+      </h5>
       <button id="key-copy" class="button is-warning">Copy</button>
     </div>
   </div>
