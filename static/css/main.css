@@ -804,6 +804,10 @@ a[data-li-active="true"] {
   font-size: 1.2em;
 }
 
+#journal-card > details > summary::marker {
+  color: #8abc99;
+}
+
 #journal-card > details > p {
   margin-top: 1em;
   line-height: 1.7;
