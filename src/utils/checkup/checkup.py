@@ -17,18 +17,35 @@ class CheckUp:
 
 
     def fetch_checkup(self, checkup_id):
-        """Fetches the checkup for a specific date from the database."""
+        """Fetches new checkup for the day from the database."""
         try:
             db = DBConnection()
-            query = "SELECT * FROM checkup WHERE checkup_id = %s ORDER BY id DESC LIMIT 1"
+            query = "SELECT * FROM checkup_answer WHERE checkup_id = %s ORDER BY id DESC LIMIT 1"
             db.cursor.execute(query, checkup_id)
             result = db.cursor.fetchone()
-            if checkup_id < 1 or checkup_id > 30:
-                checkup_id = 1
-            todays_checkup = result +1
             
-        except mysql.connector.Error as err:
-            print(f"Error: {err}")
+            todays_checkup = result[1] + 1
+            if not result:
+                checkup_id = 1
+            
+            if checkup_id > 30:
+                checkup_id = 1
+                db.cursor.execute()
+                
+            # Get the next checkup:
+            query2 = ("SELECT * FROM checkup WHERE id = %s")
+            db.cursor.execute(query2)
+            
+            """""    
+            if result:
+                last_checkup_id = result[0]
+                next_checkup = (last_checkup_id % 30) +1
+            else:
+                next_checkup = 1
+            return next_checkup
+            """
+        except mysql.connector.Error as e:
+            print(f"Error: {e}")
         
         db.cursor.close()
         db.cnx.close()
