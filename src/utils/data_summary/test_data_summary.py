@@ -4,7 +4,6 @@
 """Unittest DataSummary module."""
 
 import unittest
-import datetime
 from unittest.mock import MagicMock
 from src.utils.data_summary.data_summary import DataSummary
 from src.utils.db_connection.db_connection import DBConnection
@@ -26,9 +25,13 @@ class TestDataSummary(unittest.TestCase):
         """Test get_data_summary function."""
         self.setUp()
 
+        expected_uid = 3
+
+        self.cursor_mock.fetchone.return_value = expected_uid
+
         expected_checkups = [
-            {"content": 'Did you sleep well today?', "answer": 1,
-             "date": datetime.date(2023, 4, 18)},
+            {"content": 'Did you sleep well today?', "answer": None,
+             "date": None},
             {"content": 'Did you start your day with a healthy '
              'breakfast today?', "answer": None, "date": None},
             {"content": 'Have you been drinking enough water lately?',
@@ -101,6 +104,7 @@ class TestDataSummary(unittest.TestCase):
             "last_name": self.data_summary.last_name["last_name"],
             "birth": self.data_summary.birth["birth"],
             "gender": self.data_summary.gender["gender"],
+            "doctor_key": self.data_summary.doctor_key["doctor_key"],
             "checkups":
                 {
                     "checkups_sentences": [],

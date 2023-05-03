@@ -58,12 +58,16 @@ class TestJournal(unittest.TestCase):
 
     def test_get_all_journals(self):
         """Test get_all_journals method."""
-        result = self.journal.get_all_journals()
+        user_id = 98
+        result = self.journal.get_all_journals(user_id)
         self.assertTrue(isinstance(result, list))
+        for journal in result:
+            self.assertEqual(journal.user_id, user_id)
+        
 
     def test_search_journals(self):
         """Test search_journals method."""
-        result = self.journal.search_journals(self.user_id, self.journal_date)
+        result = self.journal.search_journals(self.user_id, self.search_query)
         self.assertTrue(isinstance(result, list))
 
     def test_search_journals_error(self):

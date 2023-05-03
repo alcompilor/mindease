@@ -270,12 +270,12 @@ html {
 
 #index-aboutus-p1 {
   font-family: "Open Sans", sans-serif;
-  font-size: 19px; 
-  line-height: 1.6; 
+  font-size: 19px;
+  line-height: 1.6;
   text-align: justify;
   margin-top: 0.5em;
   margin-bottom: 1em;
-  padding: 0.5em; 
+  padding: 0.5em;
 }
 
 #index-aboutus-link1 {
@@ -362,12 +362,12 @@ html {
 
 .aboutus-card-description {
   font-family: "Open Sans", sans-serif;
-  font-size: 16px; 
-  line-height: 1.6; 
+  font-size: 16px;
+  line-height: 1.6;
   margin-top: 0em;
   margin-bottom: 2em;
-  padding: 0.5em; 
-  letter-spacing: 1px; 
+  padding: 0.5em;
+  letter-spacing: 1px;
   text-align: left;
   max-width: 90%;
 }
@@ -381,6 +381,7 @@ html {
   margin-bottom: 1cm;
   font-weight: bold;
 }
+
 /* MY SPACE */
 
 /* SPACE MENU */
@@ -528,7 +529,7 @@ a[data-li-active="true"] {
   border: none;
 }
 
-#metrics-none{
+#metrics-none {
   margin-top: 2em;
   margin-bottom: 1em;
   max-width: 30ch;
@@ -683,7 +684,8 @@ a[data-li-active="true"] {
   gap: 2em;
 }
 
-#myspace-journals-history, #myspace-journals-create {
+#myspace-journals-history,
+#myspace-journals-create {
   background-color: #fff;
   width: 100%;
   height: max-content;
@@ -694,7 +696,8 @@ a[data-li-active="true"] {
   border: 1px solid #c6c6c6;
 }
 
-#myspace-journals-history:hover, #myspace-journals-create:hover {
+#myspace-journals-history:hover,
+#myspace-journals-create:hover {
   transform: scale(0.995);
   box-shadow: none;
   transition-duration: 0.3s;
@@ -703,7 +706,24 @@ a[data-li-active="true"] {
 #myspace-journals-cards {
   display: flex;
   flex-direction: column;
-  gap: 1em;
+  gap: 1.3em;
+  overflow: auto;
+  max-height: 550px;
+  padding: 0em 1em;
+}
+
+#myspace-journals-cards::-webkit-scrollbar {
+  width: 6px;
+}
+
+#myspace-journals-cards::-webkit-scrollbar-track {
+  background-color: #eee;
+  border-radius: 10px;
+}
+
+#myspace-journals-cards::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-color: #bdd5d7;
 }
 
 #journal-card {
@@ -726,8 +746,14 @@ a[data-li-active="true"] {
 }
 
 @keyframes sweep {
-  0%    {opacity: 0; margin-top: -1em}
-  100%  {opacity: 1; margin-top: 0em}
+  0% {
+    opacity: 0;
+    margin-top: -1em;
+  }
+  100% {
+    opacity: 1;
+    margin-top: 0em;
+  }
 }
 
 #journal-card > details > summary {
@@ -742,10 +768,26 @@ a[data-li-active="true"] {
   font-size: 1.1em;
 }
 
+#journal-date {
+  float: right;
+}
+
 #journals-none {
   margin-top: 1em;
   margin-bottom: 1em;
   color: #859d8f;
+}
+
+#journal-notifications {
+  padding: 0em 0em 1em 0em;
+}
+
+#journal-search {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1em;
+  padding: 0em 1em 1em 1em;
 }
 
 /* CHECKUP */

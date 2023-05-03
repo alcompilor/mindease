@@ -15,6 +15,7 @@ from src.validator import (ValidateRegister, ValidateLogin, ValidateJournal,
 from src.utils.register.register import Register
 from src.utils.login.login import Login
 from src.utils.user.user import User
+from src.utils.journal.journal import Journal
 from src.utils.data_summary.data_summary import DataSummary
 
 load_dotenv()  # load .env
@@ -33,14 +34,15 @@ app.url_map.strict_slashes = False  # ignores trailing slash in routes
 # assigning secret key for flask app
 app.secret_key = os.getenv('APP_SECRET_KEY')
 
-@app.route("/")  # route
+
+@app.route("/")  # homepage route
 def home_page():
     """Route for home page."""
     data = {"doc_title": "Home | Mindease"}
     return render_template("index.html", data=data)
 
 
-@app.route('/register', methods=['POST', 'GET'])  # route
+@app.route('/register', methods=['POST', 'GET'])  # register route
 def register():
     """Route for account registration page."""
     form = ValidateRegister(request.form)
@@ -61,7 +63,7 @@ def register():
         if result['registration_succeeded']:
             flash(dedent("""\
                     Successfully registered.
-                    We will notify you once our platform launches!"""),
+                    To continue, please login."""),
                   "success")
         else:
             flash("Email already exists", "error")
@@ -73,7 +75,7 @@ def register():
     return redirect(url_for('myspace'))
 
 
-@app.route('/login', methods=['GET', 'POST'])  # route
+@app.route('/login', methods=['GET', 'POST'])  # login route
 def login():
     """Route for login page."""
     form = ValidateLogin(request.form)
@@ -99,7 +101,7 @@ def login():
 
         if not result['login_succeeded']:
             try:
-                result['invalid_password']
+                result['invalid_password']  # pylint: disable=W0104
 
                 flash("Password is incorrect", "error")
                 return redirect(url_for('login'))
@@ -115,7 +117,7 @@ def login():
     return redirect(url_for('myspace'))
 
 
-@app.route('/logout')  # route
+@app.route('/logout')  # logout route
 def logout():
     """Route to logout a user."""
     session.pop('user_id', None)
@@ -125,7 +127,7 @@ def logout():
     return redirect(url_for('login'))
 
 
-@app.route('/checkup', methods=['GET', 'POST'])  # route
+@app.route('/checkup', methods=['GET', 'POST'])  # checkup route
 def checkup():
     """Route for user space."""
     form = ValidateCheckup(request.form)
@@ -144,7 +146,7 @@ def checkup():
     return render_template("checkup.html", data=data)
 
 
-@app.route('/myspace')  # route
+@app.route('/myspace')  # myspace route
 def myspace():
     """Route for user space."""
     user_id = session.get('user_id')
@@ -157,27 +159,71 @@ def myspace():
     return render_template("space-main.html", data=data)
 
 
-@app.route('/myspace/journals', methods=['GET', 'POST'])  # route
+# myspace/journals route
+@app.route('/myspace/journals', methods=['GET', 'POST'])
 def journals():
     """Route for user journals."""
+    user_id = session.get('user_id')
+    journal = Journal()
+
     form = ValidateJournal(request.form)
     if request.method == 'POST' and form.validate():
-        # journal_data =
-        # {form.title.data, form.content.data, form.date_submitted.data}
-        pass
+        journal_data = {"title": form.title.data,
+                        "content": form.content.data,
+                        "date": form.date_submitted.data,
+                        "user_id": session['user_id']['user_id'],
+                        }
 
+        result = journal.create_journal(
+            journal_title=journal_data['title'],
+            journal_content=journal_data['content'],
+            journal_date=journal_data['date'],
+            user_id=journal_data['user_id']
+        )
+
+        if result['journal_created']:
+            flash('Journal has been saved', 'success')
+        else:
+            flash('An error occured: Journal not saved', 'error')
+
+    if user_id is None:
+        flash('You are not authenticated', 'error')
+        return redirect('/login')
+
+    if not request.args.get('q'):
+        fetched_journals = journal.get_all_journals(
+            session['user_id']['user_id'])
+    else:
+        search_query = request.args.get('q')
+        fetched_journals = journal.search_journals(
+            session['user_id']['user_id'], search_query)
+
+    data = {"doc_title": "My Space - Journals | Mindease",
+            "journal_form": form, "user_journals": fetched_journals}
+    return render_template("space-journals.html", data=data)
+
+
+'''
+@app.route('/myspace/journals/search', methods=['GET'])
+def search_journals():
+    """Route to search journals."""
     user_id = session.get('user_id')
 
     if user_id is None:
         flash('You are not authenticated', 'error')
         return redirect('/login')
 
-    data = {"doc_title": "My Space - Journals | Mindease",
-            "journal_form": form}
-    return render_template("space-journals.html", data=data)
+    search_query = request.args.get('q')
+
+    journals = Journal()
+    result = journals.search_journals(
+        session['user_id']['user_id'], search_query)
+
+    return result
+'''
 
 
-@app.route('/aboutus')  # route
+@app.route('/aboutus')  # aboutus route
 def aboutus():
     """Route for about-us page."""
     data = {"doc_title": "About Us | Mindease"}
@@ -185,7 +231,7 @@ def aboutus():
 
 
 def load_user(email):
-    """Load user id from database based on email."""
+    """Load user id from database based on user's email."""
     user = User(email=email,
                 first_name=None,
                 last_name=None,
@@ -200,6 +246,6 @@ def load_user(email):
 
 
 def encrypt_password(password):
-    """Encrypt registration password."""
+    """Encrypt/hash registration password."""
     hashed_pwd = bcrypt.hashpw(password, bcrypt.gensalt(rounds=15))
     return hashed_pwd
