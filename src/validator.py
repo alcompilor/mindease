@@ -4,6 +4,7 @@
 """Validator module."""
 import datetime
 
+from validate_email import validate_email
 from wtforms import (
     Form,
     BooleanField,
@@ -12,6 +13,8 @@ from wtforms import (
     EmailField,
     SelectField,
     DateField,
+    TextAreaField,
+    IntegerRangeField,
     validators,
     ValidationError
 )
@@ -31,6 +34,29 @@ def validate_date_of_birth(form, field):
         raise ValidationError("You must be at least 13 years old")
     if age > 90:
         raise ValidationError("You must be at most 90 years old")
+
+
+def validate_submission_date(form, field):
+    """Validate submission date for journal."""
+    fetched_date = datetime.datetime.strptime(f"{field.data}", "%Y-%m-%d")
+    current_date = datetime.datetime.now().replace(
+        hour=0, minute=0, second=0, microsecond=0
+    )
+
+    if fetched_date != current_date:
+        raise ValidationError("An error occured: Submission date is invalid")
+
+
+def validate_user_email(form, field):
+    """Validate user email"""
+    email = field.data
+
+    is_valid = validate_email(
+        email_address=email
+    )
+
+    if not is_valid:
+        raise ValidationError(f"{email} does not appear to exist")
 
 
 class ValidateRegister(Form):
@@ -62,6 +88,7 @@ class ValidateRegister(Form):
             validators.Length(min=1, max=254, message="Email is invalid"),
             validators.Email(message="Email is invalid"),
             validators.DataRequired(message="Email is required"),
+            validate_user_email
         ],
         id="email",
         render_kw={"placeholder": "john.smith@gmail.com"},
@@ -73,10 +100,11 @@ class ValidateRegister(Form):
             validators.DataRequired(message="Password is required"),
             validators.EqualTo("password_confirm",
                                message="Passwords must match"),
-            validators.Length(
-                min=8, max=50,
-                message="Password must be between 8 and 50 characters"
-            ),
+            validators.Regexp(r"(?=.*?[A-Z])", message="Missing uppercase letter"),
+            validators.Regexp(r"(?=.*?[a-z])", message="Missing lowercase letter"),
+            validators.Regexp(r"(?=.*?[0-9])", message="Missing digit"),
+            validators.Regexp(r"(?=.*?[#?!@$%^&*-])", message="Missing special character"),
+            validators.Regexp(r".{8,}", message="Password is too short"),
         ],
         id="password",
         render_kw={"placeholder": "Enter a password"},
@@ -142,4 +170,67 @@ class ValidateLogin(Form):
         ],
         id="password",
         render_kw={"placeholder": "Your password"},
+    )
+
+
+class ValidateJournal(Form):
+    """Journal Validator to validate client side new journal form."""
+
+    title = StringField(
+        "Title",
+        validators=[
+            validators.DataRequired(message="Journal Title is required"),
+            validators.Length(min=1, max=30,
+                              message="Title is too long (>30 chars)"),
+        ],
+        id="journal-title",
+        render_kw={"placeholder": "A memory from my childhood"},
+    )
+
+    content = TextAreaField(
+        "Content",
+        validators=[
+            validators.DataRequired(message="Journal Content is required"),
+            validators.Length(min=1, max=540,
+                              message="Content is too long (>520 chars)")
+        ],
+        id="journal-content",
+        render_kw={"placeholder": "When I was a child I...", "rows": "14"},
+    )
+
+    date_submitted = DateField(
+        "Date",
+        validators=[
+            validators.DataRequired(
+                message="An error has occured: Date couldn't be processed."),
+            validate_submission_date,
+        ],
+        id="journal-submission-date"
+    )
+
+
+class ValidateCheckup(Form):
+    """Checkup Validator to validate client side new checkup range."""
+
+    checkup_range = IntegerRangeField(
+        "Range",
+        validators=[
+            validators.DataRequired(message="Checkup value is required"),
+            validators.NumberRange(min=1, max=5,
+                                   message="Checkup value is invalid")
+        ],
+        id="emoji"
+    )
+
+
+class ValidateDoctorKey(Form):
+    """Docotor_key validator to ensure that a doctor using valid doctor_key"""
+    doctor_key = StringField(
+        validators=[
+            validators.DataRequired(message="A Doctor key is required"),
+            validators.Length(min=28, max=33, message="The number of characters should be\nwithin the range of 28 to 33"),
+            validators.Regexp(r'^(?=.*[a-zA-Z])(?=.*[0-9])[a-zA-Z0-9]*([-_][a-zA-Z0-9]*)?$', message='Doctor key contains invalid characters.'),
+        ],
+        id="doctor_key",
+        render_kw={"placeholder": "Enter a doctor key"},
     )
