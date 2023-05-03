@@ -48,7 +48,7 @@ def validate_submission_date(form, field):
 
 
 def validate_user_email(form, field):
-    """Validate user email"""
+    """Validate user email."""
     email = field.data
 
     is_valid = validate_email(
@@ -227,7 +227,8 @@ class ValidateCheckup(Form):
 
 
 class ValidateDoctorKey(Form):
-    """Docotor_key validator to ensure that a doctor using valid doctor_key"""
+    """Docotor_key validator to ensure that a doctor using valid doctor_key."""
+
     doctor_key = StringField(
         validators=[
             validators.DataRequired(message="A Doctor key is required"),
