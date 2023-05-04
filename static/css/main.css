@@ -267,7 +267,7 @@ html {
   font-size: 2rem;
   margin-bottom: 20px;
 }
-
+ 
 #index-aboutus-p1 {
   font-family: "Open Sans", sans-serif;
   font-size: 19px;
@@ -277,28 +277,28 @@ html {
   margin-bottom: 1em;
   padding: 0.5em;
 }
-
+ 
 #index-aboutus-link1 {
   color: rgb(0, 0, 0);
   font-family: "Open Sans", sans-serif;
   text-align: center;
   margin-bottom: 1em;
 }
-
+ 
 #index-aboutus-link2 {
   color: rgb(0, 0, 0);
   font-family: "Open Sans", sans-serif;
   text-align: center;
   margin-bottom: 1em;
 }
-
+ 
 #index-aboutus-link3 {
   color: rgb(0, 0, 0);
   font-family: "Open Sans", sans-serif;
   text-align: center;
   margin-bottom: 1em;
 }
-
+ 
 .home-hero {
   display: grid;
   grid-template-columns: 1fr;
@@ -315,14 +315,14 @@ html {
   box-shadow: 9px 11px 0px 0px #d3eae7;
   text-align: center;
 }
-
+ 
 .home-hero-left {
   grid-row: 1 / span 2;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
-
+ 
 .aboutus-cards-container {
   display: flex;
   justify-content: center;
@@ -331,7 +331,7 @@ html {
   gap: 2em;
   padding: 2em;
 }
-
+ 
 .aboutus-cards-grid {
   display: flex;
   flex-wrap: nowrap;
@@ -339,7 +339,7 @@ html {
   align-items: justify;
   gap: 3em;
 }
-
+ 
 .aboutus-card {
   display: flex;
   flex-direction: column;
@@ -347,19 +347,21 @@ html {
   background: rgb(255, 255, 255);
   background: linear-gradient(296deg, #bae3d1 3%, rgb(243 243 243) 100%);
   padding: 1em;
-  border-radius: 1em;
   box-shadow: 6px 7px 0px 0px #7dae8e70;
   width: 500px;
   min-height: 200px;
 }
-
-.aboutus-card-title {
+ 
+.aboutus-card-title-container {
   font-size: 1.5em;
-  font-weight: bold;
+  margin-bottom: 0.7em;
   text-align: center;
-  margin-bottom: 1em;
 }
-
+ 
+ .aboutus-card-title {
+  font-size: 1.2em;
+}
+ 
 .aboutus-card-description {
   font-family: "Open Sans", sans-serif;
   font-size: 16px;
@@ -371,15 +373,70 @@ html {
   text-align: left;
   max-width: 90%;
 }
+ 
+#featured-review-container {
+  display: grid;
+  grid-auto-flow: column; 
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2em;
+  padding: 2em;
+  align-self: center;
+}
 
-.aboutus-card-cta a {
-  text-decoration: none;
-  background-color: rgb(35, 141, 121);
-  color: #fff;
-  padding: 8px 16px;
-  border-radius: 0.5em;
-  margin-bottom: 1cm;
+.featured-review-grid {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-evenly;
+  align-items: justify;
+  gap: 3em;
+}
+
+.featured-review-background {
+  display: grid;
+  flex-direction: row;
+  align-items: top;
+  padding: 1em;
+  box-shadow: 0px 0px 6px 6px #7dae8e70;
+  width: 620px;
+  min-height: 330px;
+  margin-left: 43px;
+}
+
+.featured-review-profile-image {
+  display: block;
+  width: 68px;
+  height: 68px;
+  object-fit: cover;
+  margin-right: 1em;
+}
+
+.featured-review-header {
+  display: block;
   font-weight: bold;
+  font-size: 20px;
+}
+
+.featured-review-username {
+  display: block;
+  font-weight: bold;
+  width: 28%;
+  margin-top: -60px;
+  margin-left: 75px;
+}
+
+.featured-review-content {
+  overflow: auto;
+  padding: 12px;
+  color: #333;
+  font-family: udemy sans,sf pro text,-apple-system,BlinkMacSystemFont,Roboto,segoe ui,Helvetica,Arial,sans-serif,apple color emoji,segoe ui emoji,segoe ui symbol;
+  font-weight: 400;
+  line-height: 1.4;
+  font-size: 0.9rem;
+}
+
+.featured-review-stars {
+  margin-left: 71px;
+  margin-top: 2px;
 }
 
 /* MY SPACE */
