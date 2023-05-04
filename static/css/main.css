@@ -376,14 +376,24 @@ html {
  
 #featured-review-container {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 3em;
+  grid-auto-flow: column; 
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2em;
   padding: 2em;
+  align-self: center;
+}
+
+.featured-review-grid {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-evenly;
+  align-items: justify;
+  gap: 3em;
 }
 
 .featured-review-background {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  flex-direction: row;
   align-items: top;
   padding: 1em;
   box-shadow: 0px 0px 6px 6px #7dae8e70;
@@ -394,27 +404,24 @@ html {
 
 .featured-review-profile-image {
   display: block;
-  width: 70px;
-  height: 70px;
+  width: 68px;
+  height: 68px;
   object-fit: cover;
-  border-radius: 50%;
   margin-right: 1em;
 }
 
 .featured-review-header {
+  display: block;
   font-weight: bold;
   font-size: 20px;
-  margin-bottom: 5px;
 }
 
 .featured-review-username {
-  display: flex;
+  display: block;
   font-weight: bold;
-  align-items: center;
-  justify-content: flex-end;
   width: 28%;
   margin-top: -60px;
-  margin-left: -12px;
+  margin-left: 75px;
 }
 
 .featured-review-content {
@@ -429,7 +436,7 @@ html {
 
 .featured-review-stars {
   margin-left: 71px;
-  margin-top: 3px;
+  margin-top: 2px;
 }
 
 /* MY SPACE */
