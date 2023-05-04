@@ -24,7 +24,6 @@ packaging==23.1
 platformdirs==3.2.0
 pluggy==1.0.0
 protobuf==3.20.3
-py3-validate-email @ git+https://gitea.ksol.io/karolyi/py3-validate-email@32c8f4cdfaba4c7e7fc81405a023c849a9268859
 pycodestyle==2.10.0
 pydocstyle==6.3.0
 pyflakes==3.0.1
