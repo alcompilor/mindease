@@ -4,7 +4,6 @@
 """Validator module."""
 import datetime
 
-from validate_email import validate_email
 from wtforms import (
     Form,
     BooleanField,
@@ -45,21 +44,7 @@ def validate_submission_date(form, field):
 
     if fetched_date != current_date:
         raise ValidationError("An error occured: Submission date is invalid")
-
-
-'''
-def validate_user_email(form, field):
-    """Validate user email."""
-    email = field.data
-
-    is_valid = validate_email(
-        email_address=email
-    )
-
-    if not is_valid:
-        raise ValidationError(f"{email} does not appear to exist")
-'''
-
+    
 
 class ValidateRegister(Form):
     """Register Validator to validate client side register form."""
@@ -108,7 +93,7 @@ class ValidateRegister(Form):
             validators.Regexp(r"(?=.*?[0-9])", message="Missing digit"),
             validators.Regexp(r"(?=.*?[#?!@$%^&*-])",
                               message="Missing special character"),
-            validators.Regexp(r".{8,}", message="Password is too short"),
+            validators.Regexp(r".{8,}", message="Password is too short")
         ],
         id="password",
         render_kw={"placeholder": "Enter a password"},
