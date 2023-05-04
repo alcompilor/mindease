@@ -44,7 +44,21 @@ def validate_submission_date(form, field):
 
     if fetched_date != current_date:
         raise ValidationError("An error occured: Submission date is invalid")
-    
+
+
+'''
+def validate_user_email(form, field):
+    """Validate user email."""
+    email = field.data
+
+    is_valid = validate_email(
+        email_address=email
+    )
+
+    if not is_valid:
+        raise ValidationError(f"{email} does not appear to exist")
+'''
+
 
 class ValidateRegister(Form):
     """Register Validator to validate client side register form."""
@@ -93,7 +107,7 @@ class ValidateRegister(Form):
             validators.Regexp(r"(?=.*?[0-9])", message="Missing digit"),
             validators.Regexp(r"(?=.*?[#?!@$%^&*-])",
                               message="Missing special character"),
-            validators.Regexp(r".{8,}", message="Password is too short")
+            validators.Regexp(r".{8,}", message="Password is too short"),
         ],
         id="password",
         render_kw={"placeholder": "Enter a password"},
@@ -223,9 +237,6 @@ class ValidateDoctorKey(Form):
                 max=33,
                 message="The number of characters should be within the range of 28 to 33"
             ),
-            validators.Regexp(r"^(?=.*[a-zA-Z])(?=.*[0-9])[a-zA-Z0-9]*([-_][a-zA-Z0-9]*)?$",
-                              message='Doctor key contains invalid characters.'
-                              ),
         ],
         id="doctor_key",
         render_kw={"placeholder": "Enter a doctor key"},
