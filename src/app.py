@@ -5,8 +5,6 @@
 
 import os
 import bcrypt
-import socketio
-
 
 from pathlib import Path
 from textwrap import dedent
@@ -265,11 +263,11 @@ def doctor_form():
     data = {"doc_title": "Psychologist Portal | Mindease", "doctor_form": form}
     return render_template('doctorform.html', data=data)
 
-
+"""
 @socketio.on('disconnect')
 def disconnect_user(key_name):
    session.pop(key_name, None)
-
+"""
 
 # /analysis/data route
 @app.route('/data')
@@ -292,7 +290,7 @@ def doctor_view():
     data_summary = DataSummary()
     data_summary_result = data_summary.get_data_summary(user_email['email'])
 
-    disconnect_user('doctor_key')
+    #disconnect_user('doctor_key')
 
     data = {
         "doc_title": "Psychologist View | Mindease", 
