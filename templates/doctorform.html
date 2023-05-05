@@ -5,8 +5,8 @@
         <div id="doctor-form">
             <img src={{ url_for('static', filename='img/doctorportal.png') }} id="doctor-form-img">
             <div class="form-container">
-                {% comment %} <form action="/submit-key" method="post">
-                    <input type="text" name="shareable-key" id="shareable-key" placeholder="Enter patient key" required> {% endcomment %}
+                <form action="/submit-key" method="post"> <!--Reference for jinja syntax-->
+                    <input type="text" name="shareable-key" id="shareable-key" placeholder="Enter patient key" required>
                 </form>
             </div>
             <button type="submit">Submit</button>
