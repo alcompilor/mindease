@@ -22,7 +22,7 @@ class User:
         self.user_id = user_id
         self.doctor_key = doctor_key
 
-    def get_user_id(self, email, doctor_key):
+    def get_user_id(self, email=None, doctor_key=None):
         """Method to retrieve user_id from table in the DB."""
 
         database = DBConnection()
