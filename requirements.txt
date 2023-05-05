@@ -34,7 +34,7 @@ pathspec==0.11.1
 platformdirs==3.2.0
 pluggy==1.0.0
 protobuf==3.20.3
-py3-validate-email==1.0.9
+py3-validate-email @ git+https://gitea.ksol.io/karolyi/py3-validate-email@f5ced87b0d162b67d42f43dd07498932c184d276
 pycares==4.3.0
 pycodestyle==2.10.0
 pycparser==2.21
