@@ -4,15 +4,14 @@
 """Flask module."""
 
 import os
-import bcrypt
-
 from pathlib import Path
 from textwrap import dedent
 from flask import (Flask, render_template, request,
-                  flash, url_for, redirect, session)
+                   flash, url_for, redirect, session)
+import bcrypt
 from dotenv import load_dotenv
 from src.validator import (ValidateRegister, ValidateLogin, ValidateJournal,
-                          ValidateCheckup, ValidateDoctorKey)
+                           ValidateCheckup, ValidateDoctorKey)
 from src.utils.register.register import Register
 from src.utils.login.login import Login
 from src.utils.user.user import User
@@ -263,11 +262,6 @@ def doctor_form():
     data = {"doc_title": "Psychologist Portal | Mindease", "doctor_form": form}
     return render_template('doctorform.html', data=data)
 
-"""
-@socketio.on('disconnect')
-def disconnect_user(key_name):
-   session.pop(key_name, None)
-"""
 
 # /analysis/data route
 @app.route('/data')
@@ -290,12 +284,13 @@ def doctor_view():
     data_summary = DataSummary()
     data_summary_result = data_summary.get_data_summary(user_email['email'])
 
-    #disconnect_user('doctor_key')
+    user.update_doctor_key(doctor_key)
+    session.pop('doctor_key', None)
 
     data = {
         "doc_title": "Psychologist View | Mindease", 
         "journals": journals, 
         "data_summary_result": data_summary_result
-        }
+    }
     
     return render_template("doctor-view.html", data=data)
