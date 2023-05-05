@@ -4,7 +4,6 @@
 """Validator module."""
 import datetime
 from validate_email import validate_email
-
 from wtforms import (
     Form,
     BooleanField,
@@ -18,6 +17,7 @@ from wtforms import (
     validators,
     ValidationError
 )
+from src.utils.db_connection.db_connection import DBConnection
 
 
 def validate_date_of_birth(form, field):
@@ -55,6 +55,24 @@ def validate_user_email(form, field):
 
     if is_valid is False:
         raise ValidationError(f"{email} does not appear to exist")
+
+
+def validate_doctor_key_db(form, field):
+    """Validate if doctor key exists in database."""
+    query = "SELECT user_id FROM User WHERE doctor_key = %s;"
+    data = field.data
+
+    db_conn = DBConnection()
+    db_conn.cursor.execute(query, data)
+
+    result = db_conn.cursor.fetchone()
+
+    db_conn.cursor.close()
+    db_conn.cnx.close()
+
+    if not result:
+        raise ValidationError(
+            "The patient's key you entered does not appear to exist")
 
 
 class ValidateRegister(Form):
@@ -229,13 +247,9 @@ class ValidateDoctorKey(Form):
 
     doctor_key = StringField(
         validators=[
-            validators.DataRequired(message="A Doctor key is required"),
-            validators.Length(
-                min=28,
-                max=33,
-                message="The number of characters should be within the range of 28 to 33"
-            ),
+            validators.DataRequired(message="A Patient's key is required"),
+            validate_doctor_key_db
         ],
         id="doctor_key",
-        render_kw={"placeholder": "Enter a doctor key"},
+        render_kw={"placeholder": "Enter the patient's key"},
     )
