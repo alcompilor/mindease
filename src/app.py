@@ -270,6 +270,7 @@ def doctor_view():
     
     user = User(None, None, None, None, None, None, None, None)
     user_id = user.get_user_id(None, doctor_key=doctor_key)
+    user_email = user.get_email(user_id['user_id'])
     
     journal_date = datetime(
         datetime.today().year, 
@@ -277,8 +278,17 @@ def doctor_view():
     )
 
     journal = Journal()
-    journals = journal.search_journals(user_id, journal_date)
+    journals = journal.search_journals(user_id['user_id'], journal_date)
 
+    data_summary = DataSummary()
+    data_summary_result = data_summary.get_data_summary(user_email['email'])
+
+    session.pop('doctor_key', None)
+
+    data = {
+        "doc_title": "Psychologist View | Mindease", 
+        "journals": journals, 
+        "data_summary_result": data_summary_result
+        }
     
-    data = {"doc_title": "Psychologist View | Mindease"}
     return render_template("doctor-view.html", data=data)
