@@ -222,7 +222,7 @@ def search_journals():
     return result
 '''
 
-
+# /aboutus route
 @app.route('/aboutus')  # aboutus route
 def aboutus():
     """Route for about-us page."""
@@ -260,3 +260,13 @@ def doctor_form():
         return redirect(url_for('doctor_view'))
     data = {"doc_title": "Psychologist Portal | Mindease", "doctor_form": form}
     return render_template('doctorform.html', data=data)
+
+# /analysis/data route
+@app.route('/data')
+def doctor_view():
+    """Fetches patient records to be viewed by the doctor."""
+    doctor_key = session['doctor_key']
+    user = User(None, None, None, None, None, None, None, None)
+    
+    data = {"doc_title": "Psychologist View | Mindease"}
+    return render_template("doctor-view.html", data=data)
