@@ -224,7 +224,7 @@ def aboutus():
     return render_template("aboutus.html", data=data)
 
 
-@app.route("/analysis")  # analysis (doctorform) route
+@app.route("/analysis", methods=["GET", "POST"])  # analysis (doctorform) route
 def doctor_form():
     """Implements doctor_key validation and redirects to doctor_view route if valid."""
     form = ValidateDoctorKey(request.form)
