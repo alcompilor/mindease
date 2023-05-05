@@ -1,0 +1,82 @@
+{% extends 'space.html' %} {% block space %}
+<div id="myspace-journals-data">
+  <div id="myspace-journals-history">
+    <h4 class="title is-4">Your Journals 📂</h4>
+    <form action="" method="GET">
+      <div id="journal-search">
+        <input
+          type="text"
+          class="input"
+          id="journal-search-input"
+          name="q"
+          placeholder="Search for specific journals.."
+        />
+        <input
+          id="journal-searchbtn"
+          class="button is-light"
+          type="submit"
+          value="Search"
+        />
+      </div>
+    </form>
+    <h4 class="subtitle is-4" id="journals-none"></h4>
+    <div id="myspace-journals-cards"></div>
+  </div>
+  <div id="myspace-journals-create">
+    <h4 class="title is-4">New Journal ✒️</h4>
+    <div id="myspace-journals-new">
+      <div id="journal-notifications">
+        {% with successes = get_flashed_messages(category_filter=["success"]) %}
+        {% if successes %}
+        <article class="message is-success">
+          <div class="message-body">
+            {%- for msg in successes %}
+            <strong>{{ msg }}</strong>
+            {% endfor -%}
+          </div>
+        </article>
+        {% endif %} {% endwith %} {% with errors =
+        get_flashed_messages(category_filter=["error"]) %} {% if errors %}
+        <article class="message is-danger">
+          <div class="message-body">
+            {%- for msg in errors %}
+            <strong>{{ msg }}</strong>
+            {% endfor -%}
+          </div>
+        </article>
+        {% endif %} {% endwith %} {% for field in data.journal_form.errors %} {%
+        for error in data.journal_form.errors[field] %}
+        <article class="message is-danger">
+          <div class="message-body">
+            <strong>{{ error }}</strong>
+          </div>
+        </article>
+        {% endfor %} {% endfor %}
+      </div>
+      <form id="journal-form" action="/myspace/journals" method="POST">
+        <div class="field">
+          <label class="label">Journal Title</label>
+          <div class="control">
+            {{ data.journal_form.title(class_="input") }}
+          </div>
+        </div>
+
+        <div class="field">
+          <div class="control">
+            <label class="label">Journal Content</label>
+            {{ data.journal_form.content(class_="textarea") }}
+          </div>
+        </div>
+        {{ data.journal_form.date_submitted(class_="input",
+        style_="display:none;") }}
+      </form>
+      <br />
+      <div class="field">
+        <div class="control">
+          <button class="button is-black" id="journal-btn">Save Journal</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

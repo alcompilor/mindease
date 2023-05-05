@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="icon"
+      type="image/png"
+      href="{{ url_for('static', filename='img/favicon.png') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/main.css') }}"
+    />
+    <script
+      type="module"
+      src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"
+    ></script>
+    <script
+      nomodule
+      src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"
+    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    {% if request.endpoint == 'register' %}
+    <script
+      type="module"
+      src="{{ url_for('static', filename='js/register/DOM.js') }}"
+      defer
+    ></script>
+    {% endif %} {% if request.endpoint == 'login' %}
+    <script
+      type="module"
+      src="{{ url_for('static', filename='js/login/DOM.js') }}"
+      defer
+    ></script>
+    {% endif %} {% if 'myspace' is in request.path %}
+    <script type="text/javascript">
+      const userData = {{ session['data_summary']|tojson|safe }}
+    </script>
+    <script
+      src="https://code.jquery.com/jquery-3.6.4.min.js"
+      integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="{{ url_for('static', filename='js/space/metrics.js') }}"
+      defer
+    ></script>
+    <script
+      src="{{ url_for('static', filename='js/space/key.js') }}"
+      defer
+    ></script>
+    <script
+      type="module"
+      src="{{ url_for('static', filename='js/space/assertion.js') }}"
+      defer
+    ></script>
+    <script
+      src="{{ url_for('static', filename='js/space/timer.js') }}"
+      defer
+    ></script>
+    <script
+      src="{{ url_for('static', filename='js/space/journals.js') }}"
+      defer
+    ></script>
+    {% endif %} {% if 'journals' is in request.path %}
+    <script type="text/javascript">
+      const journals = {{ data.user_journals|tojson|safe }}
+    </script>
+    {% endif %} {% if request.endpoint == 'checkup' %}
+    <script
+      type="module"
+      src="{{ url_for('static', filename='js/checkup/DOM.js') }}"
+      defer
+    ></script>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/checkup.css') }}"
+    />
+    {% endif %}
+    <title>{{data.doc_title}}</title>
+  </head>
+  <body>
+    {% block content %}{% endblock %}
+  </body>
+</html>

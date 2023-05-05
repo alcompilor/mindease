@@ -1,0 +1,136 @@
+{% extends 'layout.html' %} {% block content %}
+<div id="home">
+  {% include 'navbar.html' %}
+  <div class="home-hero">
+    <div class="home-hero-left">
+      <h1 class="title is-3" id ="index-aboutus-h1" style="margin-bottom: 20px;">Who We Are</h1> 
+    </div>
+    <div class="home-hero-right">
+      <p class="is-4" id="index-aboutus-p1">
+        At Mindease, our mission is to help people take control
+        of their mental health and wellbeing. We believe that everyone 
+        deserves access to tools and resources that can help them 
+        manage their emotions, reduce stress, and improve their 
+        overall quality of life. That's why we've created an 
+        easy-to-use platform that allows users to track their 
+        mood, write in their journal, and answer positive checkup 
+        questions that can help them identify areas where they 
+        might need additional support. 
+        Our team is made up of experienced mental health professionals 
+        and software developers who are passionate about making a 
+        difference in people's lives. We understand that seeking help 
+        for mental health can be daunting, which is why we've designed 
+        our platform to be intuitive and user-friendly. Whether you're 
+        looking to manage anxiety, depression, or simply improve your 
+        overall wellbeing, Mindease is here to support you every step 
+        of the way.
+      </p>
+    </div>
+  </div>
+  <div class="aboutus-cards-container">
+    <div class="aboutus-cards-grid">
+      <div class="aboutus-card">
+        <div class="aboutus-card-title-container">
+          <h2 class="aboutus-card-title">
+            <span>How it Works</span>
+          </h2>
+        </div>
+        <div class="aboutus-card-description" id="index-aboutus-description1">
+          Learn more about how Mindease can help you take 
+          control of your mental health. Our platform is 
+          designed to be easy to use, with features like 
+          mood tracking, journaling, and positive checkup 
+          questions that can help you stay on top of your 
+          emotional wellbeing. With Mindease, you'll have 
+          the tools you need to identify areas where you 
+          can improve your mental health.
+        </div>
+      </div>
+      <div class="aboutus-card">
+        <div class="aboutus-card-title-container">
+          <h2 class="aboutus-card-title">
+            <span>Our Team</span>
+          </h2>
+        </div>
+        <div class="aboutus-card-description" id="index-aboutus-description2">
+          Meet the experienced mental health professionals 
+          and software developers behind Mindease. Our team is 
+          passionate about helping people take control of their 
+          mental health and improve their overall 
+          quality of life. We understand that seeking help 
+          for mental health can be difficult, which is why 
+          we've designed our platform to be intuitive and 
+          user-friendly.
+        </div>
+      </div>
+      <div class="aboutus-card">
+        <div class="aboutus-card-title-container">
+          <h2 class="aboutus-card-title">
+            <span>Privacy and Security</span>
+          </h2>
+        </div>
+        <div class="aboutus-card-description" id="index-aboutus-description3">
+          At Mindease, we take your privacy and security seriously.
+          We use industry-standard encryption and security protocols 
+          to protect your data, and we never share your information 
+          with third parties without your consent. Our platform 
+          is designed to be safe and secure, so you can focus on 
+          your mental health without worrying about your personal information. 
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="featured-review-container">
+    <div class="featured-review-grid">
+      <div class="featured-review-background">
+        <h2 class="featured-review-header">Featured Review</h2>
+        <div class="featured-review-profile-image">
+          <img src="{{ url_for('static', filename='img/joker.png') }}">
+        </div>
+        <div>
+          <h3 class="featured-review-username">MR. Joker</h3>
+          <div class="featured-review-stars">
+            <img src="{{ url_for('static', filename='img/stars.png') }}">
+          </div>
+        </div>
+        <p class="featured-review-content">
+          I gotta say, I was a little skeptical about this Mindease thing at first.
+          I mean, who needs all these touchy-feely tools and resources, right? 
+          But then I tried it out and boy was I wrong. The app helped me
+          take control of my emotions and reduce my stress levels.
+          Plus, I haven't felt this good and less violent since I watched a puppy video on YouTube. 
+          Who knew that tracking my mood and answering positive checkup questions could actually
+          make a difference? And the best part is, I didn't even have to leave my lair to use it.
+          So if you're like me and you need a little mental health support,
+          give Mindease a try. Trust me, it's a real game changer. 
+          Now if you'll excuse me, I gotta go back to planning my next heist.
+        </p>
+      </div>
+      <div class="featured-review-background">
+        <h2 class="featured-review-header">Featured Review</h2>
+        <div class="featured-review-profile-image">
+          <img src="{{ url_for('static', filename='img/Harley.png') }}">
+        </div>
+        <div>
+          <h3 class="featured-review-username">Harley Quinn</h3>
+          <div class="featured-review-stars">
+            <img src="{{ url_for('static', filename='img/stars.png') }}">
+          </div>
+        </div>
+        <p class="featured-review-content">
+          Hey puddin', Harley here! You know how much of a wild card Mr.
+          J can be, and sometimes it can be tough keeping up with his craziness. 
+          But ever since I started using Mindease, things have been a whole lot smoother. 
+          I can track my moods, write in my journal, and answer checkup questions to 
+          help me stay on track. Plus, it's so easy to use even a clown like me can figure 
+          it out! Thanks to Mindease, I'm feeling more in control of my emotions and less 
+          like a ticking time bomb. So if you're looking to stay sane while dealing with the 
+          Joker, give Mindease a try. And hey, if it works for me, it'll work for anyone!
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+{% include 'footer.html' %}
+</div>
+{% endblock %}

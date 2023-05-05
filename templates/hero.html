@@ -1,0 +1,24 @@
+<div id="home-hero">
+  <div id="home-hero-left">
+    <h1 class="title is-1">Feel Good with Mindease.</h1>
+    <h3 class="subtitle is-3">
+      Your ultimate mood tracker & mental health companion 😌
+    </h3>
+    {% if session['user_id'] %}
+    <a class="button is-medium custom-green-btn" href="/myspace">
+            <strong>Your Space</strong>
+    </a>
+    {% else %}
+    <a class="button is-medium custom-green-btn" href="/register">
+            <strong>Get Started</strong>
+    </a>
+    {% endif %}
+  </div>
+  <div id="home-hero-right">
+    <img
+        src="{{ url_for('static', filename='img/hero-img.png') }}"
+        id="home-hero-img"
+      />
+    </a>
+  </div>
+</div>

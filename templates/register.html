@@ -1,0 +1,212 @@
+{% extends 'layout.html' %} {% block content %}
+<div id="auth-main">
+  <div id="left">
+    <a href="/"
+      ><img
+        src="{{ url_for('static', filename='img/logo-white.png') }}"
+        id="auth-logo"
+      />
+    </a>
+    <div id="auth-notifications">
+      {% with successes = get_flashed_messages(category_filter=["success"]) %}
+      {% if successes %}
+      <article class="message is-success msg-shadow">
+        <div class="message-body">
+          {%- for msg in successes %}
+          <strong>{{ msg }}</strong>
+          {% endfor -%}
+        </div>
+      </article>
+      {% endif %} {% endwith %} {% with errors =
+      get_flashed_messages(category_filter=["error"]) %} {% if errors %}
+      <article class="message is-danger msg-shadow">
+        <div class="message-body">
+          {%- for msg in errors %}
+          <strong>{{ msg }}</strong>
+          {% endfor -%}
+        </div>
+      </article>
+      {% endif %} {% endwith %} {% for field in data.register_form.errors %} {%
+      for error in data.register_form.errors[field] %}
+      <article class="message is-danger msg-shadow">
+        <div class="message-body">
+          <strong>{{ error }}</strong>
+        </div>
+      </article>
+      {% endfor %} {% endfor %}
+    </div>
+    <div id="auth">
+      <a id="auth-link" href="/login"
+        ><strong>Already got an account?</strong></a
+      >
+      <h1 class="title is-3">Create an account on Mindease</h1>
+
+      <form id="auth-form" action="/register" method="POST">
+        <div class="field is-grouped">
+          <div class="control">
+            <label class="label">First Name</label>
+            {{ data.register_form.first_name(class_="input") }}
+          </div>
+          <div class="control">
+            <label class="label">Last Name</label>
+            {{ data.register_form.last_name(class_="input") }}
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label">Email</label>
+          <div class="control">
+            {{ data.register_form.email(class_="input") }}
+            <p class="help is-danger" id="email-notice" style="display: none">
+              This email is invalid
+            </p>
+          </div>
+        </div>
+
+        <div class="field is-grouped">
+          <div class="control">
+            <label class="label">Password</label>
+            {{ data.register_form.password(class_="input") }}
+            <p
+              class="help is-danger"
+              id="password-notice"
+              style="display: none"
+            >
+            </p>
+          </div>
+          <div class="control">
+            <label class="label">Confirm Password</label>
+            {{ data.register_form.password_confirm(class_="input") }}
+            <p
+              class="help is-danger"
+              id="password-confirm-notice"
+              style="display: none"
+            >
+              Passwords do not match
+            </p>
+          </div>
+        </div>
+
+        <div class="field is-grouped">
+          <div class="control">
+            <label class="label">Gender</label>
+            <div class="select">
+              {{ data.register_form.gender(class_="input") }}
+            </div>
+          </div>
+
+          <div class="control">
+            <label class="label">Date of Birth:</label>
+            {{ data.register_form.birth(class_="input") }}
+          </div>
+        </div>
+
+        <div class="field">
+          <div class="control">
+            <label class="checkbox">
+              {{ data.register_form.accept_tos }} I agree to the
+              <a
+                href="#"
+                class="js-modal-trigger"
+                data-target="tos-modal"
+                id="auth-link"
+              >
+                terms and conditions
+              </a>
+            </label>
+          </div>
+        </div>
+      </form>
+      <br />
+      <div class="field">
+        <div class="control">
+          <button class="button is-black" id="register-btn" disabled>
+            Get started
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="right">
+    <img
+      src="{{ url_for('static', filename='img/register.png') }}"
+      id="auth-img"
+    />
+  </div>
+</div>
+<div class="modal" id="tos-modal">
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <p class="modal-card-title">Terms & Conditions</p>
+      <button class="delete" aria-label="close"></button>
+    </header>
+    <section class="modal-card-body">
+      <p>
+        By using our website or any of our products or services, you agree to
+        the following terms of use:
+      </p>
+      <br />
+      <p>
+        -Acceptable Use: You agree to use our website and services only for
+        lawful purposes and in a manner that does not violate any applicable
+        laws or regulations.
+      </p>
+      <br />
+      <p>
+        -Personal Responsibility: Our products and services are not a substitute
+        for professional medical advice or treatment. You are solely responsible
+        for your own physical and mental health and should consult a qualified
+        healthcare professional if you have any concerns.
+      </p>
+      <br />
+      <p>
+        -Intellectual Property: All content on our website and within our
+        products and services, including but not limited to text, graphics,
+        images, and software, is the property of Mindease and is protected by
+        copyright and other intellectual property laws. You may not use our
+        content without our express written permission.
+      </p>
+      <br />
+      <p>
+        -Privacy: We respect your privacy and will collect, use, and disclose
+        your personal information in accordance with our Privacy Policy.
+      </p>
+      <br />
+      <p>
+        -Disclaimers: We make no warranties or representations about the
+        accuracy or completeness of the information provided on our website or
+        within our products and services. We do not guarantee any specific
+        results from the use of our products or services.
+      </p>
+      <br />
+      <p>
+        -Limitation of Liability: To the fullest extent permitted by law, we
+        shall not be liable for any direct, indirect, incidental, special, or
+        consequential damages resulting from the use or inability to use our
+        website or products or services.
+      </p>
+      <br />
+      <p>
+        -Termination: We reserve the right to terminate your use of our website
+        or products or services at any time and for any reason without notice.
+      </p>
+      <br />
+      <p>
+        Changes to Terms of Use: We may modify these terms of use at any time
+        without notice. Your continued use of our website or products or
+        services constitutes your acceptance of any modified terms.
+      </p>
+      <br />
+      <p>
+        By using our website or any of our products or services, you agree to
+        these terms of use. If you do not agree to these terms, please do not
+        use our website or any of our products or services.
+      </p>
+    </section>
+    <footer class="modal-card-foot">
+      <button class="button">Done</button>
+    </footer>
+  </div>
+</div>
+{% endblock %}
