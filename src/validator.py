@@ -44,7 +44,7 @@ def validate_submission_date(form, field):
 
     if fetched_date != current_date:
         raise ValidationError("An error occured: Submission date is invalid")
-
+    
 
 class ValidateRegister(Form):
     """Register Validator to validate client side register form."""
@@ -74,7 +74,7 @@ class ValidateRegister(Form):
         validators=[
             validators.Length(min=1, max=254, message="Email is invalid"),
             validators.Email(message="Email is invalid"),
-            validators.DataRequired(message="Email is required"),
+            validators.DataRequired(message="Email is required")
         ],
         id="email",
         render_kw={"placeholder": "john.smith@gmail.com"},
@@ -86,11 +86,14 @@ class ValidateRegister(Form):
             validators.DataRequired(message="Password is required"),
             validators.EqualTo("password_confirm",
                                message="Passwords must match"),
-            validators.Regexp(r"(?=.*?[A-Z])", message="Missing uppercase letter"),
-            validators.Regexp(r"(?=.*?[a-z])", message="Missing lowercase letter"),
+            validators.Regexp(
+                r"(?=.*?[A-Z])", message="Missing uppercase letter"),
+            validators.Regexp(
+                r"(?=.*?[a-z])", message="Missing lowercase letter"),
             validators.Regexp(r"(?=.*?[0-9])", message="Missing digit"),
-            validators.Regexp(r"(?=.*?[#?!@$%^&*-])", message="Missing special character"),
-            validators.Regexp(r".{8,}", message="Password is too short"),
+            validators.Regexp(r"(?=.*?[#?!@$%^&*-])",
+                              message="Missing special character"),
+            validators.Regexp(r".{8,}", message="Password is too short")
         ],
         id="password",
         render_kw={"placeholder": "Enter a password"},
@@ -206,4 +209,24 @@ class ValidateCheckup(Form):
                                    message="Checkup value is invalid")
         ],
         id="emoji"
+    )
+
+
+class ValidateDoctorKey(Form):
+    """Docotor_key validator to ensure that a doctor using valid doctor_key."""
+
+    doctor_key = StringField(
+        validators=[
+            validators.DataRequired(message="A Doctor key is required"),
+            validators.Length(
+                min=28,
+                max=33,
+                message="The number of characters should be within the range of 28 to 33"
+            ),
+            validators.Regexp(r"^(?=.*[a-zA-Z])(?=.*[0-9])[a-zA-Z0-9]*([-_][a-zA-Z0-9]*)?$",
+                              message='Doctor key contains invalid characters.'
+                              ),
+        ],
+        id="doctor_key",
+        render_kw={"placeholder": "Enter a doctor key"},
     )
