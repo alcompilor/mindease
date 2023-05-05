@@ -262,6 +262,7 @@ def doctor_form():
     data = {"doc_title": "Psychologist Portal | Mindease", "doctor_form": form}
     return render_template('doctorform.html', data=data)
 
+
 # /analysis/data route
 @app.route('/data')
 def doctor_view():
@@ -283,12 +284,13 @@ def doctor_view():
     data_summary = DataSummary()
     data_summary_result = data_summary.get_data_summary(user_email['email'])
 
+    user.update_doctor_key(doctor_key)
     session.pop('doctor_key', None)
 
     data = {
         "doc_title": "Psychologist View | Mindease", 
         "journals": journals, 
         "data_summary_result": data_summary_result
-        }
+    }
     
     return render_template("doctor-view.html", data=data)
