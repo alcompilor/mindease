@@ -22,12 +22,18 @@ class User:
         self.user_id = user_id
         self.doctor_key = doctor_key
 
-    def get_user_id(self, email):
+    def get_user_id(self, email, doctor_key):
         """Method to retrieve user_id from table in the DB."""
 
         database = DBConnection()
-        query = "SELECT user_id FROM User WHERE email = %s"
-        database.cursor.execute(query, (email,))
+
+        if doctor_key is None:
+            query = "SELECT user_id FROM User WHERE email = %s"
+            database.cursor.execute(query, (email,))
+        elif email is None:
+            query = "SELECT user_id FROM User WHERE doctor_key = %s"
+            database.cursor.execute(query, (doctor_key,))
+        
         result = database.cursor.fetchone()
         database.cursor.close()
         database.cnx.close()
