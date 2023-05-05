@@ -889,3 +889,80 @@ a[data-li-active="true"] {
   transform: scale(0.99);
   transition-duration: 0.3s;
 }
+
+/* DOCTOR FORM */
+
+#doctor-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1em;
+  height: auto;
+  border-radius: 3em;
+  padding-left: 7%;
+  padding-right: 7%;
+  padding-top: 2em;
+  padding-bottom: 2em;
+  transition-duration: 0.2s;
+  box-shadow: 9px 11px 0px 0px #d3eae7;
+  background: #e2efe6;
+  border-radius: 1em;
+  margin-top: 42px;
+}
+
+#doctor-form-img {
+  max-width: 22%;
+}
+
+.portal {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.portal-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+input#shareable-key {
+  font-weight: bolder;
+  font-family: "Open Sans", sans-serif;
+  width: 600px;
+  padding: 10px;
+  height: 40px;
+  border: 1px solid #2f856b;
+  border-radius: 0.7em;
+  transition-duration: 0.2s;
+  font-size: 15px;
+  align-items: center;
+}
+
+button {
+  font-weight: bolder;
+  font-family: "Open Sans", sans-serif;
+  font-size: 12px;
+  width: 80px;
+  height: 28px;
+  background-color: rgb(18 137 108);
+  border-color: rgb(18 137 108);
+  color: #fff;
+  border-radius: 0.6em;
+}
+
+button:hover {
+  background-color: rgb(15, 119, 93);
+  border-color: rgb(15, 119, 93);
+  transform: scale(0.99);
+  box-shadow: none;
+  transition-duration: 0.3s;
+}
