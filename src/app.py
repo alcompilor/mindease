@@ -6,7 +6,7 @@
 import os
 from pathlib import Path
 from textwrap import dedent
-from datetime import datetime
+from datetime import datetime, timedelta
 import requests
 from flask import Flask, render_template, request, flash, url_for, redirect, session
 import bcrypt
@@ -245,10 +245,10 @@ def doctor_view():
     user_id = user.get_user_id(None, doctor_key=doctor_key)
     user_email = user.get_email(user_id["user_id"])
 
-    journal_date = datetime(datetime.today().year, datetime.today().month)
+    curr_month_year = datetime.today().strftime('%Y-%m')
 
     journal = Journal()
-    fetched_journals = journal.search_journals(user_id["user_id"], journal_date)
+    fetched_journals = journal.search_journals(user_id["user_id"], curr_month_year)
 
     data_summary = DataSummary()
     data_summary_result = data_summary.get_data_summary(user_email["email"])
