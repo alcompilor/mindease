@@ -1,22 +1,5 @@
-const assertionEl = document.getElementById("assertion");
-const newAssertion = document.getElementById("assertion-new");
+const newAssertion = document.getElementById("assertion-new"); // new assertion btn
 
-async function reqAssertion() {
-  const assertion = await fetch("https://www.affirmations.dev", {
-    method: "GET",
-    headers: {
-      Accept: "application/json",
-    },
-  }).then((response) => response.json());
-  return await assertion.affirmation;
-}
-
-const renderAssertion = () => {
-  reqAssertion().then((res) => {
-    assertionEl.textContent = res;
-  });
-};
-
-newAssertion.addEventListener("click", renderAssertion);
-
-renderAssertion();
+newAssertion.addEventListener("click", () => {
+  window.location.reload();
+}); // event listener for assertion btn
