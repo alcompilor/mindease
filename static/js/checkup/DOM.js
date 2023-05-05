@@ -1,3 +1,5 @@
+// Update emoji status based on selected slider value
+
 window.addEventListener("DOMContentLoaded", () => {
   const emojiRating = new EmojiRating("#emoji");
 });
