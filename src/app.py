@@ -264,7 +264,7 @@ def doctor_form():
 
 
 # /analysis/data route
-@app.route('/data')
+@app.route('/analysis/data')
 def doctor_view():
     """Fetches patient records to be viewed by the doctor."""
     doctor_key = session['doctor_key']
