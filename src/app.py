@@ -17,6 +17,7 @@ from src.utils.login.login import Login
 from src.utils.user.user import User
 from src.utils.journal.journal import Journal
 from src.utils.data_summary.data_summary import DataSummary
+from datetime import datetime
 
 load_dotenv()  # load .env
 
@@ -222,7 +223,7 @@ def search_journals():
     return result
 '''
 
-
+# /aboutus route
 @app.route('/aboutus')  # aboutus route
 def aboutus():
     """Route for about-us page."""
@@ -260,3 +261,34 @@ def doctor_form():
         return redirect(url_for('doctor_view'))
     data = {"doc_title": "Psychologist Portal | Mindease", "doctor_form": form}
     return render_template('doctorform.html', data=data)
+
+# /analysis/data route
+@app.route('/data')
+def doctor_view():
+    """Fetches patient records to be viewed by the doctor."""
+    doctor_key = session['doctor_key']
+    
+    user = User(None, None, None, None, None, None, None, None)
+    user_id = user.get_user_id(None, doctor_key=doctor_key)
+    user_email = user.get_email(user_id['user_id'])
+    
+    journal_date = datetime(
+        datetime.today().year, 
+        datetime.today().month
+    )
+
+    journal = Journal()
+    journals = journal.search_journals(user_id['user_id'], journal_date)
+
+    data_summary = DataSummary()
+    data_summary_result = data_summary.get_data_summary(user_email['email'])
+
+    session.pop('doctor_key', None)
+
+    data = {
+        "doc_title": "Psychologist View | Mindease", 
+        "journals": journals, 
+        "data_summary_result": data_summary_result
+        }
+    
+    return render_template("doctor-view.html", data=data)
