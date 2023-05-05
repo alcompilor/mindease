@@ -249,3 +249,7 @@ def encrypt_password(password):
     """Encrypt/hash registration password."""
     hashed_pwd = bcrypt.hashpw(password, bcrypt.gensalt(rounds=15))
     return hashed_pwd
+
+@app.errorhandler(404)
+def page_not_found():
+    return render_template('404.html')
