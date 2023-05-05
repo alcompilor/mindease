@@ -33,7 +33,7 @@ class Journal:
         except mysql.connector.Error:
             return {"journal_created": False}
 
-    def get_all_journals(self):
+    def get_all_journals(self, user_id):
         """Fetch all journals."""
         try:
             database = DBConnection()
@@ -41,7 +41,7 @@ class Journal:
                     "journal_title, journal_content, journal_date " + \
                     "FROM Journal " + \
                     "WHERE user_id = %s"
-            database.cursor.execute(query)
+            database.cursor.execute(query, (user_id,))
             results = database.cursor.fetchall()
             journals = []
             for result in results:
@@ -58,14 +58,16 @@ class Journal:
 
         return journals
 
-    def search_journals(self, user_id, journal_date):
+    def search_journals(self, user_id, search_query):
         """Fetch journals based on user_id and date."""
         try:
             database = DBConnection()
             query = "SELECT journal_id, user_id, " + \
                     "journal_title, journal_content, journal_date " + \
-                    "FROM Journal WHERE user_id = %s AND journal_date = %s"
-            database.cursor.execute(query, (user_id, journal_date))
+                    "FROM Journal WHERE user_id = %s AND " + \
+                    "(journal_title LIKE %s OR journal_content LIKE %s OR journal_date LIKE %s)"
+            wildcard_query = f"%{search_query}%"
+            database.cursor.execute(query, (user_id, wildcard_query, wildcard_query, wildcard_query))
             results = database.cursor.fetchall()
             journals = []
             for result in results:

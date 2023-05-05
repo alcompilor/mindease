@@ -3,7 +3,7 @@
 
 """Validator module."""
 import datetime
-
+from validate_email import validate_email
 from wtforms import (
     Form,
     BooleanField,
@@ -17,6 +17,7 @@ from wtforms import (
     validators,
     ValidationError
 )
+from src.utils.db_connection.db_connection import DBConnection
 
 
 def validate_date_of_birth(form, field):
@@ -44,6 +45,34 @@ def validate_submission_date(form, field):
 
     if fetched_date != current_date:
         raise ValidationError("An error occured: Submission date is invalid")
+
+
+def validate_user_email(form, field):
+    """Validate registered email."""
+    email = field.data
+
+    is_valid = validate_email(email, smtp_timeout=1)
+
+    if is_valid is False:
+        raise ValidationError(f"{email} does not appear to exist")
+
+
+def validate_doctor_key_db(form, field):
+    """Validate if doctor key exists in database."""
+    query = "SELECT user_id FROM User WHERE doctor_key = %s;"
+    data = field.data
+
+    db_conn = DBConnection()
+    db_conn.cursor.execute(query, data)
+
+    result = db_conn.cursor.fetchone()
+
+    db_conn.cursor.close()
+    db_conn.cnx.close()
+
+    if not result:
+        raise ValidationError(
+            "The patient's key you entered does not appear to exist")
 
 
 class ValidateRegister(Form):
@@ -75,6 +104,7 @@ class ValidateRegister(Form):
             validators.Length(min=1, max=254, message="Email is invalid"),
             validators.Email(message="Email is invalid"),
             validators.DataRequired(message="Email is required"),
+            validate_user_email
         ],
         id="email",
         render_kw={"placeholder": "john.smith@gmail.com"},
@@ -86,11 +116,14 @@ class ValidateRegister(Form):
             validators.DataRequired(message="Password is required"),
             validators.EqualTo("password_confirm",
                                message="Passwords must match"),
-            validators.Regexp(r"(?=.*?[A-Z])", message="Missing uppercase letter"),
-            validators.Regexp(r"(?=.*?[a-z])", message="Missing lowercase letter"),
+            validators.Regexp(
+                r"(?=.*?[A-Z])", message="Missing uppercase letter"),
+            validators.Regexp(
+                r"(?=.*?[a-z])", message="Missing lowercase letter"),
             validators.Regexp(r"(?=.*?[0-9])", message="Missing digit"),
-            validators.Regexp(r"(?=.*?[#?!@$%^&*-])", message="Missing special character"),
-            validators.Regexp(r".{8,}", message="Password is too short"),
+            validators.Regexp(r"(?=.*?[#?!@$%^&*-])",
+                              message="Missing special character"),
+            validators.Regexp(r".{8,}", message="Password is too short")
         ],
         id="password",
         render_kw={"placeholder": "Enter a password"},
@@ -206,4 +239,17 @@ class ValidateCheckup(Form):
                                    message="Checkup value is invalid")
         ],
         id="emoji"
+    )
+
+
+class ValidateDoctorKey(Form):
+    """Docotor_key validator to ensure that a doctor using valid doctor_key."""
+
+    doctor_key = StringField(
+        validators=[
+            validators.DataRequired(message="A Patient's key is required"),
+            validate_doctor_key_db
+        ],
+        id="doctor_key",
+        render_kw={"placeholder": "Enter the patient's key"},
     )
