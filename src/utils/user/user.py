@@ -72,12 +72,12 @@ class User:
         database.cnx.close()
         return {"birth" : result[0]} if result else None
 
-    def get_email(self, email):
+    def get_email(self, user_id):
         """Method to retrieve email from table in the DB."""
 
         database = DBConnection()
-        query = "SELECT email FROM User WHERE email = %s"
-        database.cursor.execute(query, (email,))
+        query = "SELECT email FROM User WHERE user_id = %s"
+        database.cursor.execute(query, (user_id,))
         result = database.cursor.fetchone()
         database.cursor.close()
         database.cnx.close()
