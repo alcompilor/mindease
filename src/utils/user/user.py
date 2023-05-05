@@ -22,12 +22,18 @@ class User:
         self.user_id = user_id
         self.doctor_key = doctor_key
 
-    def get_user_id(self, email):
+    def get_user_id(self, email, doctor_key):
         """Method to retrieve user_id from table in the DB."""
 
         database = DBConnection()
-        query = "SELECT user_id FROM User WHERE email = %s"
-        database.cursor.execute(query, (email,))
+
+        if doctor_key is None:
+            query = "SELECT user_id FROM User WHERE email = %s"
+            database.cursor.execute(query, (email,))
+        elif email is None:
+            query = "SELECT user_id FROM User WHERE doctor_key = %s"
+            database.cursor.execute(query, (doctor_key,))
+        
         result = database.cursor.fetchone()
         database.cursor.close()
         database.cnx.close()
@@ -66,12 +72,12 @@ class User:
         database.cnx.close()
         return {"birth" : result[0]} if result else None
 
-    def get_email(self, email):
+    def get_email(self, user_id):
         """Method to retrieve email from table in the DB."""
 
         database = DBConnection()
-        query = "SELECT email FROM User WHERE email = %s"
-        database.cursor.execute(query, (email,))
+        query = "SELECT email FROM User WHERE user_id = %s"
+        database.cursor.execute(query, (user_id,))
         result = database.cursor.fetchone()
         database.cursor.close()
         database.cnx.close()
