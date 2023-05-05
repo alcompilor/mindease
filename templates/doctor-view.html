@@ -1,8 +1,8 @@
 {% extends 'layout.html' %} {% block content %}
 <div id="home">
   {% include 'navbar.html' %} 
-    <div class="home-hero">
-        {{session['data_summary']}}
+    <div class="doctor-view">
+        {{data.journals}}
     </div>
   {% include 'footer.html' %}
 </div>
