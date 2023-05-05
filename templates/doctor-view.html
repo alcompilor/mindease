@@ -1,8 +1,22 @@
 {% extends 'layout.html' %} {% block content %}
 <div id="home">
   {% include 'navbar.html' %} 
-    <div id="doctor-view">
+    <div id="home-hero">
         {{data.journals}}
+        <div class="popup">
+          <img src="{{ url_for('static', filename='img/warning.jpg') }}">
+          <p>
+            You have accessed sensitive user data. Please ensure 
+            that this information remains confidential and secure. 
+            Any unauthorized disclosure, sharing or use of this data
+            can result in serious legal and ethical consequences. 
+            As a Psychologist, it is your responsibility to protect 
+            this sensitive information and take appropriate measures 
+            to safeguard it. Thank you for your cooperation in 
+            maintaining the privacy and security of our users' data.
+          </p>
+          <button type="button">OK</button>
+        </div>
     </div>
   {% include 'footer.html' %}
 </div>
