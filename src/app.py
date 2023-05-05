@@ -11,7 +11,7 @@ from flask import (Flask, render_template, request,
 import bcrypt
 from dotenv import load_dotenv
 from src.validator import (ValidateRegister, ValidateLogin, ValidateJournal,
-                           ValidateCheckup)
+                           ValidateCheckup, ValidateDoctorKey)
 from src.utils.register.register import Register
 from src.utils.login.login import Login
 from src.utils.user.user import User
@@ -249,3 +249,14 @@ def encrypt_password(password):
     """Encrypt/hash registration password."""
     hashed_pwd = bcrypt.hashpw(password, bcrypt.gensalt(rounds=15))
     return hashed_pwd
+
+#doctorform route
+@app.route('/analysis')
+def doctor_form():
+    """Implements doctor_key validation and redirects to doctor_view route if valid."""
+    form = ValidateDoctorKey(request.form)
+    if request.method == 'POST' and form.validate():
+        session['doctor_key'] = form.doctor_key.data
+        return redirect(url_for('doctor_view'))
+    data = {"doc_title": "Psychologist Portal | Mindease", "doctor_form": form}
+    return render_template('doctorform.html', data=data)
