@@ -14,47 +14,55 @@ const gender = document.getElementById("gender"); // gender dropdown
 const dateBirth = document.getElementById("date-birth"); // date of birth datepicker
 const tos = document.getElementById("tos"); // terms & conditions checkbox
 
-const passwordNote = document.getElementById("password-notice");
+const passwordNote = document.getElementById("password-notice"); // notice under password field
 
 // Function to validate password using regex
 const validatePassword = () => {
+  // Get current pass entered in field
+  const currentPass = password.value;
+
+  // Define all required regex
   const regexUpper = new RegExp("(?=.*?[A-Z])");
   const regexLower = new RegExp("(?=.*?[a-z])");
   const regexDigit = new RegExp("(?=.*?[0-9])");
   const regexSpecial = new RegExp("(?=.*?[#?!@$%^&*-])");
   const regexLength = new RegExp(".{8,}");
 
-  const currentPass = password.value;
+  // Validate if currentPass meets regex reqs
+  const isValidRegex =
+    regexUpper.test(currentPass) &&
+    regexLower.test(currentPass) &&
+    regexDigit.test(currentPass) &&
+    regexSpecial.test(currentPass) &&
+    regexLength.test(currentPass);
 
-  const isValidRegex = (regexUpper.test(currentPass) &&
-     regexLower.test(currentPass) &&
-     regexDigit.test(currentPass) &&
-     regexSpecial.test(currentPass) &&
-     regexLength.test(currentPass)
-  );
-
-  console.log(isValidRegex)
-
+  // Set custom validity based on regex reqs
   if (!isValidRegex) {
-     password.setCustomValidity("Password does not meet complexity requirements")
+    password.setCustomValidity(
+      "Password does not meet complexity requirements"
+    );
   } else {
-     password.setCustomValidity("")
+    password.setCustomValidity("");
   }
 
+  // Update password notice to show relevant error
   if (!regexLength.test(currentPass)) {
-     passwordNote.textContent = "Password must be at least 8 chars";
+    passwordNote.textContent = "Password must be at least 8 chars";
   } else if (!regexUpper.test(currentPass) || !regexLower.test(currentPass)) {
-     passwordNote.textContent = "Must contain a mixture of both uppercase and lowercase letters.";
+    passwordNote.textContent =
+      "Must contain a mixture of both uppercase and lowercase letters.";
   } else if (!regexDigit.test(currentPass) || !regexSpecial.test(currentPass)) {
-     passwordNote.textContent = "Must contain a mixture of both digits and special characters.";
+    passwordNote.textContent =
+      "Must contain a mixture of both digits and special characters.";
   }
-
-}
+};
 
 // Function to validate Registation fields and update css
 const validateField = (field) => {
   const notice = document.getElementById(`${field.id}-notice`); // target the field's error notice
   const isValid = field.checkValidity(); // check field's validity
+  
+  // Change field css status based on validity
   if (isValid) {
     field.classList.remove("is-danger");
     field.classList.add("is-success");
@@ -78,6 +86,7 @@ const validateForm = (e) => {
     dateBirth.checkValidity() &&
     tos.checkValidity(); // validates all form fields
 
+  // Change button status based on form validity
   if (isValid) {
     registerBtn.removeAttribute("disabled");
   } else {
@@ -131,7 +140,7 @@ registerBtn.addEventListener("click", (e) => {
   registerBtn.classList.add("is-loading");
   setTimeout(() => {
     registerForm.submit();
-  }, 2500);
+  }, 1500);
 });
 
 // Event listener to init terms & conditions modal
