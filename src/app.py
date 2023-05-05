@@ -228,6 +228,8 @@ def aboutus():
 def doctor_form():
     """Implements doctor_key validation and redirects to doctor_view route if valid."""
     form = ValidateDoctorKey(request.form)
+    session["doctor_key"] = None
+
     if request.method == "POST" and form.validate():
         session["doctor_key"] = form.doctor_key.data
         return redirect(url_for("doctor_view"))
@@ -236,10 +238,13 @@ def doctor_form():
     return render_template("doctorform.html", data=data)
 
 
-@app.route("/analysis/data")  # analysis/data route
+@app.route("/analysis/data", methods=["GET", "POST"])  # analysis/data route
 def doctor_view():
     """Fetch patient records to be viewed by the doctor."""
     doctor_key = session["doctor_key"]
+
+    if session.get('doctor_key') is None:
+        return redirect(url_for("doctor_form"))
 
     user = User(None, None, None, None, None, None, None, None)
     user_id = user.get_user_id(None, doctor_key=doctor_key)
