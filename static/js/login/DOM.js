@@ -10,6 +10,8 @@ const password = document.getElementById("password"); // password field
 const validateField = (field) => {
   const notice = document.getElementById(`${field.id}-notice`); // target the field's error notice
   const isValid = field.checkValidity(); // check field's validity
+
+  // Change field css status based on validity
   if (isValid) {
     field.classList.remove("is-danger");
     field.classList.add("is-success");
@@ -25,6 +27,7 @@ const validateField = (field) => {
 const validateForm = (e) => {
   const isValid = email.checkValidity() && password.checkValidity(); // validates all form fields
 
+   // Change button status based on form validity
   if (isValid) {
     loginBtn.removeAttribute("disabled");
   } else {
