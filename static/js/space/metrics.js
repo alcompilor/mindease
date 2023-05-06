@@ -43,9 +43,6 @@ var options = {
     },
     y: {
       formatter: function (value, { dataPointIndex }) {
-        //please look at the console to see the issue
-        //this will work if static values are used
-        //return value + " " + arr[0];
         return arr[dataPointIndex];
       },
     },
