@@ -132,6 +132,13 @@ html {
   border-radius: 0.5em;
 }
 
+.nav-hover:hover {
+  background: #b7dfc2 !important;
+  color: #027060 !important;
+  transition-duration: 0.1s;
+  border-radius: 0.7em !important;
+}
+
 .custom-green-btn {
   background-color: rgb(18 137 108);
   border-color: rgb(18 137 108);
