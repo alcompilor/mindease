@@ -16,61 +16,52 @@ class CheckUp:
         self.conn.close()
 
 
-    def fetch_checkup(self, checkup_id):
+    def fetch_checkup(self, user_id):
         """Fetches new checkup for the day from the database."""
         try:
-            db = DBConnection()
-            query = "SELECT * FROM checkup_answer WHERE checkup_id = %s ORDER BY id DESC LIMIT 1"
-            db.cursor.execute(query, checkup_id)
+            db = DBConnection(self, user_id)
+            query = "SELECT * FROM Checkup_answer WHERE user_id = %s AND answer_date IN (SELECT MAX (answer_date)From Checkup_answer);"
+            db.cursor.execute(query, user_id)
             result = db.cursor.fetchone()
+            checkup_ID = query + 1
             
-            todays_checkup = result[1] + 1
-            if not result:
-                checkup_id = 1
-            
-            if checkup_id > 30:
-                checkup_id = 1
-                db.cursor.execute()
-                
-            # Get the next checkup:
-            query2 = ("SELECT * FROM checkup WHERE id = %s")
-            db.cursor.execute(query2)
-            
-            """""    
-            if result:
-                last_checkup_id = result[0]
-                next_checkup = (last_checkup_id % 30) +1
+            if query < 30 :
+                query = "SELECT checkup_id FROM checkup WHERE checkup_id = %s"
             else:
-                next_checkup = 1
-            return next_checkup
-            """
+                checkup_id = 1
+        
+            query2 = ("SELECT * FROM Checkup WHERE id = %s")
+            db.cursor.execute(query2)
+            content = db.cursor.fetchone()
+            
+    
         except mysql.connector.Error as e:
             print(f"Error: {e}")
         
         db.cursor.close()
         db.cnx.close()
     
-        return {"Todays_checkup: " : todays_checkup}
+        return {"Todays_checkup: " "id " : checkup_ID ,"content " : content}
     
 
     def fetch_latest_check(self, checkup_id):
         """Fetches the latest checkup answer for a specific checkup ID."""
         
         db = DBConnection()
-        query = "SELECT * FROM checkup_answer WHERE checkup_id = %s ORDER BY id DESC LIMIT 1"
+        query = "SELECT * FROM Checkup_answer WHERE checkup_id = %s AND answer_date IN  (SELECT MAX(answer_date) FROM Checkup_anser)"
         db.cursor.execute(query, checkup_id)
         result = db.cursor.fetchone()
     
         return {"latest_checkup" : result}
     
 
-    def check_answer(self, answer_id):
+    def check_answer(self, user_id):
         """Check if the checkup answer with given ID was stored in the last 24 hours or more."""
         
         try:
             db = DBConnection()
-            query = "SELECT created_at FROM checkup_answer WHERE id = %s"
-            db.cursor.execute(query, answer_id)
+            query = "SELECT  answer_date FROM Checkup_answer WHERE id = %s "
+            db.cursor.execute(query, user_id)
             answer_date = datetime.datetime.strptime(self.cursor.fetchone()[0], "%Y-%m-%d %H:%M:%S.%f")
             success = True
         
@@ -90,7 +81,7 @@ class CheckUp:
         
         try:
             db = DBConnection()
-            query = "INSERT INTO checkup_answer (checkup_id, user_id, answer, answer_date) VALUES (%s, %s, %s, %s)"
+            query = "INSERT INTO Checkup_answer (checkup_id, user_id, answer, answer_date) VALUES (%s, %s, %s, %s)"
             data = (checkup_id,user_id, answer,answer_date)
             if answer < 1 or answer > 5:
                 raise ValueError("Answer must be a number between 1 and 5.")
