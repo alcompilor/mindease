@@ -1,98 +1,99 @@
 """Checkup integrated class."""
 
+from datetime import datetime
 import mysql.connector
-import datetime
-
 from src.utils.db_connection.db_connection import DBConnection
 
-class CheckUp:
-    """Checkup class"""
 
-    def __init__(self, db_file):
-        self.conn = DBConnection
-        self.cursor = self.conn.cursor()
-
-    def __del__(self):
-        self.conn.close()
-
+class Checkup:
+    """Checkup class."""
 
     def fetch_checkup(self, user_id):
-        """Fetches new checkup for the day from the database."""
+        """Fetch new checkup for the day from the database."""
         try:
-            db = DBConnection(self, user_id)
-            query = "SELECT * FROM Checkup_answer WHERE user_id = %s AND answer_date IN (SELECT MAX (answer_date)From Checkup_answer);"
-            db.cursor.execute(query, user_id)
-            result = db.cursor.fetchone()
-            checkup_ID = query + 1
-            
-            if query < 30 :
-                query = "SELECT checkup_id FROM checkup WHERE checkup_id = %s"
+            db_conn = DBConnection()
+            cursor = db_conn.cnx.cursor()
+
+            query = """SELECT checkup_id FROM Checkup_answer WHERE
+             user_id = %s AND answer_date
+              IN (SELECT MAX(answer_date) FROM Checkup_answer);"""
+
+            query2 = "SELECT * FROM Checkup WHERE checkup_id = %s"
+
+            cursor.execute(query, (user_id,))
+
+            result = cursor.fetchone()
+
+            if result is not None:
+                checkup_id = result[0] + 1
             else:
                 checkup_id = 1
-        
-            query2 = ("SELECT * FROM Checkup WHERE id = %s")
-            db.cursor.execute(query2)
-            content = db.cursor.fetchone()
-            
-    
-        except mysql.connector.Error as e:
-            print(f"Error: {e}")
-        
-        db.cursor.close()
-        db.cnx.close()
-    
-        return {"Todays_checkup: " "id " : checkup_ID ,"content " : content}
-    
 
-    def fetch_latest_check(self, checkup_id):
-        """Fetches the latest checkup answer for a specific checkup ID."""
-        
-        db = DBConnection()
-        query = "SELECT * FROM Checkup_answer WHERE checkup_id = %s AND answer_date IN  (SELECT MAX(answer_date) FROM Checkup_anser)"
-        db.cursor.execute(query, checkup_id)
-        result = db.cursor.fetchone()
-    
-        return {"latest_checkup" : result}
-    
+            if checkup_id < 31:
+                cursor.execute(query2, (checkup_id,))
+            else:
+                checkup_id = 1
+                cursor.execute(query2, (checkup_id,))
+
+            new_checkup = cursor.fetchone()
+
+            cursor.close()
+            db_conn.cnx.close()
+
+            return {"todays_checkup": {"id": new_checkup[0], "content": new_checkup[1]}}
+
+        except mysql.connector.Error as err:
+            return err
 
     def check_answer(self, user_id):
-        """Check if the checkup answer with given ID was stored in the last 24 hours or more."""
-        
+        """Check if the checkup answer with given user_id
+        was stored in the last 24 hours or more."""
         try:
-            db = DBConnection()
-            query = "SELECT  answer_date FROM Checkup_answer WHERE id = %s "
-            db.cursor.execute(query, user_id)
-            answer_date = datetime.datetime.strptime(self.cursor.fetchone()[0], "%Y-%m-%d %H:%M:%S.%f")
-            success = True
-        
+            db_conn = DBConnection()
+            cursor = db_conn.cnx.cursor()
+
+            query = """SELECT answer_date FROM Checkup_answer WHERE
+             user_id = %s AND answer_date
+              IN (SELECT MAX(answer_date) FROM Checkup_answer);"""
+
+            cursor.execute(query, (user_id,))
+
+            date = cursor.fetchone()
+
+            cursor.close()
+            db_conn.cnx.close()
+
+            if date is not None:
+                answer_date = datetime.strptime(f"{date[0]}", "%Y-%m-%d").date()
+                current_date = datetime.today().date()
+
+                return {"new_checkup": (current_date > answer_date)}
+
+            return {"new_checkup": True}
+
         except mysql.connector.Error as err:
-            print(f"Error: {err}")
-            success = False
-        
-        db.cursor.close()
-        db.cnx.close()
-        checked_answer = datetime.datetime.now() - answer_date >= datetime.timedelta(days=1)
-        
-        return {"checked_answer" : checked_answer}
+            return err
 
+    def register_checkup(self, checkup_id, user_id, answer, answer_date):
+        """Register a checkup answer for a specific checkup ID."""
 
-    def register_checkup(self, checkup_id,user_id, answer, answer_date):
-        """Registers a checkup answer for a specific checkup ID."""
-        
         try:
-            db = DBConnection()
-            query = "INSERT INTO Checkup_answer (checkup_id, user_id, answer, answer_date) VALUES (%s, %s, %s, %s)"
-            data = (checkup_id,user_id, answer,answer_date)
-            if answer < 1 or answer > 5:
-                raise ValueError("Answer must be a number between 1 and 5.")
-            db.cursor.execute(query, data)
-            db.cnx.commit()
-            registered = True
-        
-        except mysql.connector.Error as err:
-            print(f"Error: {err}")
-            registered = False
-        
-        db.cursor.close()
-        db.cnx.close()
-        return {"answer_regsitered" : registered}
+            db_conn = DBConnection()
+            cursor = db_conn.cnx.cursor()
+
+            query = """INSERT INTO Checkup_answer
+             (checkup_id, user_id, answer, answer_date)
+              VALUES (%s, %s, %s, %s)"""
+
+            data = (checkup_id, user_id, answer, answer_date)
+
+            cursor.execute(query, data)
+            db_conn.cnx.commit()
+
+            cursor.close()
+            db_conn.cnx.close()
+
+            return {"answer_registered": True}
+
+        except mysql.connector.Error:
+            return {"answer_registered": False}

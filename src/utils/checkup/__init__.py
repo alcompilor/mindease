@@ -1,1 +1,1 @@
-"""Init utils package."""
+"""Init checkup package."""
