@@ -6,11 +6,16 @@
 import os
 from pathlib import Path
 from textwrap import dedent
-from datetime import datetime, timedelta
+from datetime import datetime
 import requests
 from flask import Flask, render_template, request, flash, url_for, redirect, session
 import bcrypt
 from dotenv import load_dotenv
+from src.utils.register.register import Register
+from src.utils.login.login import Login
+from src.utils.user.user import User
+from src.utils.journal.journal import Journal
+from src.utils.data_summary.data_summary import DataSummary
 from src.validator import (
     ValidateRegister,
     ValidateLogin,
@@ -18,11 +23,6 @@ from src.validator import (
     ValidateCheckup,
     ValidateDoctorKey,
 )
-from src.utils.register.register import Register
-from src.utils.login.login import Login
-from src.utils.user.user import User
-from src.utils.journal.journal import Journal
-from src.utils.data_summary.data_summary import DataSummary
 
 load_dotenv()  # load .env
 
@@ -163,9 +163,16 @@ def myspace():
         flash("You are not authenticated", "error")
         return redirect("/login")
 
+    init_user = User(None, None, None, None, None, None, None, None)
+    doctor_key = init_user.get_doctor_key(user_id["user_id"])
+
     assertion = get_assertion()
 
-    data = {"doc_title": "My Space | Mindease", "assertion": assertion}
+    data = {
+        "doc_title": "My Space | Mindease",
+        "assertion": assertion,
+        "doctor_key": doctor_key,
+    }
     return render_template("space-main.html", data=data)
 
 
@@ -226,7 +233,7 @@ def aboutus():
 
 @app.route("/analysis", methods=["GET", "POST"])  # analysis (doctorform) route
 def doctor_form():
-    """Implements doctor_key validation and redirects to doctor_view route if valid."""
+    """Implement doctor_key validation and redirects to doctor_view route if valid."""
     form = ValidateDoctorKey(request.form)
 
     if request.method == "POST" and form.validate():
@@ -240,16 +247,16 @@ def doctor_form():
 @app.route("/analysis/data", methods=["GET", "POST"])  # analysis/data route
 def doctor_view():
     """Fetch patient records to be viewed by the doctor."""
-    if session.get('doctor_key') is None:
+    if session.get("doctor_key") is None:
         return redirect(url_for("doctor_form"))
-    
+
     doctor_key = session["doctor_key"]
 
     user = User(None, None, None, None, None, None, None, None)
     user_id = user.get_user_id(None, doctor_key=doctor_key)
     user_email = user.get_email(user_id["user_id"])
 
-    curr_month_year = datetime.today().strftime('%Y-%m')
+    curr_month_year = datetime.today().strftime("%Y-%m")
 
     journal = Journal()
     fetched_journals = journal.search_journals(user_id["user_id"], curr_month_year)
