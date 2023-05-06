@@ -16,6 +16,7 @@ from src.utils.login.login import Login
 from src.utils.user.user import User
 from src.utils.journal.journal import Journal
 from src.utils.data_summary.data_summary import DataSummary
+from src.utils.checkup.checkup import Checkup
 from src.validator import (
     ValidateRegister,
     ValidateLogin,
@@ -105,6 +106,11 @@ def login():
             data_summary = DataSummary().get_data_summary(session.get("user_email"))
             session["data_summary"] = data_summary
 
+            init_checkup = Checkup().check_answer(session["user_id"]["user_id"])
+            new_checkup = init_checkup["new_checkup"]
+
+            if new_checkup:
+                return redirect(url_for("checkup"))
             return redirect(url_for("myspace"))
 
         if not result["login_succeeded"]:
@@ -138,11 +144,24 @@ def logout():
 @app.route("/checkup", methods=["GET", "POST"])  # checkup route
 def checkup():
     """Route for user space."""
+    init_checkup = Checkup()
     form = ValidateCheckup(request.form)
     if request.method == "POST" and form.validate():
-        # checkup_data =
-        # {form.checkup_range.data}
-        pass
+        checkup_data = {
+            "u_id": session["user_id"]["user_id"],
+            "c_id": session["t_checkup"],
+            "answer": form.checkup_range.data,
+            "answer_date": datetime.today().date(),
+        }
+
+        init_checkup.register_checkup(
+            checkup_data["c_id"],
+            checkup_data["u_id"],
+            checkup_data["answer"],
+            checkup_data["answer_date"],
+        )
+
+        session.pop("t_checkup", None)
 
     user_id = session.get("user_id")
 
@@ -150,7 +169,21 @@ def checkup():
         flash("You are not authenticated", "error")
         return redirect("/login")
 
-    data = {"doc_title": "Checkup | Mindease", "checkup_form": form}
+    new_checkup = init_checkup.check_answer(session["user_id"]["user_id"])[
+        "new_checkup"
+    ]
+
+    if not new_checkup:
+        return redirect(url_for("myspace"))
+
+    t_checkup = init_checkup.fetch_checkup(session["user_id"]["user_id"])
+    session["t_checkup"] = t_checkup["todays_checkup"]["id"]
+
+    data = {
+        "doc_title": "Checkup | Mindease",
+        "checkup_form": form,
+        "checkup": t_checkup,
+    }
     return render_template("checkup.html", data=data)
 
 
@@ -162,6 +195,12 @@ def myspace():
     if user_id is None:
         flash("You are not authenticated", "error")
         return redirect("/login")
+
+    init_checkup = Checkup().check_answer(session["user_id"]["user_id"])
+    new_checkup = init_checkup["new_checkup"]
+
+    if new_checkup:
+        return redirect(url_for("checkup"))
 
     init_user = User(None, None, None, None, None, None, None, None)
     doctor_key = init_user.get_doctor_key(user_id["user_id"])
@@ -207,6 +246,12 @@ def journals():
     if user_id is None:
         flash("You are not authenticated", "error")
         return redirect("/login")
+
+    init_checkup = Checkup().check_answer(session["user_id"]["user_id"])
+    new_checkup = init_checkup["new_checkup"]
+
+    if new_checkup:
+        return redirect(url_for("checkup"))
 
     if not request.args.get("q"):
         fetched_journals = journal.get_all_journals(session["user_id"]["user_id"])
