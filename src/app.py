@@ -342,11 +342,6 @@ def encrypt_password(password):
     hashed_pwd = bcrypt.hashpw(password, bcrypt.gensalt(rounds=15))
     return hashed_pwd
 
-<<<<<<< HEAD
-@app.errorhandler(404)
-def page_not_found():
-    return render_template('404.html')
-=======
 
 def get_assertion():
     """Fetch an assertion from an external api."""
@@ -356,4 +351,4 @@ def get_assertion():
     result = response.json()
 
     return result["affirmation"]
->>>>>>> 6ba2baf792f95afd51afd0137c52fbe7945f5186
+
