@@ -299,6 +299,7 @@ def page_not_found(e):
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:unknown_route>')
 def catch_all(unknown_route):
+    """"Catches all unknown routes"""
     return page_not_found(404)
 
 def get_assertion():
