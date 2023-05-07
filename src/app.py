@@ -344,7 +344,7 @@ def encrypt_password(password):
 
 app.errorhandler(404)
 def page_not_found(e):
-    """"Error handler for 404 not found errors"""
+    """"Error handler method for 404 not found errors"""
     return render_template("404.html"), 404
 
 @app.route('/', defaults={'path': ''})
