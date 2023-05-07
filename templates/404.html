@@ -1,0 +1,9 @@
+{% extends 'layout.html' %} {% block content %}
+<div id="home">
+  {% include 'navbar.html' %}
+    <title>404 - Page not found | Mindease</title>
+    <h1>Sorry, the page you requested could not be found.</h1>
+    <img src="{{ url_for('static', filename='img/405.png') }}" alt="404 Error">
+{% include 'footer.html' %}
+</div>
+{% endblock %}
