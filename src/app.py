@@ -342,6 +342,16 @@ def encrypt_password(password):
     hashed_pwd = bcrypt.hashpw(password, bcrypt.gensalt(rounds=15))
     return hashed_pwd
 
+
+def get_assertion():
+    """Fetch an assertion from an external api."""
+    url = "https://www.affirmations.dev"
+
+    response = requests.get(url, timeout=3)
+    result = response.json()
+
+    return result["affirmation"]
+
 app.errorhandler(404)
 def page_not_found(e):
     """"Error handler method for 404 not found errors"""
@@ -353,12 +363,4 @@ def catch_all(unknown_route):
     """"Catches all unknown routes"""
     return page_not_found(404)
 
-def get_assertion():
-    """Fetch an assertion from an external api."""
-    url = "https://www.affirmations.dev"
-
-    response = requests.get(url, timeout=3)
-    result = response.json()
-
-    return result["affirmation"]
 
