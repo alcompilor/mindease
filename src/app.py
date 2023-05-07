@@ -342,6 +342,19 @@ def encrypt_password(password):
     hashed_pwd = bcrypt.hashpw(password, bcrypt.gensalt(rounds=15))
     return hashed_pwd
 
+<<<<<<< HEAD
+=======
+app.errorhandler(404)
+def page_not_found(e):
+    """"Error handler for 404 not found errors"""
+    return render_template("404.html"), 404
+
+@app.route('/', defaults={'path': ''})
+@app.route('/<path:unknown_route>')
+def catch_all(unknown_route):
+    """"Catches all unknown routes"""
+    return page_not_found(404)
+>>>>>>> a8a79aff0128104286c6341bbaf4634b75b86862
 
 def get_assertion():
     """Fetch an assertion from an external api."""
@@ -351,4 +364,7 @@ def get_assertion():
     result = response.json()
 
     return result["affirmation"]
+<<<<<<< HEAD
 
+=======
+>>>>>>> a8a79aff0128104286c6341bbaf4634b75b86862
