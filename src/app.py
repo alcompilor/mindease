@@ -7,6 +7,7 @@ import os
 from pathlib import Path
 from textwrap import dedent
 from datetime import datetime, timedelta
+from xml.dom.pulldom import ErrorHandler
 import requests
 from flask import Flask, render_template, request, flash, url_for, redirect, session
 import bcrypt
@@ -290,11 +291,15 @@ def encrypt_password(password):
     hashed_pwd = bcrypt.hashpw(password, bcrypt.gensalt(rounds=15))
     return hashed_pwd
 
-<<<<<<< HEAD
-@app.errorhandler(404)
-def page_not_found():
-    return render_template('404.html')
-=======
+app.errorhandler(404)
+def page_not_found(e):
+    """"Error handler for 404 not found errors"""
+    return render_template("404.html"), 404
+
+@app.route('/', defaults={'path': ''})
+@app.route('/<path:unknown_route>')
+def catch_all(unknown_route):
+    return page_not_found(404)
 
 def get_assertion():
     """Fetch an assertion from an external api."""
@@ -304,4 +309,3 @@ def get_assertion():
     result = response.json()
 
     return result["affirmation"]
->>>>>>> 6ba2baf792f95afd51afd0137c52fbe7945f5186
