@@ -1029,6 +1029,7 @@ input#shareable-key {
   outline: None;
   cursor: pointer;
 }
+
 #black-layer {
   position: fixed;
   top: 0;
