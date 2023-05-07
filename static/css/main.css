@@ -956,15 +956,16 @@ input#shareable-key {
   align-items: center;
 }
 
-#home img {
+/* 404 NOT FOUND */
+
+#notfound-img {
   width: 50%;
   display: block;
   margin: 0 auto;
 }
 
-#home h1 {
+#notfound-title {
   font-weight: bold;
-  font-size: 2em; 
   text-align: center;
 }
 
