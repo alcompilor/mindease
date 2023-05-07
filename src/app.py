@@ -361,3 +361,4 @@ def get_assertion():
     result = response.json()
 
     return result["affirmation"]
+
