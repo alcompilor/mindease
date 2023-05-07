@@ -355,7 +355,8 @@ def get_assertion():
 app.errorhandler(404)
 def page_not_found(e):
     """"Error handler method for 404 not found errors"""
-    return render_template("404.html"), 404
+    data = {'doc_title': 'Page Not Found'}
+    return render_template("404.html", data = data)
 
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:unknown_route>')

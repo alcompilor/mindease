@@ -16,11 +16,17 @@ class Checkup:
 
             query = """SELECT checkup_id FROM Checkup_answer WHERE
              user_id = %s AND answer_date
-              IN (SELECT MAX(answer_date) FROM Checkup_answer);"""
+              IN (SELECT MAX(answer_date) FROM Checkup_answer WHERE user_id = %s);"""
 
             query2 = "SELECT * FROM Checkup WHERE checkup_id = %s"
 
-            cursor.execute(query, (user_id,))
+            cursor.execute(
+                query,
+                (
+                    user_id,
+                    user_id,
+                ),
+            )
 
             result = cursor.fetchone()
 
@@ -53,10 +59,16 @@ class Checkup:
             cursor = db_conn.cnx.cursor()
 
             query = """SELECT answer_date FROM Checkup_answer WHERE
-             user_id = %s AND answer_date
-              IN (SELECT MAX(answer_date) FROM Checkup_answer);"""
+             user_id = %s AND answer_date = (SELECT MAX(answer_date)
+              FROM Checkup_answer WHERE user_id = %s);"""
 
-            cursor.execute(query, (user_id,))
+            cursor.execute(
+                query,
+                (
+                    user_id,
+                    user_id,
+                ),
+            )
 
             date = cursor.fetchone()
 
@@ -76,7 +88,6 @@ class Checkup:
 
     def register_checkup(self, checkup_id, user_id, answer, answer_date):
         """Register a checkup answer for a specific checkup ID."""
-
         try:
             db_conn = DBConnection()
             cursor = db_conn.cnx.cursor()
