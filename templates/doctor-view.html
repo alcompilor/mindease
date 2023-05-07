@@ -75,11 +75,15 @@
   </div>
   <div class="popup" id="popup">
     <img src="{{ url_for('static', filename='img/warning.jpg') }}" />
-    <p>
+    <p id="popup-doctor-warning">
       You have accessed sensitive user data. Please ensure that this information
       remains confidential and secure. Any unauthorized disclosure, sharing or
       use of this data can result in serious legal and ethical consequences.
     </p>
+    <div class="notification is-warning is-light">
+      Note: Refreshing or closing the tab before you're finished will cause your
+      session to expire, so kindly refrain from doing so.
+    </div>
     <button
       type="button"
       onclick="closePopup()"

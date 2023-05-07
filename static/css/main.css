@@ -1030,6 +1030,13 @@ input#shareable-key {
   cursor: pointer;
 }
 
+#popup-doctor-warning {
+  font-weight: 600;
+  line-height: 1.7;
+  color: #800b0b;
+  padding: 0.5em;
+}
+
 #black-layer {
   position: fixed;
   top: 0;
