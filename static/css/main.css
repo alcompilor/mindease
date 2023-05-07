@@ -955,3 +955,15 @@ input#shareable-key {
   font-size: 15px;
   align-items: center;
 }
+
+#home img {
+  width: 50%;
+  display: block;
+  margin: 0 auto;
+}
+
+#home h1 {
+  font-weight: bold;
+  font-size: 2em; 
+  text-align: center;
+}
