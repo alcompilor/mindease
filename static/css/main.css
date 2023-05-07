@@ -1,5 +1,6 @@
 html {
   background-color: #fff;
+  scroll-behavior: smooth;
 }
 
 #auth-main {
@@ -905,22 +906,21 @@ a[data-li-active="true"] {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1em;
+  gap: 1.5em;
   height: auto;
   border-radius: 3em;
   padding-left: 7%;
   padding-right: 7%;
-  padding-top: 2em;
-  padding-bottom: 2em;
+  padding-top: 3em;
+  padding-bottom: 3em;
   transition-duration: 0.2s;
   box-shadow: 9px 11px 0px 0px #d3eae7;
   background: #e2efe6;
   border-radius: 1em;
-  margin-top: 42px;
 }
 
 #doctor-form-img {
-  max-width: 22%;
+  max-width: 30%;
 }
 
 .portal {
@@ -941,6 +941,11 @@ a[data-li-active="true"] {
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
+}
+
+#doctorform {
+  width: 32%;
 }
 
 input#shareable-key {
@@ -1038,22 +1043,20 @@ input#shareable-key {
 }
 
 #doctor-view {
-  height: auto;
+  display: grid;
+  grid-template-columns: 0.6fr 2fr;
+  min-height: 100vh;
 }
 
 #doctor-view-menu {
-  left: 0;
-  width: 28%;
-  position: fixed;
-  height: 100vmax; /* Set the border width and color */
-  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4em;
 }
 
 #doctor-view-menu-container {
-  left: 0;
-  width: 10%;
-  position: fixed;
-  height: 100vmax;
   color: #70b9e9;
 }
 
@@ -1061,8 +1064,6 @@ input#shareable-key {
   display: block;
   text-decoration: none;
   font-size: 22px;
-  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
-    "Lucida Sans", Arial, sans-serif;
   color: rgb(128, 128, 128);
   font-weight: bold;
 }
@@ -1073,7 +1074,6 @@ input#shareable-key {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-top: 20%;
 }
 
 #doctor-view-menu li {
@@ -1087,12 +1087,11 @@ input#shareable-key {
   filter: contrast(1.3);
   padding: 0.5em 2em 0.5em 1em;
   background: rgb(136, 175, 197);
-  background: linear-gradient(296deg, #1fa3e0 3%, rgb(204, 226, 240) 100%);
+  background: linear-gradient(296deg, #1fa3e0 3%, rgb(154 200 230) 100%);
   border-radius: 1em;
   box-shadow: 5px 6px 0px 0px #8fa8b480;
   transition-duration: 0.2s;
-  margin-left: 20%;
-  margin-top: 10%;
+  margin-top: 20%;
 }
 
 #doctorview-left-logo:hover {
@@ -1101,30 +1100,15 @@ input#shareable-key {
   transition-duration: 0.3s;
 }
 
-.material-symbols-outlined {
-  font-variation-settings: "FILL" 0, "wght" 500, "GRAD" 200, "opsz" 40;
-}
-
 #doctor-view-menu-logo {
   width: 430px;
   height: 300px;
-  margin-top: 68px;
-  margin-left: 40px;
 }
 
 #welcome-doctor {
   color: #489dce;
   font-weight: bold;
-  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
-    "Lucida Sans", Arial, sans-serif;
-  position: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
   font-size: 24px;
-  margin-left: 32%;
-  margin-top: 15%;
-  text-shadow: 1px 1px #77afc5;
 }
 
 #personal-info {
@@ -1135,11 +1119,8 @@ input#shareable-key {
 }
 
 #personal-info-inner {
-  min-width: 18%;
-}
-
-html {
-  scroll-behavior: smooth;
+  display: flex;
+  gap: 3em;
 }
 
 #data-container {
@@ -1147,21 +1128,14 @@ html {
   flex-direction: column;
   justify-content: center;
   gap: 2em;
-  padding: 2em 8em 10em;
-  border-top-left-radius: 3em;
-  border-bottom-left-radius: 3em;
-  min-width: 70%;
-  min-height: 100%;
-  position: absolute;
-  left: 28%;
-  top: 20px;
+  padding: 4em 3em;
+  border-top-left-radius: 6em;
+  border-bottom-left-radius: 6em;
   background-color: #d1eaf8;
 }
 
 #personal-info {
   background-color: #fff;
-  min-width: 30%;
-  height: 20%;
   border-radius: 2em;
   box-shadow: 10px 13px 0px -4px rgb(125 154 134 / 14%);
   padding: 3em;
@@ -1176,10 +1150,18 @@ html {
   transition-duration: 0.3s;
 }
 
-#personal-info-content {
+.personal-info-content {
+  display: flex;
+  gap: 0.4em;
+  align-items: center;
   font-size: 18px;
-  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
-    "Lucida Sans", Arial, sans-serif;
+}
+
+#doctor-metrics-journals {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2em;
+  width: 100%;
 }
 
 #doctor-view-checkups-container {
@@ -1201,22 +1183,15 @@ html {
   transition-duration: 0.3s;
 }
 
-#doctor-journals-data {
-  display: grid;
-  grid-template-columns: 1.5fr 1.3fr;
-  gap: 2em;
-}
-
 #doctor-journals-history,
 #doctor-journals-create {
   background-color: #fff;
-  width: 100%;
-  height: max-content;
   border-radius: 2em;
   box-shadow: 10px 13px 0px -4px rgb(125 154 134 / 14%);
   padding: 3em;
   transition-duration: 0.2s;
   border: 1px solid #c6c6c6;
+  min-height: 30vh;
 }
 
 #doctor-journals-history:hover,
