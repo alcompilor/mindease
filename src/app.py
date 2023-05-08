@@ -351,3 +351,17 @@ def get_assertion():
     result = response.json()
 
     return result["affirmation"]
+
+app.errorhandler(404)
+def page_not_found(e):
+    """"Error handler method for 404 not found errors"""
+    data = {'doc_title': 'Page Not Found'}
+    return render_template("404.html", data = data)
+
+@app.route('/', defaults={'path': ''})
+@app.route('/<path:unknown_route>')
+def catch_all(unknown_route):
+    """"Catches all unknown routes"""
+    return page_not_found(404)
+
+
