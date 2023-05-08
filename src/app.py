@@ -202,7 +202,7 @@ def myspace():
     if new_checkup:
         return redirect(url_for("checkup"))
 
-    init_user = User(None, None, None, None, None, None, None, None)
+    init_user = User()
     doctor_key = init_user.get_doctor_key(user_id["user_id"])
 
     assertion = get_assertion()
@@ -297,7 +297,7 @@ def doctor_view():
 
     doctor_key = session["doctor_key"]
 
-    user = User(None, None, None, None, None, None, None, None)
+    user = User()
     user_id = user.get_user_id(None, doctor_key=doctor_key)
     user_email = user.get_email(user_id["user_id"])
 
@@ -323,16 +323,7 @@ def doctor_view():
 
 def load_user(email):
     """Load user id from database based on user's email."""
-    user = User(
-        email=email,
-        first_name=None,
-        last_name=None,
-        password=None,
-        birth=None,
-        gender=None,
-        user_id=None,
-        doctor_key=None,
-    )
+    user = User()
 
     return user.get_user_id(email, doctor_key=None)
 
@@ -352,16 +343,18 @@ def get_assertion():
 
     return result["affirmation"]
 
+
 app.errorhandler(404)
+
+
 def page_not_found(e):
-    """"Error handler method for 404 not found errors"""
-    data = {'doc_title': 'Page Not Found'}
-    return render_template("404.html", data = data)
+    """ "Error handler method for 404 not found errors"""
+    data = {"doc_title": "Page Not Found"}
+    return render_template("404.html", data=data)
 
-@app.route('/', defaults={'path': ''})
-@app.route('/<path:unknown_route>')
+
+@app.route("/", defaults={"path": ""})
+@app.route("/<path:unknown_route>")
 def catch_all(unknown_route):
-    """"Catches all unknown routes"""
+    """ "Catches all unknown routes"""
     return page_not_found(404)
-
-
