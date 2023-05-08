@@ -5,7 +5,7 @@ const copyKey = () => {
   var copyText = document.getElementById("key-container");
 
   // Copy the text inside the text field
-  navigator.clipboard.writeText(copyText.textContent);
+  navigator.clipboard.writeText(copyText.textContent.trim());
 };
 
 copyKeyBtn.addEventListener("click", copyKey);

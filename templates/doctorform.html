@@ -5,15 +5,17 @@
     <img src={{ url_for('static', filename='img/doctorportal.png') }}
     id="doctor-form-img">
     <div class="form-container">
-      <form action="/submit-key" method="post" id="doctorform">
+      {% for field in data.doctor_form.errors %} {% for error in
+      data.doctor_form.errors[field] %}
+      <article class="message is-danger">
+        <div class="message-body">
+          <strong>{{ error }}</strong>
+        </div>
+      </article>
+      {% endfor %} {% endfor %}
+      <form action="/analysis" method="POST" id="doctorform">
         <!--Reference for jinja syntax-->
-        <input
-          type="text"
-          name="shareable-key"
-          id="shareable-key"
-          placeholder="Enter patient key"
-          required
-        />
+        {{ data.doctor_form.doctor_key(class_="input") }}
       </form>
     </div>
     <button type="submit" form="doctorform" class="button custom-green-btn">
