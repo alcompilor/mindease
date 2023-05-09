@@ -20,7 +20,7 @@ from wtforms import (
 from src.utils.db_connection.db_connection import DBConnection
 
 
-def validate_date_of_birth(form, field):
+def validate_date_of_birth(form, field):  # pylint: disable=W0613
     """Validate minimum age."""
     date_of_birth = datetime.datetime.strptime(f"{field.data}", "%Y-%m-%d")
     today = datetime.date.today()
@@ -37,7 +37,7 @@ def validate_date_of_birth(form, field):
         raise ValidationError("You must be at most 90 years old")
 
 
-def validate_submission_date(form, field):
+def validate_submission_date(form, field):  # pylint: disable=W0613
     """Validate submission date for journal."""
     fetched_date = datetime.datetime.strptime(f"{field.data}", "%Y-%m-%d")
     current_date = datetime.datetime.now().replace(
@@ -48,7 +48,7 @@ def validate_submission_date(form, field):
         raise ValidationError("An error occured: Submission date is invalid")
 
 
-def validate_user_email(form, field):
+def validate_user_email(form, field):  # pylint: disable=W0613
     """Validate registered email."""
     email = field.data
 
@@ -58,7 +58,7 @@ def validate_user_email(form, field):
         raise ValidationError(f"{email} does not appear to exist")
 
 
-def validate_doctor_key_db(form, field):
+def validate_doctor_key_db(form, field):  # pylint: disable=W0613
     """Validate if doctor key exists in database."""
     query = "SELECT user_id FROM User WHERE doctor_key = %s;"
     data = field.data
