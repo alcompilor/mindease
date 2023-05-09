@@ -8,7 +8,15 @@ from pathlib import Path
 from textwrap import dedent
 from datetime import datetime
 import requests
-from flask import Flask, render_template, request, flash, url_for, redirect, session
+from flask import (
+    Flask,
+    render_template,
+    request,
+    flash,
+    url_for,
+    redirect,
+    session,
+)
 import bcrypt
 from dotenv import load_dotenv
 from src.utils.register.register import Register
@@ -29,7 +37,9 @@ load_dotenv()  # load .env
 
 ROOT_DIR = Path(__file__).parent.parent  # getting root dir path
 STATIC_DIR = (ROOT_DIR).joinpath("static")  # generating static dir path
-TEMPLATES_DIR = (ROOT_DIR).joinpath("templates")  # generating templates dir path
+TEMPLATES_DIR = (ROOT_DIR).joinpath(
+    "templates"
+)  # generating templates dir path
 
 
 app = Flask(
@@ -103,10 +113,14 @@ def login():
             user_id = load_user(user_data["email"])
             session["user_id"] = user_id
             session["user_email"] = user_data["email"]
-            data_summary = DataSummary().get_data_summary(session.get("user_email"))
+            data_summary = DataSummary().get_data_summary(
+                session.get("user_email")
+            )
             session["data_summary"] = data_summary
 
-            init_checkup = Checkup().check_answer(session["user_id"]["user_id"])
+            init_checkup = Checkup().check_answer(
+                session["user_id"]["user_id"]
+            )
             new_checkup = init_checkup["new_checkup"]
 
             if new_checkup:
@@ -254,7 +268,9 @@ def journals():
         return redirect(url_for("checkup"))
 
     if not request.args.get("q"):
-        fetched_journals = journal.get_all_journals(session["user_id"]["user_id"])
+        fetched_journals = journal.get_all_journals(
+            session["user_id"]["user_id"]
+        )
     else:
         search_query = request.args.get("q")
         fetched_journals = journal.search_journals(
@@ -304,7 +320,9 @@ def doctor_view():
     curr_month_year = datetime.today().strftime("%Y-%m")
 
     journal = Journal()
-    fetched_journals = journal.search_journals(user_id["user_id"], curr_month_year)
+    fetched_journals = journal.search_journals(
+        user_id["user_id"], curr_month_year
+    )
 
     data_summary = DataSummary()
     data_summary_result = data_summary.get_data_summary(user_email["email"])
