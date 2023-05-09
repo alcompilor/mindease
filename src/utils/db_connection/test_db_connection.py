@@ -15,8 +15,8 @@ class TestDBConnection(unittest.TestCase):
         database = DBConnection()
         cursor = database.cursor
 
-        query = 'SELECT VERSION()'
+        query = "SELECT VERSION()"
         cursor.execute(query)
         row = cursor.fetchone()
 
-        self.assertIsNotNone(row, 'Connection Failed')
+        self.assertIsNotNone(row, "Connection Failed")

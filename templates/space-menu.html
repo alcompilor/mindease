@@ -1,0 +1,42 @@
+<ul>
+  <li>
+    {% if request.endpoint == 'myspace' %}
+    <a href="/myspace" class="subtitle is-5" data-li-active="true"
+      ><ion-icon name="planet-outline"></ion-icon> My Space</a
+    >
+    {% else %}
+    <a href="/myspace" class="subtitle is-5" data-li-active="false"
+      ><ion-icon name="planet-outline"></ion-icon> My Space</a
+    >
+    {% endif %}
+  </li>
+  <li>
+    {% if request.endpoint == 'journals' %}
+    <a href="/myspace/journals" class="subtitle is-5" data-li-active="true"
+      ><ion-icon name="documents-outline"></ion-icon> Journals</a
+    >
+    {% else %}
+    <a href="/myspace/journals" class="subtitle is-5" data-li-active="false"
+      ><ion-icon name="documents-outline"></ion-icon> Journals</a
+    >
+    {% endif %}
+  </li>
+  <!--
+  <li>
+    {% if request.endpoint == 'account' %}
+    <a href="/myspace/account" class="subtitle is-5" data-li-active="true"
+      ><ion-icon name="cog-outline"></ion-icon> Account</a
+    >
+    {% else %}
+    <a href="/myspace/account" class="subtitle is-5" data-li-active="false"
+      ><ion-icon name="cog-outline"></ion-icon> Account</a
+    >
+    {% endif %}
+  </li>
+-->
+  <li>
+    <a href="/logout" class="subtitle is-5" data-li-active="false"
+      ><ion-icon name="log-out-outline"></ion-icon> Logout</a
+    >
+  </li>
+</ul>

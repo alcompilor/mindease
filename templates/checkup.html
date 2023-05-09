@@ -1,0 +1,93 @@
+{% extends 'layout.html' %} {% block content %}
+
+<div id="checkup-container">
+  <img
+    src="{{ url_for('static', filename='img/logo-white.png') }}"
+    id="checkup-logo"
+  />
+  <div id="checkup-notifications">
+    {% with successes = get_flashed_messages(category_filter=["success"]) %} {%
+    if successes %}
+    <article class="message is-success">
+      <div class="message-body">
+        {%- for msg in successes %}
+        <strong>{{ msg }}</strong>
+        {% endfor -%}
+      </div>
+    </article>
+    {% endif %} {% endwith %} {% with errors =
+    get_flashed_messages(category_filter=["error"]) %} {% if errors %}
+    <article class="message is-danger">
+      <div class="message-body">
+        {%- for msg in errors %}
+        <strong>{{ msg }}</strong>
+        {% endfor -%}
+      </div>
+    </article>
+    {% endif %} {% endwith %} {% for field in data.checkup_form.errors %} {% for
+    error in data.checkup_form.errors[field] %}
+    <article class="message is-danger">
+      <div class="message-body">
+        <strong>{{ error }}</strong>
+      </div>
+    </article>
+    {% endfor %} {% endfor %}
+  </div>
+  <div id="checkup">
+    <h2 class="subtitle is-3" id="checkupq">
+      {{ data.checkup.todays_checkup.content }}
+    </h2>
+  </div>
+  <div id="checkup-form">
+    <form id="checkupform" class="e-rating" action="/checkup" method="POST">
+      <label for="emoji" class="e-rating__sr">Emotion</label>
+      {{ data.checkup_form.checkup_range(class_="e-rating__range") }}
+      <div class="e-rating__faces">
+        <div class="e-rating__face e-rating__face--1">
+          <div class="e-rating__face-inner">
+            <div class="e-rating__eye"></div>
+            <div class="e-rating__eye"></div>
+            <div class="e-rating__mouth"></div>
+          </div>
+          <div class="e-rating__tear"></div>
+          <div class="e-rating__tear"></div>
+        </div>
+        <div class="e-rating__face e-rating__face--2">
+          <div class="e-rating__face-inner">
+            <div class="e-rating__eye"></div>
+            <div class="e-rating__eye"></div>
+            <div class="e-rating__mouth"></div>
+          </div>
+        </div>
+        <div class="e-rating__face e-rating__face--3">
+          <div class="e-rating__face-inner">
+            <div class="e-rating__eye"></div>
+            <div class="e-rating__eye"></div>
+            <div class="e-rating__mouth"></div>
+          </div>
+        </div>
+        <div class="e-rating__face e-rating__face--4">
+          <div class="e-rating__face-inner">
+            <div class="e-rating__eye"></div>
+            <div class="e-rating__eye"></div>
+            <div class="e-rating__mouth"></div>
+          </div>
+        </div>
+        <div class="e-rating__face e-rating__face--5">
+          <div class="e-rating__face-inner">
+            <div class="e-rating__eye"></div>
+            <div class="e-rating__eye"></div>
+            <div class="e-rating__mouth"></div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <input
+    class="button custom-green-btn"
+    form="checkupform"
+    type="submit"
+    value="Continue"
+  />
+</div>
+{% endblock %}
