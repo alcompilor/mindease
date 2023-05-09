@@ -21,9 +21,13 @@ class DataSummary:
 
     def get_data_summary(self, email):
         """DATASUMMARY get_data_summary function."""
+<<<<<<< HEAD
         query = (
             'SELECT user_id FROM User WHERE email = %s;'
         )
+=======
+        query = "SELECT user_id FROM User WHERE email = %s;"
+>>>>>>> 5ae83f8f6e9b0a1e8284f75dee49b3ff5f53d8ef
 
         cursor = self.conn.cnx.cursor()
         cursor.execute(query, (email,))
@@ -37,12 +41,12 @@ class DataSummary:
         self.doctor_key = self.user.get_doctor_key(int(uid[0]))
 
         query = (
-            'SELECT c.checkup_content, ca.answer, ca.answer_date '
-            'FROM User u '
-            'LEFT JOIN Checkup c ON c.checkup_id = c.checkup_id '
-            'LEFT JOIN Checkup_answer ca ON ca.user_id = u.user_id '
-            'AND ca.checkup_id = c.checkup_id '
-            'WHERE u.email = %s;'
+            "SELECT c.checkup_content, ca.answer, ca.answer_date "
+            "FROM User u "
+            "LEFT JOIN Checkup c ON c.checkup_id = c.checkup_id "
+            "LEFT JOIN Checkup_answer ca ON ca.user_id = u.user_id "
+            "AND ca.checkup_id = c.checkup_id "
+            "WHERE u.email = %s;"
         )
 
         cursor = self.conn.cnx.cursor()
@@ -56,12 +60,20 @@ class DataSummary:
             "birth": self.birth["birth"],
             "gender": self.gender["gender"],
             "doctor_key": self.doctor_key["doctor_key"],
+<<<<<<< HEAD
             "checkups":
                 {
                     "checkups_sentences": [],
                     "checkups_answers": [],
                     "checkups_date": []
                 }
+=======
+            "checkups": {
+                "checkups_sentences": [],
+                "checkups_answers": [],
+                "checkups_date": [],
+            },
+>>>>>>> 5ae83f8f6e9b0a1e8284f75dee49b3ff5f53d8ef
         }
 
         for checkup_row in rows:

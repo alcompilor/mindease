@@ -17,6 +17,10 @@
       rel="stylesheet"
       href="{{ url_for('static', filename='css/main.css') }}"
     />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+    />
     <script
       type="module"
       src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"
@@ -84,6 +88,22 @@
     />
     {% endif %}
     <title>{{data.doc_title}}</title>
+    {% if "data" in request.path %}
+    <script type="text/javascript">
+      const journals = {{ data.journals|tojson|safe }}
+    </script>
+    <script
+      src="{{ url_for('static', filename='js/doctor-view/journals.js') }}"
+      defer>
+    </script>
+    <script type="text/javascript">
+      const userData = {{ data.data_summary_result|tojson|safe }}
+    </script>
+    <script
+      src="{{ url_for('static', filename='js/doctor-view/metrics.js') }}"
+      defer>
+    </script>
+    {% endif %}
   </head>
   <body>
     {% block content %}{% endblock %}
