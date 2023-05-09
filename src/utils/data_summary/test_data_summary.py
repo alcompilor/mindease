@@ -21,13 +21,17 @@ class TestDataSummary(unittest.TestCase):
         self.email = "johndoe@email.com"
         self.data_summary = DataSummary()
 
+    def test_get_id(self):
+        user_id = self.data_summary.get_id(self.email)
+        self.assertIsNotNone(user_id)
+
+    def test_get_checkup_info(self):
+        checkup_info = self.data_summary.get_checkup_info(self.email)
+        self.assertIsNotNone(checkup_info)
+
     def test_get_data_summary(self):
         """Test get_data_summary function."""
         self.setUp()
-
-        expected_uid = 3
-
-        self.cursor_mock.fetchone.return_value = expected_uid
 
         expected_checkups = [
             {
