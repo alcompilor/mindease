@@ -46,7 +46,12 @@ class Checkup:
             cursor.close()
             db_conn.cnx.close()
 
-            return {"todays_checkup": {"id": new_checkup[0], "content": new_checkup[1]}}
+            return {
+                "todays_checkup": {
+                    "id": new_checkup[0],
+                    "content": new_checkup[1],
+                }
+            }
 
         except mysql.connector.Error as err:
             return err
@@ -76,7 +81,9 @@ class Checkup:
             db_conn.cnx.close()
 
             if date is not None:
-                answer_date = datetime.strptime(f"{date[0]}", "%Y-%m-%d").date()
+                answer_date = datetime.strptime(
+                    f"{date[0]}", "%Y-%m-%d"
+                ).date()
                 current_date = datetime.today().date()
 
                 return {"new_checkup": (current_date > answer_date)}

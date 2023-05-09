@@ -8,4 +8,4 @@ const copyKey = () => {
   navigator.clipboard.writeText(copyText.textContent.trim());
 };
 
-copyKeyBtn.addEventListener("click", copyKey);
+copyKeyBtn.addEventListener("click", copyKey); // copy doctor key event listener

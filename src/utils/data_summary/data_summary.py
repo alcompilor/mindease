@@ -76,12 +76,11 @@ class DataSummary:
             "birth": self.birth["birth"],
             "gender": self.gender["gender"],
             "doctor_key": self.doctor_key["doctor_key"],
-            "checkups":
-                {
-                    "checkups_sentences": [],
-                    "checkups_answers": [],
-                    "checkups_date": []
-                }
+            "checkups": {
+                "checkups_sentences": [],
+                "checkups_answers": [],
+                "checkups_date": [],
+            },
         }
 
         for checkup_row in rows:

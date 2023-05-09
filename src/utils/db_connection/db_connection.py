@@ -16,12 +16,11 @@ class DBConnection:
         load_dotenv()
 
         self.cnx = mysql.connector.connect(
-            database=os.getenv('DATABASE_NAME'),
-            host=os.getenv('DATABASE_HOSTNAME'),
-            user=os.getenv('DATABASE_USER'),
-            password=os.getenv('DATABASE_PASSWORD'),
-            auth_plugin='mysql_native_password'
+            database=os.getenv("DATABASE_NAME"),
+            host=os.getenv("DATABASE_HOSTNAME"),
+            user=os.getenv("DATABASE_USER"),
+            password=os.getenv("DATABASE_PASSWORD"),
+            auth_plugin="mysql_native_password",
         )
 
         self.cursor = self.cnx.cursor()
-       
