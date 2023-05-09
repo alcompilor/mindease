@@ -72,7 +72,9 @@ def validate_doctor_key_db(form, field):
     db_conn.cnx.close()
 
     if not result:
-        raise ValidationError("The patient's key you entered does not appear to exist")
+        raise ValidationError(
+            "The patient's key you entered does not appear to exist"
+        )
 
 
 class ValidateRegister(Form):
@@ -114,9 +116,15 @@ class ValidateRegister(Form):
         "New Password",
         validators=[
             validators.DataRequired(message="Password is required"),
-            validators.EqualTo("password_confirm", message="Passwords must match"),
-            validators.Regexp(r"(?=.*?[A-Z])", message="Missing uppercase letter"),
-            validators.Regexp(r"(?=.*?[a-z])", message="Missing lowercase letter"),
+            validators.EqualTo(
+                "password_confirm", message="Passwords must match"
+            ),
+            validators.Regexp(
+                r"(?=.*?[A-Z])", message="Missing uppercase letter"
+            ),
+            validators.Regexp(
+                r"(?=.*?[a-z])", message="Missing lowercase letter"
+            ),
             validators.Regexp(r"(?=.*?[0-9])", message="Missing digit"),
             validators.Regexp(
                 r"(?=.*?[#?!@$%^&*-])", message="Missing special character"
@@ -130,7 +138,9 @@ class ValidateRegister(Form):
     password_confirm = PasswordField(
         "Repeat Password",
         validators=[
-            validators.DataRequired(message="Password confirmation sis required")
+            validators.DataRequired(
+                message="Password confirmation sis required"
+            )
         ],
         id="password-confirm",
         render_kw={"placeholder": "Re-enter password"},
@@ -155,7 +165,9 @@ class ValidateRegister(Form):
 
     accept_tos = BooleanField(
         validators=[
-            validators.DataRequired(message="You must accept terms & conditions")
+            validators.DataRequired(
+                message="You must accept terms & conditions"
+            )
         ],
         id="tos",
     )
@@ -180,7 +192,9 @@ class ValidateLogin(Form):
         validators=[
             validators.DataRequired(message="Password is required"),
             validators.Length(
-                min=8, max=50, message="Password is between 8 and 50 characters"
+                min=8,
+                max=50,
+                message="Password is between 8 and 50 characters",
             ),
         ],
         id="password",
@@ -195,7 +209,9 @@ class ValidateJournal(Form):
         "Title",
         validators=[
             validators.DataRequired(message="Journal Title is required"),
-            validators.Length(min=1, max=30, message="Title is too long (>30 chars)"),
+            validators.Length(
+                min=1, max=30, message="Title is too long (>30 chars)"
+            ),
         ],
         id="journal-title",
         render_kw={"placeholder": "A memory from my childhood"},
@@ -232,7 +248,9 @@ class ValidateCheckup(Form):
         "Range",
         validators=[
             validators.DataRequired(message="Checkup value is required"),
-            validators.NumberRange(min=1, max=5, message="Checkup value is invalid"),
+            validators.NumberRange(
+                min=1, max=5, message="Checkup value is invalid"
+            ),
         ],
         id="emoji",
     )
