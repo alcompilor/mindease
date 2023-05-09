@@ -1,0 +1,14 @@
+{% extends 'layout.html' %} {% block content %}
+<div id="home">
+  {% include 'navbar.html' %}
+  <h3 class="title is-3" id="notfound-title">
+    Sorry, the page you requested could not be found.
+  </h3>
+  <img
+    id="notfound-img"
+    src="{{ url_for('static', filename='img/405.png') }}"
+    alt="404 Error"
+  />
+  {% include 'footer.html' %}
+</div>
+{% endblock %}

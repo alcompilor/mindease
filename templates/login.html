@@ -1,0 +1,80 @@
+{% extends 'layout.html' %} {% block content %}
+<div id="auth-main">
+  <div id="left">
+    <a href="/"
+      ><img
+        src="{{ url_for('static', filename='img/logo-white.png') }}"
+        id="auth-logo"
+      />
+    </a>
+    <div id="auth-notifications">
+      {% with successes = get_flashed_messages(category_filter=["success"]) %}
+      {% if successes %}
+      <article class="message is-success msg-shadow">
+        <div class="message-body">
+          {%- for msg in successes %}
+          <strong>{{ msg }}</strong>
+          {% endfor -%}
+        </div>
+      </article>
+      {% endif %} {% endwith %} {% with errors =
+      get_flashed_messages(category_filter=["error"]) %} {% if errors %}
+      <article class="message is-danger msg-shadow">
+        <div class="message-body">
+          {%- for msg in errors %}
+          <strong>{{ msg }}</strong>
+          {% endfor -%}
+        </div>
+      </article>
+      {% endif %} {% endwith %} {% for field in data.login_form.errors %} {% for
+      error in data.login_form.errors[field] %}
+      <article class="message is-danger msg-shadow">
+        <div class="message-body">
+          <strong>{{ error }}</strong>
+        </div>
+      </article>
+      {% endfor %} {% endfor %}
+    </div>
+    <div id="auth">
+      <a id="auth-link" href="/register"
+        ><strong>Don't have an account?</strong></a
+      >
+      <h1 class="title is-3">Login to your Mindease account</h1>
+
+      <form id="auth-form" action="/login" method="POST">
+        <div class="field">
+          <label class="label">Email</label>
+          <div class="control">
+            {{ data.login_form.email(class_="input") }}
+            <p class="help is-danger" id="email-notice" style="display: none">
+              This email is invalid
+            </p>
+          </div>
+        </div>
+
+        <div class="field">
+          <div class="control">
+            <label class="label">Password</label>
+            {{ data.login_form.password(class_="input") }}
+          </div>
+        </div>
+      </form>
+      <br />
+      <div class="field">
+        <div class="control">
+          <button class="button is-black" id="login-btn" disabled>Login</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="right">
+    <img
+      src="{{ url_for('static', filename='img/login.png') }}"
+      id="auth-img"
+    />
+  </div>
+</div>
+
+{% include 'footer.html' %}
+
+{% endblock %}

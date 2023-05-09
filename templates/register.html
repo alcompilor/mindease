@@ -1,13 +1,13 @@
 {% extends 'layout.html' %} {% block content %}
-<div id="register-main">
+<div id="auth-main">
   <div id="left">
     <a href="/"
       ><img
         src="{{ url_for('static', filename='img/logo-white.png') }}"
-        id="register-logo"
+        id="auth-logo"
       />
     </a>
-    <div id="register-notifications">
+    <div id="auth-notifications">
       {% with successes = get_flashed_messages(category_filter=["success"]) %}
       {% if successes %}
       <article class="message is-success msg-shadow">
@@ -35,13 +35,13 @@
       </article>
       {% endfor %} {% endfor %}
     </div>
-    <div id="register">
-      <a id="register-link" href="/login"
+    <div id="auth">
+      <a id="auth-link" href="/login"
         ><strong>Already got an account?</strong></a
       >
       <h1 class="title is-3">Create an account on Mindease</h1>
 
-      <form id="register-form" action="/register" method="POST">
+      <form id="auth-form" action="/register" method="POST">
         <div class="field is-grouped">
           <div class="control">
             <label class="label">First Name</label>
@@ -72,7 +72,6 @@
               id="password-notice"
               style="display: none"
             >
-              Password should be at least 8 characters
             </p>
           </div>
           <div class="control">
@@ -110,7 +109,7 @@
                 href="#"
                 class="js-modal-trigger"
                 data-target="tos-modal"
-                id="register-link"
+                id="auth-link"
               >
                 terms and conditions
               </a>
@@ -131,7 +130,7 @@
   <div id="right">
     <img
       src="{{ url_for('static', filename='img/register.png') }}"
-      id="register-img"
+      id="auth-img"
     />
   </div>
 </div>

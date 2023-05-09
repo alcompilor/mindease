@@ -11,6 +11,7 @@ from src.utils.login.login import Login
 
 class TestLogin(unittest.TestCase):
     """Test Login."""
+
     def setUp(self):
         """Unittest setup."""
         self.conn_mock = MagicMock(DBConnection())
@@ -20,29 +21,36 @@ class TestLogin(unittest.TestCase):
         self.login_instance = Login()
 
     def test_validate_password(self):
-        """test validate_password function."""
+        """Test validate_password function."""
         self.setUp()
         email = "alkatebmohammed383@gmail.com"
-        password = "mohammed2001"
+        password = "Mohammed2001@"
 
-        self.assertEqual(self.login_instance.validate_password
-            (email, password.encode('utf-8')),
-            {"matches": True}, {"matches": False})
-
+        self.assertEqual(
+            self.login_instance.validate_password(
+                email, password.encode("utf-8")
+            ),
+            {"matches": True},
+            {"matches": False},
+        )
 
     def test_login(self):
-        """Test login function"""
-        email = 'alkatebmohammed383@gmail.com'
-        password = 'mohammed2001'
+        """Test login function."""
+        email = "alkatebmohammed383@gmail.com"
+        password = "Mohammed2001@"
 
         self.setUp()
         self.cursor_mock.fetchone.return_value = (email,)
 
-        pwd_validation = self.login_instance.validate_password(email, password.encode('utf-8'))
-        self.assertEqual(pwd_validation, {'matches': True})
+        pwd_validation = self.login_instance.validate_password(
+            email, password.encode("utf-8")
+        )
+        self.assertEqual(pwd_validation, {"matches": True})
 
-        with unittest.mock.patch('src.utils.db_connection.db_connection.DBConnection',
-            return_value=self.conn_mock):
+        with unittest.mock.patch(
+            "src.utils.db_connection.db_connection.DBConnection",
+            return_value=self.conn_mock,
+        ):
             result = self.login_instance.login(email, password)
 
-        self.assertEqual(result, {'login_succeeded': True})
+        self.assertEqual(result, {"login_succeeded": True})
