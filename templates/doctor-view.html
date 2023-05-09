@@ -1,0 +1,97 @@
+{% extends 'layout.html' %} {% block content %}
+<div id="doctor-view">
+  <div id="black-layer"></div>
+  <div id="doctor-view-menu-container">
+    <div id="doctor-view-menu">
+      <img
+        src="{{ url_for('static', filename='img/logo-white.png') }}"
+        id="doctorview-left-logo"
+      />
+      <h2 id="welcome-doctor">Welcome Doctor!</h2>
+      <ul>
+        <li>
+          <a href="#personal-info">
+            <ion-icon name="person-outline"></ion-icon>
+            Personal Info
+          </a>
+        </li>
+        <li>
+          <a href="#myspace-main-metrics">
+            <ion-icon name="analytics-outline"></ion-icon>
+            Checkups
+          </a>
+        </li>
+        <li>
+          <a href="#myspace-journals-data">
+            <ion-icon name="documents-outline"></ion-icon>
+            Journals
+          </a>
+        </li>
+      </ul>
+      <img
+        src="{{ url_for('static', filename='img/doctor-view-menu-logo.jpg') }}"
+        id="doctor-view-menu-logo"
+      />
+    </div>
+  </div>
+  <div id="data-container">
+    <div id="personal-info">
+      <h4 class="title is-4">Personal Info 🪪</h4>
+      <div id="personal-info-inner">
+        <h3 class="personal-info-content">
+          <span class="material-symbols-outlined" style="color: #0077be">
+            badge
+          </span>
+          Name: {{data.data_summary_result.first_name}}
+          {{data.data_summary_result.last_name}}
+        </h3>
+        <h3 class="personal-info-content">
+          <span class="material-symbols-outlined" style="color: #0077be">
+            cake
+          </span>
+          Birth: {{data.data_summary_result.birth}}
+        </h3>
+        <h3 class="personal-info-content">
+          <span class="material-symbols-outlined" style="color: #0077be">
+            face
+          </span>
+          Gender: {{data.data_summary_result.gender}}
+        </h3>
+      </div>
+    </div>
+    <div id="doctor-metrics-journals">
+      <div id="myspace-main-metrics">
+        <h4 class="title is-4">Mood Metrics 🎭</h4>
+        <h4 class="subtitle is-4" id="metrics-none"></h4>
+      </div>
+      <div id="doctor-journals-data">
+        <div id="doctor-journals-history">
+          <h4 class="title is-4">Journals 📓</h4>
+          <h4 class="subtitle is-4" id="journals-none"></h4>
+          <div id="doctor-journals-cards"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="popup" id="popup">
+    <img src="{{ url_for('static', filename='img/warning.jpg') }}" />
+    <p id="popup-doctor-warning">
+      You have accessed sensitive user data. Please ensure that this information
+      remains confidential and secure. Any unauthorized disclosure, sharing or
+      use of this data can result in serious legal and ethical consequences.
+    </p>
+    <div class="notification is-warning is-light">
+      Note: Refreshing or closing the tab before you're finished will cause your
+      session to expire, so kindly refrain from doing so.
+    </div>
+    <button
+      type="button"
+      onclick="closePopup()"
+      class="button is-warning is-light"
+    >
+      OK
+    </button>
+  </div>
+  <script src="{{ url_for('static', filename='js/doctor-view/popup.js') }}"></script>
+</div>
+{% endblock %}

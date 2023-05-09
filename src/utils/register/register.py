@@ -15,12 +15,12 @@ class Register:
 
     def __init__(self, user):
         """Register Constructor."""
-        self.first_name = user['first_name']
-        self.last_name = user['last_name']
-        self.email = user['email']
-        self.password = user['password']
-        self.birth = user['birth']
-        self.gender = user['gender']
+        self.first_name = user["first_name"]
+        self.last_name = user["last_name"]
+        self.email = user["email"]
+        self.password = user["password"]
+        self.birth = user["birth"]
+        self.gender = user["gender"]
         self.doctor_key = self.generate_doctor_key()
 
     def generate_doctor_key(self):
@@ -35,10 +35,10 @@ class Register:
 
     def register_user(self):
         """Register user function for Register class."""
-        query = 'INSERT INTO User \
+        query = "INSERT INTO User \
             (first_name, last_name, email, \
             password, birth, gender, doctor_key) VALUES \
-            (%s, %s, %s, %s, %s, %s, %s)'
+            (%s, %s, %s, %s, %s, %s, %s)"
 
         params = (
             self.first_name,
@@ -47,7 +47,7 @@ class Register:
             self.password,
             self.birth,
             self.gender,
-            self.doctor_key
+            self.doctor_key,
         )
 
         try:
@@ -59,8 +59,8 @@ class Register:
             conn.cursor.close()
             conn.cnx.close()
 
-            return {'registration_succeeded': True}
+            return {"registration_succeeded": True}
 
         except mysql.connector.Error as err:
-            print(f'error: {err}')
-            return {'registration_succeeded': False}
+            print(f"error: {err}")
+            return {"registration_succeeded": False}

@@ -1,4 +1,4 @@
-"""Unittest User Class"""
+"""Unittest for User Class."""
 
 import unittest
 import datetime
@@ -8,12 +8,12 @@ from unittest.mock import MagicMock
 from src.utils.user.user import User, DBConnection
 
 
+# pylint: disable=too-many-instance-attributes
 class TestUserClass(unittest.TestCase):
-    """Tests User Class"""
+    """Test the User class with various test cases."""
 
     def setUp(self):
-        """Method to setup data as placeholders for testing purposes."""
-
+        """Set up placeholder data for testing purposes."""
         self.email = "jacksonreacher@gmail.com"
         self.user_id = 41
         self.first_name = "Jackson"
@@ -23,7 +23,7 @@ class TestUserClass(unittest.TestCase):
         self.password = "pass1234"
         self.doctor_key = "A43212DADD1321"
 
-        self.user = User(self.first_name, self.last_name, self.birth, self.email, self.password, self.gender, self.user_id, self.doctor_key)
+        self.user = User()
 
         self.db_connection = MagicMock(spec=DBConnection)
         self.db_connection.cursor = MagicMock()
@@ -34,7 +34,6 @@ class TestUserClass(unittest.TestCase):
 
     def test_get_user_id(self):
         """Tests the retrieval of a user id."""
-
         self.db_connection.cursor.fetchone.return_value = self.user_id
         DBConnection.return_value = self.db_connection
 
@@ -43,7 +42,6 @@ class TestUserClass(unittest.TestCase):
 
     def test_get_first_name(self):
         """Tests the retrieval of a first_name that belongs to a user."""
-
         self.db_connection.cursor.fetchone.return_value = self.first_name
         DBConnection.return_value = self.db_connection
 
@@ -52,7 +50,6 @@ class TestUserClass(unittest.TestCase):
 
     def test_get_last_name(self):
         """Tests the retrieval of a last_name that belongs to a user."""
-
         self.db_connection.cursor.fetchone.return_value = self.last_name
         DBConnection.return_value = self.db_connection
 
@@ -61,7 +58,6 @@ class TestUserClass(unittest.TestCase):
 
     def test_get_birth(self):
         """Tests the retrieval of a users date of birth."""
-
         self.db_connection.cursor.fetchone.return_value = self.birth
         DBConnection.return_value = self.db_connection
 
@@ -70,7 +66,6 @@ class TestUserClass(unittest.TestCase):
 
     def test_get_email(self):
         """Tests the retrieval of a users email."""
-
         self.db_connection.cursor.fetchone.return_value = self.email
         DBConnection.return_value = self.db_connection
 
@@ -79,7 +74,6 @@ class TestUserClass(unittest.TestCase):
 
     def test_get_password(self):
         """Tests the retrieval of a users password."""
-
         self.db_connection.cursor.fetchone.return_value = self.password
         DBConnection.return_value = self.db_connection
 
@@ -88,7 +82,6 @@ class TestUserClass(unittest.TestCase):
 
     def test_get_gender(self):
         """Tests the retrieval of a users gender."""
-
         self.db_connection.cursor.fetchone.return_value = self.gender
         DBConnection.return_value = self.db_connection
 
@@ -97,7 +90,6 @@ class TestUserClass(unittest.TestCase):
 
     def test_get_doctor_key(self):
         """Tests the retrieval of a users doctor_key."""
-
         self.db_connection.cursor.fetchone.return_value = self.doctor_key
         DBConnection.return_value = self.db_connection
 
@@ -106,7 +98,6 @@ class TestUserClass(unittest.TestCase):
 
     def test_update_first_name(self):
         """Tests the update of a users first_name."""
-
         new_first_name = "Jackson"
 
         DBConnection.cursor = MagicMock()
@@ -119,7 +110,6 @@ class TestUserClass(unittest.TestCase):
 
     def test_update_last_name(self):
         """Tests the update of a users last_name."""
-
         new_last_name = "Reacher"
 
         DBConnection.cursor = MagicMock()
@@ -132,7 +122,6 @@ class TestUserClass(unittest.TestCase):
 
     def test_update_password(self):
         """Tests the update of a users password."""
-
         new_password = "pass1234"
 
         DBConnection.cursor = MagicMock()
@@ -145,7 +134,6 @@ class TestUserClass(unittest.TestCase):
 
     def test_update_email(self):
         """Tests the update of a users email."""
-
         new_email = "jacksonreacher@gmail.com"
 
         DBConnection.cursor = MagicMock()
@@ -158,8 +146,7 @@ class TestUserClass(unittest.TestCase):
 
     def test_update_doctor_key(self):
         """Tests the update of a users doctor_key."""
-
-        old_doctor_key = self.user.doctor_key
+        old_doctor_key = self.doctor_key
 
         DBConnection.cursor = MagicMock()
         DBConnection.cursor.execute = MagicMock()
@@ -171,7 +158,6 @@ class TestUserClass(unittest.TestCase):
 
     def test_delete_user(self):
         """Tests the deletion of a user."""
-
         self.db_connection.cursor.execute.return_value = None
         self.db_connection.cnx.commit.return_value = None
         DBConnection.return_value = self.db_connection
@@ -179,6 +165,6 @@ class TestUserClass(unittest.TestCase):
         result = self.user.delete_user(self.email)
         self.assertEqual(result, {"user_deleted": True})
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     unittest.main()
-    

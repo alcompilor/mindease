@@ -12,7 +12,7 @@ userData.checkups.checkups_date.forEach((element) => {
 });
 
 var options = {
-  colors: ["#33AC83"],
+  colors: ["#0077be"],
   series: [
     {
       name: "Checkup",

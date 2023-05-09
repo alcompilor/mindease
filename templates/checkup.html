@@ -6,8 +6,8 @@
     id="checkup-logo"
   />
   <div id="checkup-notifications">
-    {% with successes = get_flashed_messages(category_filter=["success"]) %}
-    {% if successes %}
+    {% with successes = get_flashed_messages(category_filter=["success"]) %} {%
+    if successes %}
     <article class="message is-success">
       <div class="message-body">
         {%- for msg in successes %}
@@ -24,8 +24,8 @@
         {% endfor -%}
       </div>
     </article>
-    {% endif %} {% endwith %} {% for field in data.checkup_form.errors %} {%
-    for error in data.checkup_form.errors[field] %}
+    {% endif %} {% endwith %} {% for field in data.checkup_form.errors %} {% for
+    error in data.checkup_form.errors[field] %}
     <article class="message is-danger">
       <div class="message-body">
         <strong>{{ error }}</strong>
@@ -34,7 +34,9 @@
     {% endfor %} {% endfor %}
   </div>
   <div id="checkup">
-    <h2 class="subtitle is-3" id="checkupq">How are you feeling today?</h2>
+    <h2 class="subtitle is-3" id="checkupq">
+      {{ data.checkup.todays_checkup.content }}
+    </h2>
   </div>
   <div id="checkup-form">
     <form id="checkupform" class="e-rating" action="/checkup" method="POST">
@@ -81,6 +83,11 @@
       </div>
     </form>
   </div>
-  <input class="button custom-green-btn" form="checkupform" type="submit" value="Continue">
+  <input
+    class="button custom-green-btn"
+    form="checkupform"
+    type="submit"
+    value="Continue"
+  />
 </div>
 {% endblock %}
