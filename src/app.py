@@ -11,6 +11,12 @@ import requests
 from flask import Flask, render_template, request, flash, url_for, redirect, session
 import bcrypt
 from dotenv import load_dotenv
+from src.utils.register.register import Register
+from src.utils.login.login import Login
+from src.utils.user.user import User
+from src.utils.journal.journal import Journal
+from src.utils.data_summary.data_summary import DataSummary
+from src.utils.checkup.checkup import Checkup
 from src.validator import (
     ValidateRegister,
     ValidateLogin,
@@ -18,11 +24,6 @@ from src.validator import (
     ValidateCheckup,
     ValidateDoctorKey,
 )
-from src.utils.register.register import Register
-from src.utils.login.login import Login
-from src.utils.user.user import User
-from src.utils.journal.journal import Journal
-from src.utils.data_summary.data_summary import DataSummary
 
 load_dotenv()  # load .env
 
@@ -105,6 +106,11 @@ def login():
             data_summary = DataSummary().get_data_summary(session.get("user_email"))
             session["data_summary"] = data_summary
 
+            init_checkup = Checkup().check_answer(session["user_id"]["user_id"])
+            new_checkup = init_checkup["new_checkup"]
+
+            if new_checkup:
+                return redirect(url_for("checkup"))
             return redirect(url_for("myspace"))
 
         if not result["login_succeeded"]:
@@ -138,11 +144,24 @@ def logout():
 @app.route("/checkup", methods=["GET", "POST"])  # checkup route
 def checkup():
     """Route for user space."""
+    init_checkup = Checkup()
     form = ValidateCheckup(request.form)
     if request.method == "POST" and form.validate():
-        # checkup_data =
-        # {form.checkup_range.data}
-        pass
+        checkup_data = {
+            "u_id": session["user_id"]["user_id"],
+            "c_id": session["t_checkup"],
+            "answer": form.checkup_range.data,
+            "answer_date": datetime.today().date(),
+        }
+
+        init_checkup.register_checkup(
+            checkup_data["c_id"],
+            checkup_data["u_id"],
+            checkup_data["answer"],
+            checkup_data["answer_date"],
+        )
+
+        session.pop("t_checkup", None)
 
     user_id = session.get("user_id")
 
@@ -150,7 +169,21 @@ def checkup():
         flash("You are not authenticated", "error")
         return redirect("/login")
 
-    data = {"doc_title": "Checkup | Mindease", "checkup_form": form}
+    new_checkup = init_checkup.check_answer(session["user_id"]["user_id"])[
+        "new_checkup"
+    ]
+
+    if not new_checkup:
+        return redirect(url_for("myspace"))
+
+    t_checkup = init_checkup.fetch_checkup(session["user_id"]["user_id"])
+    session["t_checkup"] = t_checkup["todays_checkup"]["id"]
+
+    data = {
+        "doc_title": "Checkup | Mindease",
+        "checkup_form": form,
+        "checkup": t_checkup,
+    }
     return render_template("checkup.html", data=data)
 
 
@@ -163,9 +196,22 @@ def myspace():
         flash("You are not authenticated", "error")
         return redirect("/login")
 
+    init_checkup = Checkup().check_answer(session["user_id"]["user_id"])
+    new_checkup = init_checkup["new_checkup"]
+
+    if new_checkup:
+        return redirect(url_for("checkup"))
+
+    init_user = User()
+    doctor_key = init_user.get_doctor_key(user_id["user_id"])
+
     assertion = get_assertion()
 
-    data = {"doc_title": "My Space | Mindease", "assertion": assertion}
+    data = {
+        "doc_title": "My Space | Mindease",
+        "assertion": assertion,
+        "doctor_key": doctor_key,
+    }
     return render_template("space-main.html", data=data)
 
 
@@ -201,6 +247,12 @@ def journals():
         flash("You are not authenticated", "error")
         return redirect("/login")
 
+    init_checkup = Checkup().check_answer(session["user_id"]["user_id"])
+    new_checkup = init_checkup["new_checkup"]
+
+    if new_checkup:
+        return redirect(url_for("checkup"))
+
     if not request.args.get("q"):
         fetched_journals = journal.get_all_journals(session["user_id"]["user_id"])
     else:
@@ -224,10 +276,11 @@ def aboutus():
     return render_template("aboutus.html", data=data)
 
 
-@app.route("/analysis")  # analysis (doctorform) route
+@app.route("/analysis", methods=["GET", "POST"])  # analysis (doctorform) route
 def doctor_form():
-    """Implements doctor_key validation and redirects to doctor_view route if valid."""
+    """Implement doctor_key validation and redirects to doctor_view route if valid."""
     form = ValidateDoctorKey(request.form)
+
     if request.method == "POST" and form.validate():
         session["doctor_key"] = form.doctor_key.data
         return redirect(url_for("doctor_view"))
@@ -236,19 +289,22 @@ def doctor_form():
     return render_template("doctorform.html", data=data)
 
 
-@app.route("/analysis/data")  # analysis/data route
+@app.route("/analysis/data", methods=["GET", "POST"])  # analysis/data route
 def doctor_view():
     """Fetch patient records to be viewed by the doctor."""
+    if session.get("doctor_key") is None:
+        return redirect(url_for("doctor_form"))
+
     doctor_key = session["doctor_key"]
 
-    user = User(None, None, None, None, None, None, None, None)
+    user = User()
     user_id = user.get_user_id(None, doctor_key=doctor_key)
     user_email = user.get_email(user_id["user_id"])
 
-    journal_date = datetime(datetime.today().year, datetime.today().month)
+    curr_month_year = datetime.today().strftime("%Y-%m")
 
     journal = Journal()
-    fetched_journals = journal.search_journals(user_id["user_id"], journal_date)
+    fetched_journals = journal.search_journals(user_id["user_id"], curr_month_year)
 
     data_summary = DataSummary()
     data_summary_result = data_summary.get_data_summary(user_email["email"])
@@ -267,16 +323,7 @@ def doctor_view():
 
 def load_user(email):
     """Load user id from database based on user's email."""
-    user = User(
-        email=email,
-        first_name=None,
-        last_name=None,
-        password=None,
-        birth=None,
-        gender=None,
-        user_id=None,
-        doctor_key=None,
-    )
+    user = User()
 
     return user.get_user_id(email, doctor_key=None)
 
@@ -295,3 +342,19 @@ def get_assertion():
     result = response.json()
 
     return result["affirmation"]
+
+
+app.errorhandler(404)
+
+
+def page_not_found(e):
+    """ "Error handler method for 404 not found errors"""
+    data = {"doc_title": "Page Not Found"}
+    return render_template("404.html", data=data)
+
+
+@app.route("/", defaults={"path": ""})
+@app.route("/<path:unknown_route>")
+def catch_all(unknown_route):
+    """ "Catches all unknown routes"""
+    return page_not_found(404)
