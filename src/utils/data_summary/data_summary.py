@@ -15,7 +15,6 @@ class DataSummary:
         """DATASUMMARY constructor."""
         self.conn = DBConnection()
         self.user = User()
-        self.user = User()
         self.first_name = None
         self.last_name = None
         self.birth = None
