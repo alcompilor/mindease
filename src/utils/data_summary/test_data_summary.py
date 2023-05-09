@@ -30,71 +30,6 @@ class TestDataSummary(unittest.TestCase):
         self.cursor_mock.fetchone.return_value = expected_uid
 
         expected_checkups = [
-<<<<<<< HEAD
-            {"content": 'Did you sleep well today?', "answer": None,
-             "date": None},
-            {"content": 'Did you start your day with a healthy '
-             'breakfast today?', "answer": None, "date": None},
-            {"content": 'Have you been drinking enough water lately?',
-             "answer": None, "date": None},
-            {"content": 'Did you get some fresh air today?',
-             "answer": None, "date": None},
-            {"content": 'Have you been feeling energized lately?',
-             "answer": None, "date": None},
-            {"content": 'Did you have a chance to do some exercise today?',
-             "answer": None, "date": None},
-            {"content": 'Are you feeling relaxed and calm today?',
-             "answer": None, "date": None},
-            {"content": "Did you have a good night's sleep last night?",
-             "answer": None, "date": None},
-            {"content": 'Have you been taking breaks throughout the day to'
-             ' stretch or move around?', "answer": None, "date": None},
-            {"content": 'Did you have a chance to spend time in nature today?',
-             "answer": None, "date": None},
-            {"content": 'Are you feeling well-rested today?',
-             "answer": None, "date": None},
-            {"content": 'Have you been able to manage stress effectively '
-             'lately?', "answer": None, "date": None},
-            {"content": 'Did you have a nutritious lunch today?',
-             "answer": None, "date": None},
-            {"content": 'Are you feeling productive and focused today?',
-             "answer": None, "date": None},
-            {"content": 'Did you take time to unwind and relax before bed '
-             'last night?', "answer": None, "date": None},
-
-            {"content": 'Are you feeling motivated and inspired today?',
-                "answer": None, "date": None},
-            {"content": 'Did you have a good workout or physical '
-             'activity today?', "answer": None, "date": None},
-            {"content": 'Are you feeling positive and optimistic today?',
-                "answer": None, "date": None},
-            {"content": 'Did you have a healthy snack today?',
-                "answer": None, "date": None},
-            {"content": 'Are you feeling alert and awake today?',
-                "answer": None, "date": None},
-
-            {"content": 'Did you take time to meditate or practice '
-             'mindfulness today?', "answer": None, "date": None},
-            {"content": 'Are you feeling physically strong today?',
-                "answer": None, "date": None},
-            {"content": 'Did you have a chance to do something you '
-             'enjoy today?', "answer": None, "date": None},
-            {"content": 'Are you feeling optimistic about your health '
-             'and well-being?', "answer": None, "date": None},
-            {"content": 'Did you have a nutritious dinner tonight?',
-                "answer": None, "date": None},
-
-            {"content": 'Are you feeling fulfilled and satisfied today?',
-                "answer": None, "date": None},
-            {"content": 'Did you take time to connect with loved ones today?',
-                "answer": None, "date": None},
-            {"content": 'Are you feeling confident and self-assured today?',
-                "answer": None, "date": None},
-            {"content": 'Did you have a chance to laugh and have fun today?',
-                "answer": None, "date": None},
-            {"content": 'Are you feeling grateful for your health and '
-             'well-being today?', "answer": None, "date": None}
-=======
             {
                 "content": "Did you sleep well today?",
                 "answer": None,
@@ -254,7 +189,6 @@ class TestDataSummary(unittest.TestCase):
                 "answer": None,
                 "date": None,
             },
->>>>>>> 5ae83f8f6e9b0a1e8284f75dee49b3ff5f53d8ef
         ]
 
         self.cursor_mock.fetchall.return_value = expected_checkups
@@ -267,20 +201,11 @@ class TestDataSummary(unittest.TestCase):
             "birth": self.data_summary.birth["birth"],
             "gender": self.data_summary.gender["gender"],
             "doctor_key": self.data_summary.doctor_key["doctor_key"],
-<<<<<<< HEAD
-            "checkups":
-                {
-                    "checkups_sentences": [],
-                    "checkups_answers": [],
-                    "checkups_date": []
-                }
-=======
             "checkups": {
                 "checkups_sentences": [],
                 "checkups_answers": [],
                 "checkups_date": [],
             },
->>>>>>> 5ae83f8f6e9b0a1e8284f75dee49b3ff5f53d8ef
         }
 
         for element in expected_checkups:
