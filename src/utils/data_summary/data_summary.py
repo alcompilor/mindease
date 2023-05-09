@@ -12,7 +12,7 @@ class DataSummary:
     def __init__(self):
         """DATASUMMARY constructor."""
         self.conn = DBConnection()
-        self.user = User(None, None, None, None, None, None, None, None)
+        self.user = User()
         self.first_name = None
         self.last_name = None
         self.birth = None
