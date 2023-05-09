@@ -166,5 +166,5 @@ class TestUserClass(unittest.TestCase):
         self.assertEqual(result, {"user_deleted": True})
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

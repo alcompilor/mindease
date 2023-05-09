@@ -5,8 +5,7 @@ from setproctitle import setproctitle
 from waitress import serve
 from src.app import app
 
-PORT = int(os.getenv(
-    'APP_PORT'))  # type: ignore
+PORT = int(os.getenv("APP_PORT"))  # type: ignore
 setproctitle("mindease")  # sets custom name for process
 
 # servers flask app using waitress
