@@ -55,6 +55,7 @@ app.secret_key = os.getenv("APP_SECRET_KEY")
 
 # ROUTES SECTION #
 
+
 @app.route("/")  # homepage route
 def home_page():
     """Route for home page."""
@@ -100,7 +101,7 @@ def login():
             "password": form.password.data,
         }  # data fetched from login form
 
-        try_login(user_data)  # attempt to login
+        return try_login(user_data)  # attempt to login & return result
 
     data = {"doc_title": "Login | Mindease", "login_form": form}
     return render_template("login.html", data=data)
@@ -109,9 +110,7 @@ def login():
 @app.route("/logout")  # logout route
 def logout():
     """Route to logout a user."""
-    session.pop("user_id", None)
-    session.pop("user_email", None)
-    session.pop("data_summary", None)
+    session.clear()  # clear all session keys
 
     flash("You have been successfully logged out", "success")
     return redirect(url_for("login"))
@@ -120,17 +119,21 @@ def logout():
 @app.route("/checkup", methods=["GET", "POST"])  # checkup route
 def checkup():
     """Route for user space."""
-    if not is_loggedin():
+    if not is_loggedin():  # check if user is authenticated
         flash("You are not authenticated", "error")
         return redirect("/login")
 
-    control_checkup(route="checkup")  # control if new checkup is required
+    if not control_checkup():  # control if new checkup is required
+        return redirect(url_for("myspace"))
 
     form = ValidateCheckup(request.form)
     if request.method == "POST" and form.validate():
-        try_checkup("register", data=form.checkup_range.data)
+        try_checkup(
+            "register", data=form.checkup_range.data
+        )  # register todays checkup data
+        return redirect(url_for("myspace"))
 
-    todays_checkup = try_checkup("display", data=None)
+    todays_checkup = try_checkup("display", data=None)  # fetch todays checkup
 
     data = {
         "doc_title": "Checkup | Mindease",
@@ -143,14 +146,15 @@ def checkup():
 @app.route("/myspace")  # myspace route
 def myspace():
     """Route for user space."""
-    if not is_loggedin():
+    if not is_loggedin():  # check if user is authenticated
         flash("You are not authenticated", "error")
         return redirect("/login")
 
-    control_checkup(route="myspace")
+    if control_checkup():  # control if new checkup is required
+        return redirect(url_for("checkup"))
 
-    doctor_key = fetch_doctor_key()
-    assertion = get_assertion()
+    doctor_key = fetch_doctor_key()  # fetch user doctor key
+    assertion = get_assertion()  # fetch assertion from external API
 
     data = {
         "doc_title": "My Space | Mindease",
@@ -164,11 +168,12 @@ def myspace():
 @app.route("/myspace/journals", methods=["GET", "POST"])
 def journals():
     """Route for user journals."""
-    if not is_loggedin():
+    if not is_loggedin():  # check if user is authenticated
         flash("You are not authenticated", "error")
         return redirect("/login")
 
-    control_checkup(route="journals")
+    if control_checkup():  # control if new checkup is required
+        return redirect(url_for("myspace"))
 
     form = ValidateJournal(request.form)
     if request.method == "POST" and form.validate():
@@ -179,9 +184,13 @@ def journals():
             "user_id": session["user_id"]["user_id"],
         }
 
-        try_journal("register", journal_data, None)
+        try_journal(
+            "register", journal_data, None
+        )  # attempt to save a journal
 
-    fetched_journals = try_journal("display", None, request)
+    fetched_journals = try_journal(
+        "display", None, request
+    )  # attempt to fetch journals
 
     data = {
         "doc_title": "My Space - Journals | Mindease",
@@ -202,7 +211,6 @@ def aboutus():
 def doctor_form():
     """Route for psychologist portal (doctor form)."""
     form = ValidateDoctorKey(request.form)
-
     if request.method == "POST" and form.validate():
         session["doctor_key"] = form.doctor_key.data
         return redirect(url_for("doctor_view"))
@@ -214,28 +222,36 @@ def doctor_form():
 @app.route("/analysis/data", methods=["GET", "POST"])  # analysis/data route
 def doctor_view():
     """Fetch patient records to be viewed by the doctor."""
-    if session.get("doctor_key") is None:
+    if (
+        session.get("doctor_key") is None
+    ):  # check if theres a valid doctor key in session
         return redirect(url_for("doctor_form"))
 
     doctor_key = session["doctor_key"]
 
     user = User()
-    user_id = user.get_user_id(None, doctor_key=doctor_key)
+    user_id = user.get_user_id(
+        None, doctor_key=doctor_key
+    )  # fetch user_id based on doctor_key
 
-    user_email = user.get_email(user_id["user_id"])
+    user_email = user.get_email(
+        user_id["user_id"]
+    )  # fetch user email based on user_id
 
     curr_month_year = datetime.today().strftime("%Y-%m")
 
     journal = Journal()
     fetched_journals = journal.search_journals(
         user_id["user_id"], curr_month_year
-    )
+    )  # fetch all journals based on "curr_month_year" variable
     data_summary = DataSummary()
 
-    data_summary_result = data_summary.get_data_summary(user_email["email"])
+    data_summary_result = data_summary.get_data_summary(
+        user_email["email"]
+    )  # fetch user data
 
-    user.update_doctor_key(doctor_key)
-    session.pop("doctor_key", None)
+    user.update_doctor_key(doctor_key)  # generate new doctor key to user
+    session.pop("doctor_key", None)  # force doctor key session to expire
 
     data = {
         "doc_title": "Psychologist View | Mindease",
@@ -255,6 +271,7 @@ def page_not_found(err):
 
 # UTILS FUNCTIONS SECTION #
 
+
 def load_user(email):
     """Load user id from database based on user's email."""
     user = User()
@@ -272,8 +289,8 @@ def get_assertion():
     """Fetch an assertion from an external api."""
     url = "https://www.affirmations.dev"
 
-    response = requests.get(url, timeout=3)
-    result = response.json()
+    response = requests.get(url, timeout=3)  # get req
+    result = response.json()  # convert to json
 
     return result["affirmation"]
 
@@ -304,49 +321,42 @@ def fetch_data_summary(email):
     session["data_summary"] = data_summary
 
 
-def control_checkup(route):
+def control_checkup():
     """Check if a new checkup is required."""
     init_checkup = Checkup().check_answer(session["user_id"]["user_id"])
 
     new_checkup = init_checkup["new_checkup"]
 
-    match route:
-        case "checkup":
-            if not new_checkup:
-                return redirect(url_for("myspace"))
-            return None
-        case _:
-            if new_checkup:
-                return redirect(url_for("checkup"))
-            return None
+    if not new_checkup:
+        return False
+    return True
 
 
 def try_journal(action, journal_data, j_request):
     """Attempt to display or register journals."""
-    journal = Journal()
+    journal = Journal()  # init journal object
 
-    match action:
+    match action:  # logic based on action type
         case "register":
             result = journal.create_journal(
                 journal_title=journal_data["title"],
                 journal_content=journal_data["content"],
                 journal_date=journal_data["date"],
                 user_id=journal_data["user_id"],
-            )
+            )  # saves journal to db
 
-            if result["journal_created"]:
-                flash("Journal has been saved", "success")
-            else:
-                flash("An error occured: Journal not saved", "error")
+            if result["journal_created"]:  # flash msg based on status
+                return flash("Journal has been saved", "success")
+            return flash("An error occured: Journal not saved", "error")
 
         case "display":
-            if not j_request.args.get("q"):
+            if not j_request.args.get("q"):  # if it's NOT a search
                 fetched_journals = journal.get_all_journals(
                     session["user_id"]["user_id"]
                 )
                 return fetched_journals
 
-            search_query = j_request.args.get("q")
+            search_query = j_request.args.get("q")  # if it's a search
             fetched_journals = journal.search_journals(
                 session["user_id"]["user_id"], search_query
             )
@@ -355,9 +365,9 @@ def try_journal(action, journal_data, j_request):
 
 def try_checkup(action, data):
     """Attempt to display or register new checkup."""
-    init_checkup = Checkup()
+    init_checkup = Checkup()  # init checkup object
 
-    match action:
+    match action:  # logic based on action type
         case "register":
             checkup_data = {
                 "u_id": session["user_id"]["user_id"],
@@ -371,14 +381,16 @@ def try_checkup(action, data):
                 checkup_data["u_id"],
                 checkup_data["answer"],
                 checkup_data["answer_date"],
-            )
+            )  # saves checkup to db
 
-            session.pop("t_checkup", None)
+            session.pop(
+                "t_checkup", None
+            )  # remove current checkup from session
 
         case "display":
             t_checkup = init_checkup.fetch_checkup(
                 session["user_id"]["user_id"]
-            )
+            )  # fetches new checkup
             session["t_checkup"] = t_checkup["todays_checkup"]["id"]
             return t_checkup
 
@@ -390,21 +402,23 @@ def try_login(user_data):
         user_data["email"], user_data["password"]
     )  # attempt login
 
-    match result["login_succeeded"]:
-        case True:
+    match result["login_succeeded"]:  # logic based on login status
+        case True:  # if success
             fetch_data_summary(user_data["email"])
-            control_checkup(route="login")
+
+            if control_checkup():  # control if new checkup is required
+                return redirect(url_for("checkup"))
 
             return redirect(url_for("myspace"))
 
-        case False | None:
-            try:
+        case False | None:  # if fail
+            try:  # invalid password
                 result["invalid_password"]  # pylint: disable=W0104
 
                 flash("Password is incorrect", "error")
                 return redirect(url_for("login"))
 
-            except KeyError:
+            except KeyError:  # invalid email
                 flash("This email does not exist", "error")
                 return redirect(url_for("login"))
 
@@ -416,9 +430,9 @@ def try_register(user_data):
 
     match result[
         "registration_succeeded"
-    ]:  # block to flash msg based on result
-        case True:
-            flash(
+    ]:  # flash msg based on register result
+        case True:  # if success
+            return flash(
                 dedent(
                     """\
                     Successfully registered.
@@ -426,5 +440,5 @@ def try_register(user_data):
                 ),
                 "success",
             )
-        case False | None:
-            flash("Email already exists", "error")
+        case False | None:  # if fail
+            return flash("Email already exists", "error")
