@@ -24,6 +24,7 @@ class Login:
         cursor = self.conn.cnx.cursor()
         cursor.execute(query, (email,))
         row = cursor.fetchone()
+
         self.close_cursor(cursor)
 
         if row is None:
@@ -33,7 +34,6 @@ class Login:
 
         if bcrypt.checkpw(password, hashed_password.encode("utf-8")):
             return {"matches": True}
-
 
     def login(self, email, password):
         """Login function."""
@@ -45,6 +45,7 @@ class Login:
 
         if row is not None:
             result = self.validate_password(email, password.encode("utf-8"))
+            self.conn.cnx.close()
             if result["matches"] is True:
-                self.conn.cnx.close()
                 return {"login_succeeded": True}
+        self.conn.cnx.close()
