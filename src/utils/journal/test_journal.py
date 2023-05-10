@@ -13,21 +13,26 @@ class TestJournal(unittest.TestCase):
 
     def setUp(self):
         """Set up method."""
-        self.journal_content = "Today, I made a conscious effort to " + \
-            "prioritize my well-being. I started the day with meditation " + \
-            "and a mindful breakfast, and then went for a long walk in " + \
-            "nature. I attended a yoga class and spent some time " + \
-            "journaling and reflecting on my goals. Finally, I treated " + \
-            "myself to a massage. I feel refreshed and energized, and I " + \
-            "realize the importance of making self-care a regular priority."
+        self.journal_content = (
+            "Today, I made a conscious effort to "
+            + "prioritize my well-being. I started the day with meditation "
+            + "and a mindful breakfast, and then went for a long walk in "
+            + "nature. I attended a yoga class and spent some time "
+            + "journaling and reflecting on my goals. Finally, I treated "
+            + "myself to a massage. I feel refreshed and energized, and I "
+            + "realize the importance of making self-care a regular priority."
+        )
         self.journal_date = datetime.date(2023, 4, 18)
         self.journal_id = 70
         self.journal_title = "A Day Focused on Self-Care"
         self.user_id = 3
 
-        self.journal = Journal(self.journal_content, self.journal_date,
-                               self.journal_title,
-                               self.user_id)
+        self.journal = Journal(
+            self.journal_content,
+            self.journal_date,
+            self.journal_title,
+            self.user_id,
+        )
 
         self.db_connection = MagicMock(spec=DBConnection)
         self.db_connection.cursor = MagicMock()
@@ -38,22 +43,26 @@ class TestJournal(unittest.TestCase):
 
     def test_create_journal(self):
         """Test create_journal method."""
-        result = self.journal.create_journal(self.journal_content,
-                                             self.journal_date,
-                                             self.journal_title,
-                                             self.user_id)
+        result = self.journal.create_journal(
+            self.journal_content,
+            self.journal_date,
+            self.journal_title,
+            self.user_id,
+        )
 
-        if result.get('journal_created'):
+        if result.get("journal_created"):
             self.assertTrue(True)
         else:
-            self.assertFalse(True, 'Journal Creation Failed')
+            self.assertFalse(True, "Journal Creation Failed")
 
     def test_create_journal_error(self):
         """Test create_journal with query error."""
-        result = self.journal.create_journal(self.journal_content,
-                                             self.journal_date,
-                                             self.journal_title,
-                                             self.user_id)
+        result = self.journal.create_journal(
+            self.journal_content,
+            self.journal_date,
+            self.journal_title,
+            self.user_id,
+        )
         self.assertTrue("error" in result)
 
     def test_get_all_journals(self):
@@ -63,11 +72,10 @@ class TestJournal(unittest.TestCase):
         self.assertTrue(isinstance(result, list))
         for journal in result:
             self.assertEqual(journal.user_id, user_id)
-        
 
     def test_search_journals(self):
         """Test search_journals method."""
-        result = self.journal.search_journals(self.user_id, self.journal_date)
+        result = self.journal.search_journals(self.user_id, self.search_query)
         self.assertTrue(isinstance(result, list))
 
     def test_search_journals_error(self):

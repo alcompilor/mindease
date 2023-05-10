@@ -12,7 +12,7 @@ userData.checkups.checkups_date.forEach((element) => {
 }); // push fetched checkups dates to new array
 
 var options = {
-  colors: ["#33AC83"],
+  colors: ["#0077be"],
   series: [
     {
       name: "Checkup",
@@ -61,5 +61,5 @@ if (
   chart.render(); // render chart in DOM
 } else {
   document.getElementById("metrics-none").textContent =
-    "There are currently no metrics to show. Keep answering your daily checkups 💪🏼"; // display msg
+    "There are currently no metrics to show for this patient."; // display msg
 }
