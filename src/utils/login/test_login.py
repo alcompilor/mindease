@@ -21,10 +21,10 @@ class TestLogin(unittest.TestCase):
         self.login_instance = Login()
 
     def test_validate_password(self):
-        """test validate_password function."""
+        """Test validate_password function."""
         self.setUp()
         email = "alkatebmohammed383@gmail.com"
-        password = "mohammed2001"
+        password = "Mohammed2001@"
 
         self.assertEqual(
             self.login_instance.validate_password(
@@ -35,9 +35,9 @@ class TestLogin(unittest.TestCase):
         )
 
     def test_login(self):
-        """Test login function"""
+        """Test login function."""
         email = "alkatebmohammed383@gmail.com"
-        password = "mohammed2001"
+        password = "Mohammed2001@"
 
         self.setUp()
         self.cursor_mock.fetchone.return_value = (email,)
