@@ -1,19 +1,20 @@
-const saveBtn = document.getElementById("journal-btn");
-const journalForm = document.getElementById("journal-form");
+const saveBtn = document.getElementById("journal-btn"); // journal save btn
+const journalForm = document.getElementById("journal-form"); // journal form
 const journalSubmissionDate = document.getElementById(
   "journal-submission-date"
-);
+); // journal submission date (hidden)
 
-const journalSearchInput = document.getElementById("journal-search-input");
-const journalSearchButton = document.getElementById("journal-searchbtn");
+const journalSearchInput = document.getElementById("journal-search-input"); // journal search bar
+const journalSearchButton = document.getElementById("journal-searchbtn"); // journal search btn
 
-const cardsContainer = document.getElementById("myspace-journals-cards");
+const cardsContainer = document.getElementById("myspace-journals-cards"); // journal cards main container
 
 saveBtn.addEventListener("click", () => {
   journalSubmissionDate.value = new Date().toLocaleDateString("sv-SE");
   journalForm.submit();
-});
+}); // event listener for save btn to trigger form submit
 
+// Function to create a journal card element
 const createCard = (title, content, date) => {
   const cardDiv = document.createElement("div");
   const cardDetails = document.createElement("details");
@@ -32,9 +33,11 @@ const createCard = (title, content, date) => {
 };
 
 if (journals.length > 0) {
-  const reversedJournals = journals.reverse();
+  // if theres at least one journal
+  const reversedJournals = journals.reverse(); // reorder journals
 
   reversedJournals.forEach((element) => {
+    // create card for each journal
     const title = element["journal_content"]["title"];
     const content = element["journal_content"]["content"];
     const date = new Date(
@@ -60,26 +63,28 @@ details.forEach((targetDetail) => {
   });
 });
 
-const searchParams = new URLSearchParams(window.location.search);
-const isSearch = searchParams.has("q");
+const searchParams = new URLSearchParams(window.location.search); // store url params
+const isSearch = searchParams.has("q"); // check if theres a search param
 
-const card = document.getElementById("journal-card");
+const card = document.getElementById("journal-card"); // check if theres any rendered journal cards
 
 if (!card && !isSearch) {
+  // if no rendered cards & if no search param
   document.getElementById("journals-none").textContent =
     "You have no journals. Add a few but keep in mind that journals can't be deleted nor edited 😉";
 }
 
 if (!card && isSearch) {
+  // if no rendered cards & if search param exists
   document.getElementById("journals-none").textContent =
     "There were no journals found 👀";
 }
 
 if (isSearch) {
+  // if search param
   query = searchParams.get("q");
   if (query != "") {
-    journalSearchInput.value = searchParams.get("q");
-  } else {
-    window.location = window.location.href.split("?")[0];
+    // if search param not empty
+    journalSearchInput.value = searchParams.get("q"); // update search bar with param value
   }
 }
