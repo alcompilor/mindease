@@ -17,15 +17,19 @@ class TestRegister(unittest.TestCase):
         user = {
             "first_name": "Jackson",
             "last_name": "Reacher",
-            "email": "jackreacherooss@gmail.com",
-            "password": "pass1234",
+            "email": "new_user@gmail.com",
+            "password": "Mohammed2000@",
             "birth": "1955.05.05",
             "gender": "male",
         }
 
         conn_mock = MagicMock(DBConnection())
         cursor_mock = MagicMock()
-        conn_mock.cnx.cursor.return_value = cursor_mock
+        cnx_mock = MagicMock()
+
+        conn_mock.cnx.cursor = cursor_mock
+        conn_mock.cnx = cnx_mock
+
         cursor_mock.fetchone.return_value = None
 
         with unittest.mock.patch(
@@ -35,7 +39,7 @@ class TestRegister(unittest.TestCase):
             reg = Register(user)
             user_reg = reg.register_user()
 
-        if user_reg.get("registration_succeeded"):
+        if user_reg.get("registration_succeeded") is True:
             self.assertTrue(True)
         else:
             self.assertFalse(True, "Registration failed")
