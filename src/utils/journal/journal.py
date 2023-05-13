@@ -7,9 +7,12 @@ from src.utils.db_connection.db_connection import DBConnection
 class Journal:
     """Journal class."""
 
-    def __init__(self):
+    def __init__(self, content=None, date=None, title=None, user_id=None):
         """Initialize Journal object with provided data."""
-        pass
+        self.content = content
+        self.date = date
+        self.title = title
+        self.user_id = user_id
 
     def create_journal(
         self, journal_content, journal_date, journal_title, user_id
@@ -77,7 +80,8 @@ class Journal:
                 "SELECT journal_id, user_id, "
                 + "journal_title, journal_content, journal_date "
                 + "FROM Journal WHERE user_id = %s AND "
-                + "(journal_title LIKE %s OR journal_content LIKE %s OR journal_date LIKE %s)"
+                + "(journal_title LIKE %s OR journal_content LIKE %s OR "
+                + "journal_date LIKE %s)"
             )
             wildcard_query = f"%{search_query}%"
             database.cursor.execute(
