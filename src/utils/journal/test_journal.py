@@ -50,10 +50,7 @@ class TestJournal(unittest.TestCase):
             self.user_id,
         )
 
-        if result.get("journal_created"):
-            self.assertTrue(True)
-        else:
-            self.assertFalse(True, "Journal Creation Failed")
+        self.assertTrue(result.get("journal_created"))
 
     def test_create_journal_error(self):
         """Test create_journal with query error."""
@@ -69,13 +66,14 @@ class TestJournal(unittest.TestCase):
         """Test get_all_journals method."""
         user_id = 98
         result = self.journal.get_all_journals(user_id)
-        self.assertTrue(isinstance(result, list))
+        self.assertTrue(isinstance(result, dict))
         for journal in result:
-            self.assertEqual(journal.user_id, user_id)
+            self.assertEqual(journal["user_id"], user_id)
 
     def test_search_journals(self):
         """Test search_journals method."""
-        result = self.journal.search_journals(self.user_id, self.search_query)
+        search_query = "self-care"
+        result = self.journal.search_journals(self.user_id, search_query)
         self.assertTrue(isinstance(result, list))
 
     def test_search_journals_error(self):
