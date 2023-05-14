@@ -57,8 +57,7 @@ class Checkup:
             return err
 
     def check_answer(self, user_id):
-        """Check if the checkup answer with given user_id
-        was stored in the last 24 hours or more."""
+        """Verify if the user's checkup response with the given user_id was saved within the past 24 hours."""
         try:
             db_conn = DBConnection()
             cursor = db_conn.cnx.cursor()

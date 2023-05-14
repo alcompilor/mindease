@@ -2,9 +2,8 @@
 # -*- coding: utf-8 -*-
 """Unittest Checkup class."""
 import unittest
-from unittest.mock import patch
-from datetime import datetime, timedelta
 from unittest.mock import MagicMock
+from datetime import datetime, timedelta
 from src.utils.checkup.checkup import Checkup
 from src.utils.db_connection.db_connection import DBConnection
 
@@ -15,86 +14,85 @@ class TestCheckupClass(unittest.TestCase):
 
     def setUp(self):
         """Unittest setup."""
-        self.conn_mock = MagicMock(DBConnection)
-        self.cursor_mock = MagicMock()
-        self.conn_mock.cnx.cursor.return_value = self.cursor_mock
-        self.checkup_instance = Checkup()
+        self.checkup = Checkup()
+
+        self.db_connection = MagicMock(spec=DBConnection)
+        self.db_connection.cursor = MagicMock()
+        self.db_connection.cursor.fetchone = MagicMock()
+        self.db_connection.cursor.execute = MagicMock()
+        self.db_connection.cursor.close = MagicMock()
+        self.db_connection.cnx = MagicMock()
+        self.db_connection.cnx.close = MagicMock()
 
     def test_fetch_checkup(self):
         """Test fetch_checkup function."""
-        self.setUp()
-        user_id = 1
-        query_result = (1, "How do you feel today?")
-        self.cursor_mock.fetchone.return_value = None
-        self.cursor_mock.execute.return_value = None
-        self.cursor_mock.fetchone.return_value = query_result
-        expected_output = {"todays_checkup": {"id": 1, "content": "How do you feel today?"}}
-        result = self.checkup_instance.fetch_checkup(user_id)
-        self.assertEqual(result, expected_output)
+        self.db_connection.cursor.fetchone.return_value = None
+        self.db_connection.cursor.fetchone.side_effect = [
+            (1, "Did you sleep well today?"),
+            (2, "Question 2"),
+            (3, "Question 3"),
+            (4, "Question 4"),
+            (5, "Question 5"),
+            (6, "Question 6"),
+            (7, "Question 7"),
+            (8, "Question 8"),
+            (9, "Question 9"),
+            (10, "Question 10"),
+            (11, "Question 11"),
+            (12, "Question 12"),
+            (13, "Question 13"),
+            (14, "Question 14"),
+            (15, "Question 15"),
+            (16, "Question 16"),
+            (17, "Question 17"),
+            (18, "Question 18"),
+            (19, "Question 19"),
+            (20, "Question 20"),
+            (21, "Question 21"),
+            (22, "Question 22"),
+            (23, "Question 23"),
+            (24, "Question 24"),
+            (25, "Question 25"),
+            (26, "Question 26"),
+            (27, "Question 27"),
+            (28, "Question 28"),
+            (29, "Question 29"),
+            (30, "Question 30"),
+            (1, "Question 1")
+        ]
+        DBConnection.return_value = self.db_connection
+        result = self.checkup.fetch_checkup(1)
+        self.assertEqual(result, {"todays_checkup": {"id": 1, "content": "Did you sleep well today?"}})
 
-    def test_check_answer(self):
+    def test_check_answe_with_answer_registered(self):
         """Test check_answer function."""
-        self.setUp()
-        user_id = 1
-        query_result = (datetime.today().date() - timedelta(days=1),)
-        self.cursor_mock.fetchone.return_value = query_result
-        expected_output = {"new_checkup": True}
-        result = self.checkup_instance.check_answer(user_id)
-        self.assertEqual(result, expected_output)
-
-    def test_register_checkup(self):
-        """Test refister_checkup function."""
-        self.setUp()
-        checkup_id = 1
-        user_id = 1
-        answer = "Good"
-        answer_date = datetime.today().date()
-        self.cursor_mock.execute.return_value = None
-        self.conn_mock.cnx.commit.return_value = None
-        expected_output = {"answer_registerd": True}
-        result = self.checkup_instance.register_checkup(checkup_id, user_id, answer, answer_date)
-        self.assertEqual(result, expected_output)
-
-    def test_error_on_query(self):
-        """Test try 2"""
-        self.cursor_mock.return_value = self.cursor_mock
-
-    @patch('src.checkup.DBConnection')
-    def test_fetch_checkup_2(self, mock_db_connection):
-        """Test."""
-        checkup = Checkup()
-        mock_cursor = mock_db_connection.return_value.cnx.cursor.return_value
-        mock_cursor.fetchone.return_value = (1, 'How do you feel today?')
-        result = checkup.fetch_checkup(1)
-        self.assertEqual(result, {"todays_checkup": {"id": 1, "content": "How is your day?"}})
-    
-    @patch('src.checkup.DBConnection')
-    def test_check_answer_new_answer(self, mock_db_connection):
-        """Test1."""
-        checkup = Checkup()
-        mock_cursor = mock_db_connection.return_value.cnx.cursor.return_value 
-        mock_cursor.fetchone.return_value = None
-        result = Checkup.check_answer(1)
-        self.assertEqual(result, {"new_checkup": True})
-        
-    @patch('src.checkup.DBConnection')
-    def test_check_answer_old_answer(self, mock_db_connection):
-        """Try."""
-        checkup = Checkup()
-        mock_cursor = mock_db_connection.return_value.cnx.cursor.return_value
-        mock_cursor.fetchone.return_value = ('2023-05-10',)
-        result = checkup.check_answer(1)
+        self.db_connection.cursor.fetchone.return_value = ("2023-05-14",)
+        DBConnection.return_value = self.db_connection
+        result = self.checkup.check_answer(1)
         self.assertEqual(result, {"new_checkup": False})
     
-    @patch('src.checkup.DBConnection')
-    def test_register_checkup_num(self, mock_db_connection):
-        """Test reg."""
-        checkup = Checkup()
-        mock_cursor = mock_db_connection.return_value.cnx.cursor.return_value
-        mock_cursor.execute.return_value = None
-        mock_db_connection.return_value.cnx.commit.return_value = None
-        result = checkup.register_checkup(1, 1, 'test answer', datetime.now().date())
+    def test_check_answer_with_answer_not_registered(self):
+        """Test1."""
+        self.db_connection.cursor.fetchone.return_value = None
+        DBConnection.retutn_value = self.db_connection
+        result = self.checkup.check_answer(1)
+        self.assertEqual(result, {"new_checkup": True})
+
+    def test_register_checkup_with_registered_answer(self):
+        """Test refister_checkup function."""
+        self.db_connection.cursor.execute.return_value = None
+        self.db_connection.cnx.commit.return_value = None
+        DBConnection.return_value = self.db_connection
+
+        result = self.checkup.register_checkup(1, 1, "Answer 1", datetime.now())
+
         self.assertEqual(result, {"answer_registered": True})
+
+    def test_register_checkup_with_not_registered(self):
+        """Test."""
+        self.db_connection.cursor.execute.side_effect = [None, Exception("Database error")]
+        DBConnection.return_value = self.db_connection
+        result = self.checkup.register_checkup(1, 1, "4")
 
 
 if __name__ == '__main__':
