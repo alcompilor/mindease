@@ -2,8 +2,8 @@
 <img width="300" alt="Mindease Logo" src="https://i.imgur.com/shPchlq.png">
 <br />
 
-| ![license badge](https://img.shields.io/badge/license%20-MIT-green) | ![coverage badge](https://img.shields.io/badge/coverage%20-90%25-success) | ![pylint badge](https://img.shields.io/badge/pylint-passed-blue) | ![pylint badge](https://img.shields.io/badge/flake8-passed-blue) |
-|:---:|:---:|:---:|:---:|
+| ![license badge](https://img.shields.io/badge/license%20-MIT-green) | ![coverage badge](https://img.shields.io/badge/coverage%20-90%25-success) | ![pylint badge](https://img.shields.io/badge/pylint-passed-blue) | ![pylint badge](https://img.shields.io/badge/flake8-passed-blue) | ![black badge](https://img.shields.io/badge/code%20syle-black-black) |
+|:---:|:---:|:---:|:---:|:---:|
 
 ## 🤔 What is Mindease?
 
@@ -13,7 +13,6 @@ Mindease is an open-source web application built with [Flask](https://flask.pall
 
 This documentation is intended for hobbyists or businesses who want to host this web application on their own servers and link it to their own database. 
 
-Please [refer here](#) if you would like to see a demo for the web application.
 ## ⚠️ Requirements
 
 **python** - >= v3.10
@@ -24,10 +23,14 @@ Please [refer here](#) if you would like to see a demo for the web application.
 
 **mysql** - Must be up and running on port 3306 with a ready to use database
 
+**git bash** (or similar) - For Windows users only
+
 **phpmyadmin** (Optional) - In case you need a decent Web GUI to administer the database
 
 ## 🚀 Get Started
 *Follow the steps below in order to properly host and run the application*
+
+***Note:*** *Windows users might need to use a bash terminal such as [git bash](https://gitforwindows.org/) in order for this to work correctly.*
 
 Clone the project
 
@@ -50,7 +53,7 @@ Create and activate a virtual environment - (Linux/macOS)
 Create and activate a virtual environment - (Windows)
 
 ```bash
-  python -m venv venv && . .venv/Scripts/activate
+  python -m venv venv && source ./venv/Scripts/activate
 ```
 
 Install required dependencies
@@ -130,3 +133,8 @@ Example - To view documentation for the user module in the user package one can 
 - [@Ahmed Abbasi](https://www.github.com/bigcbull)
 - [@Mohamed Nour Humeidi](https://www.github.com/MoNourH)
 - [@Joseph Hammami](https://www.github.com/josephhammami)
+
+## ©️ Credits
+
+- Meditation timer sound effect by [@Ivymusic](https://pixabay.com/music/ambient-space-atmospheric-background-124841/)
+- Vector images by [@Storyset](https://www.freepik.com/author/stories)

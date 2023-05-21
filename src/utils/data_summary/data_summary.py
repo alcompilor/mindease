@@ -5,6 +5,8 @@
 from src.utils.db_connection.db_connection import DBConnection
 from src.utils.user.user import User
 
+import mysql.connector
+
 
 class DataSummary:
     """DataSummary class."""
@@ -12,21 +14,53 @@ class DataSummary:
     def __init__(self):
         """DATASUMMARY constructor."""
         self.conn = DBConnection()
-        self.user = User(None, None, None, None, None, None, None, None)
+        self.user = User()
         self.first_name = None
         self.last_name = None
         self.birth = None
         self.gender = None
         self.doctor_key = None
 
+    def get_id(self, email):
+        try:
+            query = (
+                'SELECT user_id FROM User WHERE email = %s;'
+            )
+
+            cursor = self.conn.cnx.cursor()
+            cursor.execute(query, (email,))
+            row = cursor.fetchone()
+            self.conn.cnx.commit()
+
+            cursor.close()
+
+            return row
+        except mysql.connector.Error as err:
+            return err
+
+    def get_checkup_info(self, email):
+        try:
+            query = (
+                'SELECT c.checkup_content, ca.answer, ca.answer_date '
+                'FROM User u '
+                'LEFT JOIN Checkup c ON c.checkup_id = c.checkup_id '
+                'LEFT JOIN Checkup_answer ca ON ca.user_id = u.user_id '
+                'AND ca.checkup_id = c.checkup_id '
+                'WHERE u.email = %s;'
+            )
+
+            cursor = self.conn.cnx.cursor()
+            cursor.execute(query, (email,))
+            rows = cursor.fetchall()
+            cursor.close()
+
+            return rows
+        except mysql.connector.Error as err:
+            return err
+
     def get_data_summary(self, email):
         """DATASUMMARY get_data_summary function."""
-        query = "SELECT user_id FROM User WHERE email = %s;"
-
-        cursor = self.conn.cnx.cursor()
-        cursor.execute(query, (email,))
-        uid = cursor.fetchone()
-        cursor.close()
+        uid = self.get_id(email)
 
         self.first_name = self.user.get_first_name(email)
         self.last_name = self.user.get_last_name(email)
@@ -34,19 +68,7 @@ class DataSummary:
         self.gender = self.user.get_gender(email)
         self.doctor_key = self.user.get_doctor_key(int(uid[0]))
 
-        query = (
-            "SELECT c.checkup_content, ca.answer, ca.answer_date "
-            "FROM User u "
-            "LEFT JOIN Checkup c ON c.checkup_id = c.checkup_id "
-            "LEFT JOIN Checkup_answer ca ON ca.user_id = u.user_id "
-            "AND ca.checkup_id = c.checkup_id "
-            "WHERE u.email = %s;"
-        )
-
-        cursor = self.conn.cnx.cursor()
-        cursor.execute(query, (email,))
-        rows = cursor.fetchall()
-        cursor.close()
+        rows = self.get_checkup_info(email)
 
         result = {
             "first_name": self.first_name["first_name"],

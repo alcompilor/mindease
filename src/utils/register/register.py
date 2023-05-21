@@ -35,31 +35,36 @@ class Register:
 
     def register_user(self):
         """Register user function for Register class."""
-        query = "INSERT INTO User \
-            (first_name, last_name, email, \
-            password, birth, gender, doctor_key) VALUES \
-            (%s, %s, %s, %s, %s, %s, %s)"
-
-        params = (
-            self.first_name,
-            self.last_name,
-            self.email,
-            self.password,
-            self.birth,
-            self.gender,
-            self.doctor_key,
-        )
-
         try:
             conn = DBConnection()
+
+            query = "INSERT INTO User \
+                (first_name, last_name, email, \
+                password, birth, gender, doctor_key) VALUES \
+                (%s, %s, %s, %s, %s, %s, %s)"
+
+            params = (
+                self.first_name,
+                self.last_name,
+                self.email,
+                self.password,
+                self.birth,
+                self.gender,
+                self.doctor_key,
+            )
 
             conn.cursor.execute(query, params)
             conn.cnx.commit()
 
+            select_query = "SELECT * FROM User WHERE email = %s"
+            conn.cursor.execute(select_query, (self.email,))
+            user_data = conn.cursor.fetchone()
+
             conn.cursor.close()
             conn.cnx.close()
 
-            return {"registration_succeeded": True}
+            if user_data:
+                return {"registration_succeeded": True}
 
         except mysql.connector.Error as err:
             print(f"error: {err}")
