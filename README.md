@@ -1,6 +1,9 @@
+
 <br />
 <img width="300" alt="Mindease Logo" src="https://i.imgur.com/shPchlq.png">
 <br />
+
+[![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/template/OZuNZr?referralCode=AkPWra)
 
 | ![license badge](https://img.shields.io/badge/license%20-MIT-green) | ![coverage badge](https://img.shields.io/badge/coverage%20-90%25-success) | ![pylint badge](https://img.shields.io/badge/pylint-passed-blue) | ![pylint badge](https://img.shields.io/badge/flake8-passed-blue) | ![black badge](https://img.shields.io/badge/code%20syle-black-black) |
 |:---:|:---:|:---:|:---:|:---:|
